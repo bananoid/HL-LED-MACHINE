@@ -12,22 +12,45 @@ uint8_t broadcastAddr[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff}; // ALL RECEIVERS
 
 enum Action
 {
-  ASSIGN_ID,
-  SEND_PARAMS
+  NO_ACTION,
+  SEND_PARAMS,
+  REQUEST_ID,
+  SEND_ID,
+  SYNC
+  // BENCHMARK
 };
+
+Action currentAction = NO_ACTION;
 
 typedef struct SendParamsAction
 {
   Action action = SEND_PARAMS;
-  unsigned long timestamp;
-  unsigned long transactionCounter;
+  float speed = 1;
 } SendParamsAction;
 
-typedef struct AssignIdAction
+typedef struct RequestIdAction
 {
-  Action action = ASSIGN_ID;
+  Action action = REQUEST_ID;
+} RequestIdAction;
+
+typedef struct SendIdAction
+{
+  Action action = SEND_ID;
   int id = 0;
-} AssignIdAction;
+} SendIdAction;
+
+typedef struct SyncAction
+{
+  Action action = SYNC;
+  unsigned long position = 0;
+} SyncAction;
+
+// typedef struct BenchmarkAction
+// {
+//   Action action = BENCHMARK;
+//   unsigned long timestamp;
+//   unsigned long transactionCounter;
+// } BenchmarkAction;
 
 void printMacAddr(const uint8_t *macaddr)
 {
@@ -61,40 +84,18 @@ const uint8_t *clientsList[MAX_NUM_CLIENT];
 
 int clientsIdCounter = 1;
 
-// Client ID start from 1
-void sendIdToClient(const uint8_t *macaddr)
+void broadCastCurrentId(const uint8_t *macaddr)
 {
-
-  AssignIdAction data;
-  data.id = clientsIdCounter + 1;
-  for (int i = 0; i < MAX_NUM_CLIENT; i++)
-  {
-    if (clientsList[i] == macaddr)
-    {
-      data.id = i;
-    }
-  }
-
-  esp_err_t result = esp_now_send(macaddr, (uint8_t *)&data, sizeof(data));
-
-  Serial.print("Send id :: ");
-  Serial.print(data.id);
+  Serial.print("Broadcast id for :: ");
+  Serial.print(clientsIdCounter);
   Serial.print(" to client :: ");
   printMacAddr(macaddr);
 
-  if (result == ESP_OK)
-  {
-    Serial.println("Sent with success");
-  }
-  else
-  {
-    Serial.println("Error sending the data");
-    return;
-  }
+  SendIdAction data;
+  data.id = clientsIdCounter;
+  esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(SendIdAction));
 
-  clientsList[data.id] = macaddr;
-
-  clientsIdCounter = data.id;
+  clientsIdCounter++;
 }
 
 void recv_cb(const uint8_t *macaddr, const uint8_t *incomingData, int len)
@@ -104,30 +105,10 @@ void recv_cb(const uint8_t *macaddr, const uint8_t *incomingData, int len)
   Serial.print("Receive Action :: ");
   Serial.println(action);
 
-  if (!esp_now_is_peer_exist(macaddr))
+  currentAction = action;
+  if (currentAction == REQUEST_ID)
   {
-
-    esp_now_peer_info_t peerInfo;
-    peerInfo.channel = CHANNEL;
-    peerInfo.encrypt = false;
-
-    memcpy(peerInfo.peer_addr, macaddr, 6);
-
-    if (esp_now_add_peer(&peerInfo) != ESP_OK)
-    {
-      Serial.println("Failed to add peer");
-      return;
-    }
-    else
-    {
-      Serial.print("Peer added with mac :: ");
-      printMacAddr(macaddr);
-    }
-  }
-
-  if (action == ASSIGN_ID)
-  {
-    sendIdToClient(macaddr);
+    broadCastCurrentId(macaddr);
   }
 };
 
@@ -164,10 +145,6 @@ void setup()
   }
 
   esp_now_register_recv_cb(recv_cb);
-  esp_now_register_send_cb(send_cb);
-
-  // esp_now_set_self_role(ESP_NOW_ROLE_CONTROLLER);
-  // esp_now_
 
   // register broadcast address
   esp_now_peer_info_t peerInfo;
@@ -184,14 +161,15 @@ void setup()
 
 void loop()
 {
-  transactionCounter++;
+  // transactionCounter++;
 
-  SendParamsAction paramsData;
-  paramsData.transactionCounter = transactionCounter;
-  paramsData.timestamp = micros();
-  esp_now_send(broadcastAddr, (uint8_t *)&paramsData, sizeof(SendParamsAction));
-
-  delay(16);
+  if (currentAction == SEND_PARAMS)
+  {
+    SendParamsAction data;
+    data.speed = sinf(millis() / 1000.0) * 10000;
+    esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(SendParamsAction));
+    delay(16);
+  }
 }
 
 #else
@@ -202,87 +180,24 @@ const uint8_t *serverAddr = nullptr;
 int clientId = 0;
 bool serverAdded = false;
 
-void addServerToPeers()
-{
-  // if (!serverAdded)
-  if (serverAddr == nullptr)
-  {
-    return;
-  }
-
-  if (!esp_now_is_peer_exist(serverAddr))
-  {
-
-    esp_now_peer_info_t peerInfo;
-    peerInfo.channel = CHANNEL;
-    peerInfo.encrypt = false;
-    memcpy(peerInfo.peer_addr, serverAddr, 6);
-    if (esp_now_add_peer(&peerInfo) != ESP_OK)
-    {
-      Serial.print("Failed to add peer :: ");
-      printMacAddr(serverAddr);
-      // delay(500);
-      return;
-    }
-
-    serverAdded = true;
-
-    Serial.print("\nServer ADDED");
-    printMacAddr(serverAddr);
-    Serial.println("-------");
-  }
-}
-
-void handShakeWithServer(const uint8_t *macaddr)
-{
-  addServerToPeers();
-
-  serverAddr = macaddr;
-
-  if (serverAdded)
-  {
-    AssignIdAction data;
-    data.action = ASSIGN_ID;
-    esp_now_send(serverAddr, (uint8_t *)&data, sizeof(data));
-  }
-}
-
 void recv_cb(const uint8_t *macaddr, const uint8_t *incomingData, int len)
 {
   Action action = getActionFromData(incomingData);
-  // Serial.print("Acction received :: ");
-  // Serial.print(action);
-  // Serial.print(" \t from :: ");
-  // printMacAddr(macaddr);
+  Serial.print("Acction received :: ");
+  Serial.print(action);
+  Serial.print(" \t from :: ");
+  printMacAddr(macaddr);
 
-  if (action == ASSIGN_ID)
+  if (action == SEND_ID && clientId == 0)
   {
-    AssignIdAction data;
+    SendIdAction data;
     memcpy(&data, incomingData, sizeof(data));
     clientId = data.id;
 
     Serial.print("clientId assigned :: ");
     Serial.println(clientId);
 
-    return;
-  }
-  else if (action == SEND_PARAMS)
-  {
-    if (clientId == 0)
-    {
-      handShakeWithServer(macaddr);
-      return;
-    }
-
-    memcpy(&paramsData, incomingData, sizeof(paramsData));
-
-    // Serial.print("Bytes received: ");
-    // Serial.println(len);
-    // Serial.print("cnt :: ");
-    // Serial.print(paramsData.transactionCounter);
-    // Serial.print("\t\t\t\t - ts :: ");
-    // Serial.println(paramsData.timestamp);
-    // Serial.println("-------------");
+    currentAction = NO_ACTION;
 
     return;
   }
@@ -293,6 +208,8 @@ void setup()
   Serial.begin(115200);
 
   WiFi.mode(WIFI_STA);
+  Serial.println(WiFi.macAddress());
+  WiFi.disconnect();
 
   if (esp_now_init() != ESP_OK)
   {
@@ -301,10 +218,36 @@ void setup()
   }
 
   esp_now_register_recv_cb(recv_cb);
+
+  // register broadcast address
+  esp_now_peer_info_t peerInfo;
+  peerInfo.channel = CHANNEL;
+  peerInfo.encrypt = false;
+
+  memcpy(peerInfo.peer_addr, broadcastAddr, 6);
+  if (esp_now_add_peer(&peerInfo) != ESP_OK)
+  {
+    Serial.println("Failed to add peer");
+    return;
+  }
+
+  currentAction = REQUEST_ID;
 }
 
 void loop()
 {
+  if (currentAction == REQUEST_ID)
+  {
+    RequestIdAction data;
+    esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(SendParamsAction));
+    delay(200);
+  }
+  else
+  {
+    Serial.print("RUN With id :: ");
+    Serial.println(clientId);
+    delay(500);
+  }
 }
 
 #endif
