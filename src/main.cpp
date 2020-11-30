@@ -8,6 +8,8 @@
 
 uint8_t broadcastAddr[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff}; // ALL RECEIVERS
 
+//Server mac :: 16::82::28::102::150::204
+
 enum Action
 {
   ASSIGN_ID,
@@ -27,6 +29,22 @@ typedef struct AssignIdAction
   int id = 0;
 } AssignIdAction;
 
+void printMacAddr(const uint8_t *macaddr)
+{
+  Serial.print(macaddr[0]);
+  Serial.print("::");
+  Serial.print(macaddr[1]);
+  Serial.print("::");
+  Serial.print(macaddr[2]);
+  Serial.print("::");
+  Serial.print(macaddr[3]);
+  Serial.print("::");
+  Serial.print(macaddr[4]);
+  Serial.print("::");
+  Serial.print(macaddr[5]);
+  Serial.println();
+}
+
 Action getActionFromData(const uint8_t *data)
 {
   Action action;
@@ -34,22 +52,49 @@ Action getActionFromData(const uint8_t *data)
   return action;
 }
 
-// #ifdef IS_SERVER
+#ifdef IS_SERVER
 
 unsigned long transactionCounter = 0;
 
-int clientsIdCounter = 0;
+#define MAX_NUM_CLIENT 255
+const uint8_t *clientsList[MAX_NUM_CLIENT];
+
+int clientsIdCounter = 1;
 
 // Client ID start from 1
 void sendIdToClient(const uint8_t *macaddr)
 {
-  clientsIdCounter++;
 
   AssignIdAction data;
-  data.id = clientsIdCounter;
+  data.id = clientsIdCounter + 1;
+  for (int i = 0; i < MAX_NUM_CLIENT; i++)
+  {
+    if (clientsList[i] == macaddr)
+    {
+      data.id = i;
+    }
+  }
 
-  esp_now_send(macaddr, (uint8_t *)&data, sizeof(data));
-  delay(100);
+  esp_err_t result = esp_now_send(macaddr, (uint8_t *)&data, sizeof(data));
+
+  Serial.print("Send id :: ");
+  Serial.print(data.id);
+  Serial.print(" to client :: ");
+  printMacAddr(macaddr);
+
+  if (result == ESP_OK)
+  {
+    Serial.println("Sent with success");
+  }
+  else
+  {
+    Serial.println("Error sending the data");
+    return;
+  }
+
+  clientsList[data.id] = macaddr;
+
+  clientsIdCounter = data.id;
 }
 
 void recv_cb(const uint8_t *macaddr, const uint8_t *incomingData, int len)
@@ -76,18 +121,41 @@ void recv_cb(const uint8_t *macaddr, const uint8_t *incomingData, int len)
     else
     {
       Serial.print("Peer added with mac :: ");
-      Serial.println(String((char *)macaddr));
+      printMacAddr(macaddr);
     }
+  }
 
+  if (action == ASSIGN_ID)
+  {
     sendIdToClient(macaddr);
   }
 };
+
+void send_cb(const uint8_t *mac_addr, esp_now_send_status_t status)
+{
+  if (
+      mac_addr[0] == 255 &&
+      mac_addr[1] == 255 &&
+      mac_addr[2] == 255 &&
+      mac_addr[3] == 255 &&
+      mac_addr[4] == 255 &&
+      mac_addr[5] == 255)
+  {
+    return;
+  }
+
+  Serial.print("\r\nLast Packet Send Status:\t");
+  Serial.print(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+  printMacAddr(mac_addr);
+}
 
 void setup()
 {
   Serial.begin(115200);
 
   WiFi.mode(WIFI_STA);
+  Serial.println(WiFi.macAddress());
+  WiFi.disconnect();
 
   if (esp_now_init() != ESP_OK)
   {
@@ -96,11 +164,16 @@ void setup()
   }
 
   esp_now_register_recv_cb(recv_cb);
+  esp_now_register_send_cb(send_cb);
+
+  // esp_now_set_self_role(ESP_NOW_ROLE_CONTROLLER);
+  // esp_now_
 
   // register broadcast address
   esp_now_peer_info_t peerInfo;
   peerInfo.channel = CHANNEL;
   peerInfo.encrypt = false;
+
   memcpy(peerInfo.peer_addr, broadcastAddr, 6);
   if (esp_now_add_peer(&peerInfo) != ESP_OK)
   {
@@ -125,36 +198,51 @@ void loop()
 
 SendParamsAction paramsData;
 
-const uint8_t *serverAddr;
+const uint8_t *serverAddr = nullptr;
 int clientId = 0;
 bool serverAdded = false;
 
-void handShakeWithServer(const uint8_t *macaddr)
+void addServerToPeers()
 {
-  if (!esp_now_is_peer_exist(macaddr))
   // if (!serverAdded)
+  if (serverAddr == nullptr)
+  {
+    return;
+  }
+
+  if (!esp_now_is_peer_exist(serverAddr))
   {
 
     esp_now_peer_info_t peerInfo;
     peerInfo.channel = CHANNEL;
     peerInfo.encrypt = false;
-    memcpy(peerInfo.peer_addr, macaddr, 6);
+    memcpy(peerInfo.peer_addr, serverAddr, 6);
     if (esp_now_add_peer(&peerInfo) != ESP_OK)
     {
       Serial.print("Failed to add peer :: ");
-      Serial.println(String((char *)macaddr));
+      printMacAddr(serverAddr);
+      // delay(500);
       return;
     }
 
-    serverAddr = macaddr;
     serverAdded = true;
 
-    Serial.println("Server ADDED");
+    Serial.print("\nServer ADDED");
+    printMacAddr(serverAddr);
+    Serial.println("-------");
   }
+}
+
+void handShakeWithServer(const uint8_t *macaddr)
+{
+  addServerToPeers();
+
+  serverAddr = macaddr;
 
   if (serverAdded)
   {
     AssignIdAction data;
+    data.action = ASSIGN_ID;
     esp_now_send(serverAddr, (uint8_t *)&data, sizeof(data));
   }
 }
@@ -165,7 +253,7 @@ void recv_cb(const uint8_t *macaddr, const uint8_t *incomingData, int len)
   // Serial.print("Acction received :: ");
   // Serial.print(action);
   // Serial.print(" \t from :: ");
-  // Serial.println(String((char *)macaddr));
+  // printMacAddr(macaddr);
 
   if (action == ASSIGN_ID)
   {
