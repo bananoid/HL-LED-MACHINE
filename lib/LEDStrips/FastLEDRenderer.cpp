@@ -19,8 +19,8 @@ namespace LEDStrips
 
     FastLED.addLeds<WS2812B, LS_DATA_PIN, GRB>(leds, LS_NUM_LEDS_PER_STRIP);
 
-    Serial.print("Begin FastLED with :: ");
-    Serial.print(LS_NUM_LEDS_PER_STRIP * LS_NUM_STRIPS);
+    FastLED.setDither(0);
+    FastLED.setBrightness(255);
   }
 
   void FastLEDRenderer::setPixel(int inx, GFXUtils::fRGB color)

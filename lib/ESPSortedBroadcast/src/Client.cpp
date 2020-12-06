@@ -40,12 +40,6 @@ namespace ESPSortedBroadcast
       esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(SendParamsAction));
       delay(200);
     }
-    else
-    {
-      Serial.print("RUN With id :: ");
-      Serial.println(clientId);
-      delay(500);
-    }
   }
 
   Client *ClientSingleton = new Client();
