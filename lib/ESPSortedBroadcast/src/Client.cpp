@@ -12,10 +12,11 @@ namespace ESPSortedBroadcast
   void Client::recv_cb(const uint8_t *macaddr, const uint8_t *incomingData, int len)
   {
     Action action = getActionFromData(incomingData);
-    Serial.print("Acction received :: ");
-    Serial.print(action);
-    Serial.print(" \t from :: ");
-    printMacAddr(macaddr);
+
+    // Serial.print("Acction received :: ");
+    // Serial.print(action);
+    // Serial.print(" \t from :: ");
+    // printMacAddr(macaddr);
 
     if (action == SEND_ID && clientId == 0)
     {
@@ -27,7 +28,6 @@ namespace ESPSortedBroadcast
       Serial.println(clientId);
 
       currentAction = NO_ACTION;
-
       return;
     }
   }

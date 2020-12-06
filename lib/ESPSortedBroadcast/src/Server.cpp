@@ -39,14 +39,14 @@ namespace ESPSortedBroadcast
 
   void Server::update()
   {
-    if (currentAction == SEND_PARAMS)
-    {
-      SendParamsAction data;
-      data.speed = sinf(millis() / 1000.0) * 10000;
-      esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(SendParamsAction));
-      delay(16);
-    }
+    // if (currentAction == SEND_PARAMS)
+    // {
+    SendParamsAction data;
+    data.speed = sinf(millis() / 1000.0) * 10000;
+    esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(SendParamsAction));
+    delay(16);
+    // }
   }
 
   Server *ServerSingleton = new Server();
-} // namespace ESPSortedBroadcast
+} // namespace ESPSortedBroadcast 

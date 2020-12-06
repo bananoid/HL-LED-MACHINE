@@ -39,6 +39,7 @@ namespace ESPSortedBroadcast
   void Peer::begin()
   {
     WiFi.mode(WIFI_STA);
+
     // Serial.println(WiFi.macAddress());
     // WiFi.disconnect();
 
