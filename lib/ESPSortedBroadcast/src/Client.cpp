@@ -30,6 +30,14 @@ namespace ESPSortedBroadcast
       currentAction = NO_ACTION;
       return;
     }
+
+    if (action == SYNC)
+    {
+      SyncAction data;
+      memcpy(&data, incomingData, sizeof(data));
+      Serial.print("Sync to :: ");
+      Serial.println(data.position);
+    }
   }
 
   void Client::update()
@@ -38,7 +46,6 @@ namespace ESPSortedBroadcast
     {
       RequestIdAction data;
       esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(SendParamsAction));
-      delay(200);
     }
   }
 

@@ -20,6 +20,7 @@ namespace ESPSortedBroadcast
     void recv_cb(const uint8_t *macaddr, const uint8_t *incomingData, int len);
 
     void broadCastCurrentId(const uint8_t *macaddr);
+    void broadCastCurrentPosition();
   };
 
   extern Server *ServerSingleton;

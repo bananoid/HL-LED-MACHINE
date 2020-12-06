@@ -2,23 +2,45 @@
 
 // #define IS_SERVER // Comment for client mode
 
-#include <ESPSortedBroadcast.h>
-// #include <Server.h>
+#include <Server.h>
+
+#define _TASK_SLEEP_ON_IDLE_RUN
+#include <TaskScheduler.h>
+Scheduler runner;
 
 #ifdef IS_SERVER
+
+// Callback methods prototypes
+void sendParameters();
+void sendSync();
+
+// Tasks
+Task t1(16, TASK_FOREVER, &sendParameters, &runner, true);
+Task t2(1000, TASK_FOREVER, &sendSync, &runner, true);
 
 void setup()
 {
   Serial.begin(115200);
 
   ESPSortedBroadcast::ServerSingleton->begin();
+
+  runner.startNow();
 }
 
 void loop()
 {
+  runner.execute();
+}
+
+void sendParameters()
+{
   ESPSortedBroadcast::ServerSingleton->update();
 }
 
+void sendSync()
+{
+  ESPSortedBroadcast::ServerSingleton->broadCastCurrentPosition();
+}
 #else
 
 // #include <FastLED.h>
@@ -37,16 +59,15 @@ LEDStrips::FastLEDRenderer ledRenderer;
 
 LEDSynth::LEDSynth *ledSynth;
 
-#define _TASK_SLEEP_ON_IDLE_RUN
-#include <TaskScheduler.h>
-Scheduler runner;
 // Callback methods prototypes
 void frameRender();
 void benckMarkFPS();
+void clientUpdate();
 
 // Tasks
-Task t1(16, TASK_FOREVER, &frameRender, &runner, true);    //adding task to the chain on creation
-Task t2(1000, TASK_FOREVER, &benckMarkFPS, &runner, true); //adding task to the chain on creation
+Task t1(16, TASK_FOREVER, &frameRender, &runner, true);
+Task t2(1000, TASK_FOREVER, &benckMarkFPS, &runner, true);
+Task t3(200, TASK_FOREVER, &clientUpdate, &runner, true);
 
 long frameTime;
 
@@ -63,6 +84,21 @@ void benckMarkFPS()
 {
   Serial.print("Frame time :: ");
   Serial.println(frameTime);
+}
+
+void clientUpdate()
+{
+  int clientInx = ESPSortedBroadcast::ClientSingleton->clientId;
+  if (clientInx > 0)
+  {
+    Serial.print("Client index :: ");
+    Serial.println(clientInx);
+    t3.disable();
+    ledSynth->index = clientInx - 1;
+    return;
+  }
+  ESPSortedBroadcast::ClientSingleton->update();
+  Serial.println("Request Client Index");
 }
 
 void setup()

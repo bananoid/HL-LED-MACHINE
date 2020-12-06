@@ -37,6 +37,16 @@ namespace ESPSortedBroadcast
     clientsIdCounter++;
   }
 
+  void Server::broadCastCurrentPosition()
+  {
+    SyncAction data;
+    data.position = millis();
+
+    Serial.print("Send Sync at :: ");
+    Serial.println(data.position);
+    esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(SyncAction));
+  }
+
   void Server::update()
   {
     // if (currentAction == SEND_PARAMS)
@@ -44,9 +54,9 @@ namespace ESPSortedBroadcast
     SendParamsAction data;
     data.speed = sinf(millis() / 1000.0) * 10000;
     esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(SendParamsAction));
-    delay(16);
+    // delay(16);
     // }
   }
 
   Server *ServerSingleton = new Server();
-} // namespace ESPSortedBroadcast 
+} // namespace ESPSortedBroadcast
