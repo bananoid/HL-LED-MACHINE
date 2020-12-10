@@ -55,10 +55,43 @@ namespace ESPSortedBroadcast
     if (clientId == 0)
     {
       RequestIdAction data;
-      esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(RequestIdAction));
+      esp_err_t res = esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(RequestIdAction));
 
-      Serial.print("RequestIdAction :: ");
-      Serial.println(data.action);
+      if (res == ESP_OK)
+      {
+        Serial.print("RequestIdAction :: ");
+        Serial.println(data.action);
+      }
+      else if (res == ESP_ERR_ESPNOW_NOT_INIT)
+      {
+        Serial.print("ESP_ERR_ESPNOW_NOT_INIT");
+        Serial.println(data.action);
+      }
+      else if (res == ESP_ERR_ESPNOW_ARG)
+      {
+        Serial.print("ESP_ERR_ESPNOW_ARG");
+        Serial.println(data.action);
+      }
+      else if (res == ESP_ERR_ESPNOW_INTERNAL)
+      {
+        Serial.print("ESP_ERR_ESPNOW_INTERNAL");
+        Serial.println(data.action);
+      }
+      else if (res == ESP_ERR_ESPNOW_NO_MEM)
+      {
+        Serial.print("ESP_ERR_ESPNOW_NO_MEM");
+        Serial.println(data.action);
+      }
+      else if (res == ESP_ERR_ESPNOW_NOT_FOUND)
+      {
+        Serial.print("ESP_ERR_ESPNOW_NOT_FOUND");
+        Serial.println(data.action);
+      }
+      else if (res == ESP_ERR_ESPNOW_IF)
+      {
+        Serial.print("ESP_ERR_ESPNOW_IF");
+        Serial.println(data.action);
+      }
     }
   }
 

@@ -18,8 +18,8 @@ namespace LEDSynth
 
     float t = position / 1000.0f;
     // t *= 0.1;
-    float oscA;
-    // float oscB;
+    // float oscA;
+    float oscB;
     float phase;
 
     GFXUtils::fRGB color = GFXUtils::fRGB(1, 1, 1);
@@ -29,9 +29,14 @@ namespace LEDSynth
     for (size_t i = 0; i < LS_NUM_LEDS_PER_STRIP; i++)
     {
       phase = (i + index * realNumOffPix) * 0.1f;
-      oscA = sinf(fmodf(1.0 + fmodf(t * 1.5f + phase * 2.043, TWO_PI), TWO_PI)) * 0.5 + 0.5;
-      oscA = oscA * oscA * oscA;
-      color = GFXUtils::GFXUtils::hsv(phase * 0.1 + t * 0.012345, 0.8, oscA);
+
+      // oscA = sinf(fmodf(1.0 + fmodf(t * 0.35f + phase * 3.243, TWO_PI), TWO_PI)) * 0.1 + 1;
+      // oscA = oscA * oscA * oscA;
+
+      oscB = sinf(fmodf(1.0 + fmodf(t * 1.521354f + phase * 5.43123, TWO_PI), TWO_PI)) * 0.5 + 0.5;
+      oscB = oscB * oscB * oscB;
+
+      color = GFXUtils::GFXUtils::hsv(phase * .4 + t * .52345, 1, oscB);
       renderer->setPixel(i, color);
     }
 

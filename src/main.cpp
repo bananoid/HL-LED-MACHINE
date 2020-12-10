@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#define IS_SERVER // Comment for client mode
+// #define IS_SERVER // Comment for client mode
 
 #ifdef IS_SERVER
 
@@ -42,19 +42,23 @@ void sendSync()
 }
 #else
 
+#include "ClientMainController.h"
+ClientMainController *mainController;
+
 #define _TASK_STD_FUNCTION
 // #define _TASK_MICRO_RES
 #include <TaskScheduler.h>
 
 Scheduler runner;
 
-#include "ClientMainController.h"
-ClientMainController *mainController;
-
 void setup()
 {
   Serial.begin(115200);
+
+  ESPSortedBroadcast::ClientSingleton->begin();
+
   mainController = new ClientMainController(&runner);
+
   runner.startNow();
 }
 

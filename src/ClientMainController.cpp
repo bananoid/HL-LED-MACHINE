@@ -5,7 +5,7 @@ ClientMainController::ClientMainController(Scheduler *runner)
 {
   this->runner = runner;
 
-  ESPSortedBroadcast::ClientSingleton->begin();
+  // ESPSortedBroadcast::ClientSingleton->begin();
   ESPSortedBroadcast::ClientSingleton->delegate = this;
 
   ledRenderer.begin();
@@ -23,7 +23,7 @@ ClientMainController::ClientMainController(Scheduler *runner)
     {
       requestClientIndexTask.disable();
       renderCurrentIndex();
-      frameRenderTask.delay(TASK_SECOND * 5);
+      frameRenderTask.delay(TASK_SECOND * 4);
     }
   });
   runner->addTask(requestClientIndexTask);
@@ -71,5 +71,5 @@ void ClientMainController::clientReceveSyncAction(ESPSortedBroadcast::SyncAction
 }
 void ClientMainController::clientReceveClientIndex(ESPSortedBroadcast::SendIdAction data)
 {
-  // renderCurrentIndex();
+  ledSynth->index = data.id - 1; // Start index from 0 :: data id start from 1
 }
