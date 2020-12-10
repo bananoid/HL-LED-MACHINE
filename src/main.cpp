@@ -2,13 +2,17 @@
 
 #define IS_SERVER // Comment for client mode
 
+// COMMONS --------------------------
 #define _TASK_STD_FUNCTION
 // #define _TASK_MICRO_RES
 #include <TaskScheduler.h>
 
 Scheduler runner;
+// ----------------------------------
 
 #ifdef IS_SERVER
+
+// SERVER ---------------------------
 
 #include "ServerMainController.h"
 #include <Server.h>
@@ -24,8 +28,11 @@ void setup()
 
   runner.startNow();
 }
+// ----------------------------------
 
 #else
+
+// CLIENT ---------------------------
 
 #include "ClientMainController.h"
 ClientMainController *mainController;
@@ -40,9 +47,13 @@ void setup()
 
   runner.startNow();
 }
+// ----------------------------------
+
 #endif
 
+// COMMON ---------------------------
 void loop()
 {
   runner.execute();
 }
+// ----------------------------------
