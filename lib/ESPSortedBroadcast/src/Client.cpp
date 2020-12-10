@@ -13,13 +13,14 @@ namespace ESPSortedBroadcast
   {
     Action action = getActionFromData(incomingData);
 
-    // Serial.print("Acction received :: ");
-    // Serial.print(action);
-    // Serial.print(" \t from :: ");
-    // printMacAddr(macaddr);
+    Serial.print("Acction received :: ");
+    Serial.print(action);
+    Serial.print(" \t from :: ");
+    printMacAddr(macaddr);
 
     if (action == SEND_ID && clientId == 0)
     {
+
       SendIdAction data;
       memcpy(&data, incomingData, sizeof(data));
       clientId = data.id;
@@ -27,7 +28,10 @@ namespace ESPSortedBroadcast
       Serial.print("clientId assigned :: ");
       Serial.println(clientId);
 
-      currentAction = NO_ACTION;
+      if (delegate)
+      {
+        delegate->clientReceveClientIndex(data);
+      }
       return;
     }
 
@@ -35,18 +39,27 @@ namespace ESPSortedBroadcast
     {
       SyncAction data;
       memcpy(&data, incomingData, sizeof(data));
-      Serial.print("Sync to :: ");
-      Serial.println(data.position);
+      if (delegate)
+      {
+        delegate->clientReceveSyncAction(data);
+      }
+    }
+  }
+
+  void Client::requestClientIndex()
+  {
+    if (clientId == 0)
+    {
+      RequestIdAction data;
+      esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(RequestIdAction));
+
+      Serial.print("RequestIdAction :: ");
+      Serial.println(data.action);
     }
   }
 
   void Client::update()
   {
-    if (clientId == 0)
-    {
-      RequestIdAction data;
-      esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(SendParamsAction));
-    }
   }
 
   Client *ClientSingleton = new Client();

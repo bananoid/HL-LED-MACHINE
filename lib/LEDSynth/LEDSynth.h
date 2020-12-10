@@ -16,6 +16,8 @@ namespace LEDSynth
     LEDStrips::LEDStripsRenderer *renderer;
     LEDSynth(LEDStrips::LEDStripsRenderer *renderer);
     void update();
+
+    void syncTo(unsigned long position);
   };
 
 } // namespace LEDSynth

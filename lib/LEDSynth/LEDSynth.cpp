@@ -13,10 +13,11 @@ namespace LEDSynth
   void LEDSynth::update()
   {
     unsigned long curTime = micros();
-    position += lastFrameTime - curTime;
+    position += (curTime - lastFrameTime);
     lastFrameTime = curTime;
 
     float t = position / 1000000.0f;
+    // t *= 0.1;
     float oscA;
     // float oscB;
     float phase;
@@ -33,7 +34,22 @@ namespace LEDSynth
       color = GFXUtils::GFXUtils::hsv(phase * 0.1 + t * 0.012345, 0.8, oscA);
       renderer->setPixel(i, color);
     }
+
     renderer->show();
+  }
+
+  void LEDSynth::syncTo(unsigned long position)
+  {
+    long delataPosition = this->position - position;
+
+    Serial.print("curPos :: ");
+    Serial.print(this->position);
+    Serial.print(" - recPos :: ");
+    Serial.print(position);
+    Serial.print(" - deltaPos :: ");
+    Serial.println(delataPosition);
+
+    this->position = position;
   }
 
 } // namespace LEDSynth

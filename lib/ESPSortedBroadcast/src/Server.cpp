@@ -35,6 +35,8 @@ namespace ESPSortedBroadcast
     esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(SendIdAction));
 
     clientsIdCounter++;
+
+    broadCastCurrentPosition();
   }
 
   void Server::broadCastCurrentPosition()
