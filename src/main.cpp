@@ -2,10 +2,9 @@
 
 // #define IS_SERVER // Comment for client mode
 
-#include <Server.h>
-
 #ifdef IS_SERVER
 
+#include <Server.h>
 // #define _TASK_SLEEP_ON_IDLE_RUN
 #include <TaskScheduler.h>
 Scheduler runner;
@@ -13,7 +12,7 @@ Scheduler runner;
 void sendParameters();
 void sendSync();
 
-#define SYNC_TIME_INTERVAL 16
+#define SYNC_TIME_INTERVAL 2000
 // Tasks
 // Task t1(16, TASK_FOREVER, &sendParameters, &runner, true);
 Task t2(SYNC_TIME_INTERVAL, TASK_FOREVER, &sendSync, &runner, true);
@@ -43,9 +42,8 @@ void sendSync()
 }
 #else
 
-#define _TASK_SLEEP_ON_IDLE_RUN
 #define _TASK_STD_FUNCTION
-#define _TASK_MICRO_RES
+// #define _TASK_MICRO_RES
 #include <TaskScheduler.h>
 
 Scheduler runner;

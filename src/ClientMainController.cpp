@@ -1,32 +1,5 @@
 #include "ClientMainController.h"
-
 #include <Arduino.h>
-// Scheduler runner;
-
-// Task t1(16, TASK_FOREVER, &frameRender, &runner, true);
-// Task t2(1000, TASK_FOREVER, &benckMarkFPS, &runner, true);
-// Task t3(200, TASK_FOREVER, &clientUpdate, &runner, true);
-
-// void ClientMainController::benckMarkFPS()
-// {
-//   Serial.print("Frame time :: ");
-//   Serial.println(frameTime);
-// }
-
-// void ClientMainController::clientUpdate()
-// {
-//   int clientInx = ESPSortedBroadcast::ClientSingleton->clientId;
-//   if (clientInx > 0)
-//   {
-//     Serial.print("Client index :: ");
-//     Serial.println(clientInx);
-//     t3.disable();
-//     ledSynth->index = clientInx - 1;
-//     return;
-//   }
-//   ESPSortedBroadcast::ClientSingleton->update();
-//   Serial.println("Request Client Index");
-// }
 
 ClientMainController::ClientMainController(Scheduler *runner)
 {
@@ -39,27 +12,25 @@ ClientMainController::ClientMainController(Scheduler *runner)
   ledSynth = new LEDSynth::LEDSynth(&ledRenderer);
 
   // Task :: Client index request
-  requestClientIndexTask.set(200000, TASK_FOREVER, [this]() {
+  requestClientIndexTask.set(TASK_MILLISECOND * 1000, TASK_FOREVER, [this]() {
     int clientInx = ESPSortedBroadcast::ClientSingleton->clientId;
 
     if (clientInx == 0)
     {
-      Serial.print("requestClientIndexTask tick :: ");
-      Serial.println(clientInx);
       ESPSortedBroadcast::ClientSingleton->requestClientIndex();
     }
     else
     {
       requestClientIndexTask.disable();
       renderCurrentIndex();
-      frameRenderTask.delay(5000000);
+      frameRenderTask.delay(TASK_SECOND * 5);
     }
   });
-  // runner->addTask(requestClientIndexTask);
-  // requestClientIndexTask.enable();
+  runner->addTask(requestClientIndexTask);
+  requestClientIndexTask.enable();
 
   // Task :: Render led animation
-  frameRenderTask.set(RENDER_FRAME_TIME, TASK_FOREVER, [this]() {
+  frameRenderTask.set(TASK_MILLISECOND * 16, TASK_FOREVER, [this]() {
     this->frameRender();
   });
   runner->addTask(frameRenderTask);
@@ -96,7 +67,7 @@ void ClientMainController::renderCurrentIndex()
 void ClientMainController::clientReceveSyncAction(ESPSortedBroadcast::SyncAction data)
 {
   unsigned long pos = data.position;
-  ledSynth->syncTo(pos * 1000);
+  ledSynth->syncTo(pos);
 }
 void ClientMainController::clientReceveClientIndex(ESPSortedBroadcast::SendIdAction data)
 {

@@ -12,11 +12,11 @@ namespace LEDSynth
 
   void LEDSynth::update()
   {
-    unsigned long curTime = micros();
+    unsigned long curTime = millis();
     position += (curTime - lastFrameTime);
     lastFrameTime = curTime;
 
-    float t = position / 1000000.0f;
+    float t = position / 1000.0f;
     // t *= 0.1;
     float oscA;
     // float oscB;
@@ -38,7 +38,7 @@ namespace LEDSynth
     renderer->show();
   }
 
-  void LEDSynth::syncTo(unsigned long position)
+  void LEDSynth::syncTo(unsigned long position) //position in ms
   {
     long delataPosition = this->position - position;
 

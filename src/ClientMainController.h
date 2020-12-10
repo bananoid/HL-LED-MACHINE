@@ -10,14 +10,13 @@
 // #define LS_NUM_STRIPS 1
 // #define LS_DATA_PIN 2
 
-#define RENDER_FRAME_TIME 16000 // ms
-
 #include <LEDSynth.h>
 
-#define _TASK_SLEEP_ON_IDLE_RUN
 #define _TASK_STD_FUNCTION
-#define _TASK_MICRO_RES
+// #define _TASK_MICRO_RES
 #include <TaskSchedulerDeclarations.h>
+
+#define RENDER_FRAME_TIME TASK_MILLISECOND * 16 // ms
 
 class ClientMainController : ESPSortedBroadcast::ClientDelegate
 {
