@@ -6,13 +6,17 @@
 
 namespace ESPSortedBroadcast
 {
-
   class Server : public Peer
   {
   private:
   public:
-    int clientsIdCounter;
+    int clientsIdCounter = 0;
     Action currentAction;
+    uint8_t idsMap[256][6];
+
+    Server();
+
+    int getIdForAddress(const uint8_t *macaddr);
 
     void register_recv_cb() override;
     void update() override;
