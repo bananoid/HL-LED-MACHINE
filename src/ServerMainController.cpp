@@ -1,14 +1,12 @@
-#ifndef HL_SRC_SERVERMAINCONTROLLER
-#define HL_SRC_SERVERMAINCONTROLLER
+#include "ServerMainController.h"
 
-class ServerMainController
+ServerMainController::ServerMainController(Scheduler *runner)
 {
-private:
-public:
-  ServerMainController();
-};
+  this->runner = runner;
 
-ServerMainController::ServerMainController()
-{
+  sendSyncTask.set(TASK_MILLISECOND * SYNC_TIME_INTERVAL, TASK_FOREVER, [this]() {
+    ESPSortedBroadcast::ServerSingleton->broadCastCurrentPosition();
+  });
+  runner->addTask(sendSyncTask);
+  sendSyncTask.enable();
 }
-#endif /* HL_SRC_SERVERMAINCONTROLLER */

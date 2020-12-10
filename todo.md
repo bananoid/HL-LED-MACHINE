@@ -1,3 +1,3 @@
-[] Server :: wrapping in a Class controller
+[x] Server :: wrapping in a Class controller
 [] Server :: Reasing same index/id to same client with specific mac address
 [] LedSynth porting ....
