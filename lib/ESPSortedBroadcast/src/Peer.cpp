@@ -38,10 +38,10 @@ namespace ESPSortedBroadcast
 
   void Peer::begin()
   {
-    WiFi.mode(WIFI_STA);
 
-    // Serial.println(WiFi.macAddress());
-    // WiFi.disconnect();
+    WiFi.mode(WIFI_STA);
+    Serial.println(WiFi.macAddress());
+    WiFi.disconnect();
 
     if (esp_now_init() != ESP_OK)
     {
@@ -84,6 +84,8 @@ namespace ESPSortedBroadcast
       }
       return;
     }
+
+    Serial.println("Broadcast Peer added");
   }
 
   void Peer::update()

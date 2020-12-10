@@ -42,12 +42,12 @@ namespace LEDSynth
   {
     long delataPosition = this->position - position;
 
-    Serial.print("curPos :: ");
-    Serial.print(this->position);
-    Serial.print(" - recPos :: ");
-    Serial.print(position);
-    Serial.print(" - deltaPos :: ");
-    Serial.println(delataPosition);
+    // Serial.print("curPos :: ");
+    // Serial.print(this->position);
+    // Serial.print(" - recPos :: ");
+    // Serial.print(position);
+    // Serial.print(" - deltaPos :: ");
+    // Serial.println(delataPosition);
 
     this->position = position;
   }

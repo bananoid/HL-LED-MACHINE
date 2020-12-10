@@ -5,11 +5,11 @@ namespace ESPSortedBroadcast
 
   enum Action
   {
-    NO_ACTION,
-    SEND_PARAMS,
-    REQUEST_ID,
-    SEND_ID,
-    SYNC
+    NO_ACTION = 0,
+    SEND_PARAMS = 1,
+    REQUEST_ID = 2,
+    SEND_ID = 3,
+    SYNC = 4
     // BENCHMARK
   };
 

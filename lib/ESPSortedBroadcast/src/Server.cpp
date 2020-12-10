@@ -4,6 +4,7 @@ namespace ESPSortedBroadcast
 {
   void Server::register_recv_cb()
   {
+    Serial.println("Register Server receive callback");
     esp_now_register_recv_cb([](const uint8_t *macaddr, const uint8_t *incomingData, int len) {
       ServerSingleton->recv_cb(macaddr, incomingData, len);
     });

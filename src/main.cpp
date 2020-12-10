@@ -1,14 +1,12 @@
 #include <Arduino.h>
 
-// #define IS_SERVER // Comment for client mode
+#define IS_SERVER // Comment for client mode
 
 #ifdef IS_SERVER
 
-#include <Server.h>
-// #define _TASK_SLEEP_ON_IDLE_RUN
 #include <TaskScheduler.h>
 Scheduler runner;
-// Callback methods prototypes
+
 void sendParameters();
 void sendSync();
 
@@ -17,12 +15,14 @@ void sendSync();
 // Task t1(16, TASK_FOREVER, &sendParameters, &runner, true);
 Task t2(SYNC_TIME_INTERVAL, TASK_FOREVER, &sendSync, &runner, true);
 
+#include <Server.h>
+
 void setup()
 {
   Serial.begin(115200);
 
   ESPSortedBroadcast::ServerSingleton->begin();
-
+  delay(2000);
   runner.startNow();
 }
 

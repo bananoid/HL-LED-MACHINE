@@ -13,10 +13,13 @@ namespace ESPSortedBroadcast
   {
     Action action = getActionFromData(incomingData);
 
-    Serial.print("Acction received :: ");
-    Serial.print(action);
-    Serial.print(" \t from :: ");
-    printMacAddr(macaddr);
+    if (action != SYNC)
+    {
+      Serial.print("Acction received :: ");
+      Serial.print(action);
+      Serial.print(" \t from :: ");
+      printMacAddr(macaddr);
+    }
 
     if (action == SEND_ID && clientId == 0)
     {
@@ -43,6 +46,7 @@ namespace ESPSortedBroadcast
       {
         delegate->clientReceveSyncAction(data);
       }
+      return;
     }
   }
 
