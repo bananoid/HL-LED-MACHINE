@@ -13,7 +13,7 @@ namespace ESPSortedBroadcast
   {
   private:
   public:
-    Action currentAction = NO_ACTION;
+    int currentAction = NO_ACTION;
 
     Peer();
     ~Peer();
@@ -23,7 +23,7 @@ namespace ESPSortedBroadcast
     virtual void register_recv_cb();
 
     static void printMacAddr(const uint8_t *macaddr);
-    static Action getActionFromData(const uint8_t *data);
+    static uint8_t getActionTypeFromData(const uint8_t *data);
   };
 
 } // namespace ESPSortedBroadcast

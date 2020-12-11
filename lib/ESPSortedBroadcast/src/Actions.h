@@ -1,40 +1,45 @@
 #ifndef HL_LIB_ESPSORTEDBROADCASTER_SRC_ACTIONS
 #define HL_LIB_ESPSORTEDBROADCASTER_SRC_ACTIONS
+
+#define SERVER_BASE_ACTION_TYPES NO_ACTION, REQUEST_ID, SEND_ID, SYNC
+
 namespace ESPSortedBroadcast
 {
-
-  enum Action
+  enum BaseActionTypes
   {
-    NO_ACTION = 0,
-    SEND_PARAMS = 1,
-    REQUEST_ID = 2,
-    SEND_ID = 3,
-    SYNC = 4
-    // BENCHMARK
+    SERVER_BASE_ACTION_TYPES
   };
 
-  typedef struct SendParamsAction
+  struct Action
   {
-    Action action = SEND_PARAMS;
-    float speed = 1;
-  } SendParamsAction;
+    uint8_t type = NO_ACTION;
+  };
 
-  typedef struct RequestIdAction
+  struct RequestIdAction : public Action
   {
-    Action action = REQUEST_ID;
-  } RequestIdAction;
+    RequestIdAction()
+    {
+      type = REQUEST_ID;
+    }
+  };
 
-  typedef struct SendIdAction
+  struct SendIdAction : public Action
   {
-    Action action = SEND_ID;
+    SendIdAction()
+    {
+      type = SEND_ID;
+    }
     int id = 0;
-  } SendIdAction;
+  };
 
-  typedef struct SyncAction
+  struct SyncAction : public Action
   {
-    Action action = SYNC;
+    SyncAction()
+    {
+      type = SYNC;
+    }
     unsigned long position = 0;
-  } SyncAction;
+  };
 
 } // namespace ESPSortedBroadcast
 #endif /* HL_LIB_ESPSORTEDBROADCASTER_SRC_ACTIONS */

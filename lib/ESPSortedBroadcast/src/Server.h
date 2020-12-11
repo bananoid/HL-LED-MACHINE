@@ -11,7 +11,6 @@ namespace ESPSortedBroadcast
   private:
   public:
     int clientsIdCounter = 0;
-    Action currentAction;
     uint8_t idsMap[256][6];
 
     Server();
@@ -19,12 +18,13 @@ namespace ESPSortedBroadcast
     int getIdForAddress(const uint8_t *macaddr);
 
     void register_recv_cb() override;
-    void update() override;
 
     void recv_cb(const uint8_t *macaddr, const uint8_t *incomingData, int len);
 
-    void broadCastCurrentId(const uint8_t *macaddr);
-    void broadCastCurrentPosition();
+    void broadcastData(const uint8_t *data, size_t len);
+
+    void broadcastCurrentId(const uint8_t *macaddr);
+    void broadcastCurrentPosition();
   };
 
   extern Server *ServerSingleton;

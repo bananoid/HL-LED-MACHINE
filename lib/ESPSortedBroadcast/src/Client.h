@@ -18,7 +18,6 @@ namespace ESPSortedBroadcast
   private:
   public:
     ClientDelegate *delegate;
-    SendParamsAction paramsData;
     int clientId = 0;
 
     void register_recv_cb() override;

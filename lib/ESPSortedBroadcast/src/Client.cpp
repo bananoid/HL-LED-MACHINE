@@ -11,7 +11,7 @@ namespace ESPSortedBroadcast
 
   void Client::recv_cb(const uint8_t *macaddr, const uint8_t *incomingData, int len)
   {
-    Action action = getActionFromData(incomingData);
+    uint8_t action = getActionTypeFromData(incomingData);
 
     if (action != SYNC)
     {
@@ -56,42 +56,6 @@ namespace ESPSortedBroadcast
     {
       RequestIdAction data;
       esp_err_t res = esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(RequestIdAction));
-
-      if (res == ESP_OK)
-      {
-        Serial.print("RequestIdAction :: ");
-        Serial.println(data.action);
-      }
-      else if (res == ESP_ERR_ESPNOW_NOT_INIT)
-      {
-        Serial.print("ESP_ERR_ESPNOW_NOT_INIT");
-        Serial.println(data.action);
-      }
-      else if (res == ESP_ERR_ESPNOW_ARG)
-      {
-        Serial.print("ESP_ERR_ESPNOW_ARG");
-        Serial.println(data.action);
-      }
-      else if (res == ESP_ERR_ESPNOW_INTERNAL)
-      {
-        Serial.print("ESP_ERR_ESPNOW_INTERNAL");
-        Serial.println(data.action);
-      }
-      else if (res == ESP_ERR_ESPNOW_NO_MEM)
-      {
-        Serial.print("ESP_ERR_ESPNOW_NO_MEM");
-        Serial.println(data.action);
-      }
-      else if (res == ESP_ERR_ESPNOW_NOT_FOUND)
-      {
-        Serial.print("ESP_ERR_ESPNOW_NOT_FOUND");
-        Serial.println(data.action);
-      }
-      else if (res == ESP_ERR_ESPNOW_IF)
-      {
-        Serial.print("ESP_ERR_ESPNOW_IF");
-        Serial.println(data.action);
-      }
     }
   }
 

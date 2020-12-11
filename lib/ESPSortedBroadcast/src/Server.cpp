@@ -16,15 +16,14 @@ namespace ESPSortedBroadcast
 
   void Server::recv_cb(const uint8_t *macaddr, const uint8_t *incomingData, int len)
   {
-    ESPSortedBroadcast::Action action = Server::getActionFromData(incomingData);
+    uint8_t actionType = Server::getActionTypeFromData(incomingData);
 
     Serial.print("Receive Action :: ");
-    Serial.println(action);
+    Serial.println(actionType);
 
-    currentAction = action;
-    if (currentAction == REQUEST_ID)
+    if (actionType == REQUEST_ID)
     {
-      broadCastCurrentId(macaddr);
+      broadcastCurrentId(macaddr);
     }
   };
 
@@ -53,15 +52,21 @@ namespace ESPSortedBroadcast
     return clientsIdCounter;
   }
 
-  void Server::broadCastCurrentId(const uint8_t *macaddr)
+  void Server::broadcastData(const uint8_t *data, size_t len)
+  {
+    esp_now_send(broadcastAddr, data, len);
+  }
+
+  void Server::broadcastCurrentId(const uint8_t *macaddr)
   {
     int peerId = getIdForAddress(macaddr);
 
     SendIdAction data;
     data.id = peerId;
-    esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(SendIdAction));
 
-    broadCastCurrentPosition();
+    broadcastData((uint8_t *)&data, sizeof(data));
+
+    broadcastCurrentPosition();
 
     Serial.print("Broadcast id :: ");
     Serial.print(peerId);
@@ -69,25 +74,17 @@ namespace ESPSortedBroadcast
     printMacAddr(macaddr);
   }
 
-  void Server::broadCastCurrentPosition()
+  void Server::broadcastCurrentPosition()
   {
     SyncAction data;
     data.position = millis();
 
-    Serial.print("Send Sync at :: ");
+    Serial.print("Action type :: ");
+    Serial.print(data.type);
+    Serial.print(" - Send Sync at :: ");
     Serial.println(data.position);
-    esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(SyncAction));
-  }
 
-  void Server::update()
-  {
-    // if (currentAction == SEND_PARAMS)
-    // {
-    SendParamsAction data;
-    data.speed = sinf(millis() / 1000.0) * 10000;
-    esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(SendParamsAction));
-    // delay(16);
-    // }
+    broadcastData((uint8_t *)&data, sizeof(data));
   }
 
   Server *ServerSingleton = new Server();

@@ -21,9 +21,9 @@ namespace ESPSortedBroadcast
     Serial.println();
   }
 
-  Action Peer::getActionFromData(const uint8_t *data)
+  uint8_t Peer::getActionTypeFromData(const uint8_t *data)
   {
-    Action action;
+    int action;
     memcpy(&action, data, sizeof(action));
     return action;
   }
