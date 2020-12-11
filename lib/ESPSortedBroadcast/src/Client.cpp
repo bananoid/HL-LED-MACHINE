@@ -55,12 +55,8 @@ namespace ESPSortedBroadcast
     if (clientId == 0)
     {
       RequestIdAction data;
-      esp_err_t res = esp_now_send(broadcastAddr, (uint8_t *)&data, sizeof(RequestIdAction));
+      broadcastData((uint8_t *)&data, sizeof(data));
     }
-  }
-
-  void Client::update()
-  {
   }
 
   Client *ClientSingleton = new Client();

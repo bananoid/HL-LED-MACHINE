@@ -52,11 +52,6 @@ namespace ESPSortedBroadcast
     return clientsIdCounter;
   }
 
-  void Server::broadcastData(const uint8_t *data, size_t len)
-  {
-    esp_now_send(broadcastAddr, data, len);
-  }
-
   void Server::broadcastCurrentId(const uint8_t *macaddr)
   {
     int peerId = getIdForAddress(macaddr);

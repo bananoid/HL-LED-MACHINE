@@ -21,8 +21,6 @@ namespace ESPSortedBroadcast
 
     void recv_cb(const uint8_t *macaddr, const uint8_t *incomingData, int len);
 
-    void broadcastData(const uint8_t *data, size_t len);
-
     void broadcastCurrentId(const uint8_t *macaddr);
     void broadcastCurrentPosition();
   };

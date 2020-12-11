@@ -88,11 +88,12 @@ namespace ESPSortedBroadcast
     Serial.println("Broadcast Peer added");
   }
 
-  void Peer::update()
+  void Peer::register_recv_cb()
   {
   }
 
-  void Peer::register_recv_cb()
+  void Peer::broadcastData(const uint8_t *data, size_t len)
   {
+    esp_now_send(broadcastAddr, data, len);
   }
 } // namespace ESPSortedBroadcast
