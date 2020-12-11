@@ -33,10 +33,13 @@ namespace LEDSynth
       // oscA = sinf(fmodf(1.0 + fmodf(t * 0.35f + phase * 3.243, TWO_PI), TWO_PI)) * 0.1 + 1;
       // oscA = oscA * oscA * oscA;
 
-      oscB = sinf(fmodf(1.0 + fmodf(t * 1.521354f + phase * 5.43123, TWO_PI), TWO_PI)) * 0.5 + 0.5;
-      oscB = oscB * oscB * oscB;
+      // oscB = sinf(fmodf(1.0 + fmodf(t * 1.521354f + phase * 5.43123, TWO_PI), TWO_PI)) * 0.5 + 0.5;
+      // oscB = oscB * oscB * oscB;
 
-      color = GFXUtils::GFXUtils::hsv(phase * .4 + t * .52345, 1, oscB);
+      float x = t * 6 + phase * 2;
+      oscB = GFXUtils::GFXUtils::chaserNoise(x, 0.1);
+
+      color = GFXUtils::GFXUtils::hsv(x / 10, 1, oscB);
       renderer->setPixel(i, color);
     }
 
