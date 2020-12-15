@@ -1,21 +1,14 @@
 #include <Arduino.h>
 
-#define IS_SERVER // Comment for client mode
+#if defined(TARGET_ESP32_LED_SERVER)
 
-// COMMONS --------------------------
 #define _TASK_STD_FUNCTION
-// #define _TASK_MICRO_RES
 #include <TaskScheduler.h>
 
 Scheduler runner;
-// ----------------------------------
-
-#ifdef IS_SERVER
-
-// SERVER ---------------------------
 
 #include "ServerMainController.h"
-#include <Server.h>
+// #include <Server.h>
 ServerMainController *mainController;
 
 void setup()
@@ -28,11 +21,17 @@ void setup()
 
   runner.startNow();
 }
-// ----------------------------------
+void loop()
+{
+  runner.execute();
+}
 
-#else
+#elif defined(TARGET_ESP32_LED_CLIENT)
 
-// CLIENT ---------------------------
+#define _TASK_STD_FUNCTION
+#include <TaskScheduler.h>
+
+Scheduler runner;
 
 #include "ClientMainController.h"
 ClientMainController *mainController;
@@ -49,11 +48,19 @@ void setup()
 }
 // ----------------------------------
 
-#endif
-
-// COMMON ---------------------------
 void loop()
 {
   runner.execute();
 }
-// ----------------------------------
+
+#elif defined(TARGET_TEENSY_AUDIO_IN_FFT)
+
+void setup()
+{
+}
+
+void loop()
+{
+}
+
+#endif
