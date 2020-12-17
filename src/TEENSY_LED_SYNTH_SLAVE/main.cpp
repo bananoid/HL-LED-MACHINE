@@ -7,5 +7,5 @@ void setup()
 
 void loop()
 {
-  Serial.println("TEENSyyyy");
+  Serial.println("Slave");
 }
