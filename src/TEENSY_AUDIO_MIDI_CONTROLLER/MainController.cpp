@@ -1,17 +1,25 @@
 #include "MainController.h"
+#include <Arduino.h>
 
 MainController::MainController()
 {
+  pinMode(13, OUTPUT);
+
   midiControl = new MIDIControl();
   midiControl->delegate = this;
+
+  audioControl = new HLAudioControl::AudioControl();
+  audioControl->delegate = this;
 }
 void MainController::begin()
 {
   midiControl->begin();
+  audioControl->begin();
 }
 void MainController::update()
 {
   midiControl->update();
+  audioControl->update();
 }
 
 void MainController::midiControlReceiveMsg(ControlMsg *message)
@@ -33,4 +41,10 @@ void MainController::midiControlReceiveMsg(ControlMsg *message)
     Serial.printf(" - Button release");
   }
   Serial.println();
+}
+
+void MainController::audioControlReceiveMsg(AudioSignalsMsg *message)
+{
+  // Serial.println(message->lowBand);
+  analogWrite(13, message->lowBand * 255);
 }
