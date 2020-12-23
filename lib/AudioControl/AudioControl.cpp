@@ -43,7 +43,7 @@ namespace HLAudioControl
     if (fft1024_1.available())
     {
       AudioSignalsMsg msg;
-      msg.lowBand = fft1024_1.read(0, 10);
+      msg.lowBand = fft1024_1.read(4, 10);
       msg.midBand = fft1024_1.read(11, 80);
       msg.hiBand = fft1024_1.read(81, 500);
       delegate->audioControlReceiveMsg(&msg);
