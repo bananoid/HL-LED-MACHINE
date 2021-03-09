@@ -13,7 +13,7 @@ namespace HLSerialMessanger
   class SerialMessengerDelegate
   {
   public:
-    virtual void serialMessengerReceiveMsg(AudioSignalsMsg *message);
+    virtual void serialMessengerReceiveMsg(Message *message);
   };
 
   class SerialMessenger
@@ -21,10 +21,15 @@ namespace HLSerialMessanger
   private:
   public:
     PacketSerial_<COBS, 0, PACKET_SIZE> packetSerial;
-    SerialMessenger(Stream *stream);
+    SerialMessenger();
+    SerialMessengerDelegate *delegate;
     void sendMessage(Message *message);
+    void begin(Stream *stream, int boudrate);
     void update();
 
     void onReceive(const uint8_t *buffer, size_t size);
   };
+
+  extern SerialMessenger *SerialMessengerSingleton;
+
 } // namespace HLSerialMessanger
