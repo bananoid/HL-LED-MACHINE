@@ -2,16 +2,19 @@
 #include <Arduino.h>
 #include "Instrument.h"
 
-class PinIntrument : public Instrument
+namespace HLSequencer
 {
-public:
-  int pin;
-  PinIntrument(int pin, Scheduler *runner);
+  class PinIntrument : public Instrument
+  {
+  public:
+    int pin;
+    PinIntrument(int pin, Scheduler *runner);
 
-  const int minTrigPWM = 150;
-  const int maxTrigPWM = 255;
-  int trigPWM = 255;
+    const int minTrigPWM = 150;
+    const int maxTrigPWM = 255;
+    int trigPWM = 255;
 
-  void noteOn(int note, int vel);
-  void noteOff(int note);
-};
+    void noteOn(int note, int vel) override;
+    void noteOff(int note) override;
+  };
+}

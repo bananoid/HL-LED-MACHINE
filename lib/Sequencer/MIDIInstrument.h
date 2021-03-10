@@ -2,12 +2,15 @@
 #include <Arduino.h>
 #include "Instrument.h"
 
-class MIDIInstrument : public Instrument
+namespace HLSequencer
 {
-public:
-  int channel;
-  MIDIInstrument(int channel, Scheduler *runner);
+  class MIDIInstrument : public Instrument
+  {
+  public:
+    int channel;
+    MIDIInstrument(int channel, Scheduler *runner);
 
-  void noteOn(int note, int vel);
-  void noteOff(int note);
-};
+    void noteOn(int note, int vel) override;
+    void noteOff(int note) override;
+  };
+}

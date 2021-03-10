@@ -4,15 +4,25 @@
 
 #include "config.h"
 #include <TaskSchedulerDeclarations.h>
-
 #include "Clock.h"
+#include <LinkedList.h>
+#include "Track.h"
 
-class Sequencer : public ClockDelegate
+namespace HLSequencer
 {
-private:
-public:
-  Sequencer(Scheduler *runner);
+  class Sequencer : public ClockDelegate, public InstrumentDelegate
+  {
+  private:
+    LinkedList<Track *> *tracks;
 
-  Clock *clock;
-  void clockTick() override;
-};
+  public:
+    Sequencer(Scheduler *runner);
+
+    Clock *clock;
+    void clockTick() override;
+
+    void appendTrack(Track *track);
+
+    long getClockTime() override;
+  };
+}

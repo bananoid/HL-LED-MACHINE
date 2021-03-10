@@ -3,19 +3,20 @@
 #include "config.h"
 #include <TaskSchedulerDeclarations.h>
 
-// Delegation: this is to allow clock tick to be called by main controller
-class ClockDelegate
+namespace HLSequencer
 {
-public:
+  // Delegation: this is to allow clock tick to be called by main controller
+  class ClockDelegate
+  {
+  public:
     virtual void clockTick(); // virtual because it is not implemented in the class
-};
-
-class Clock : public Task
-{
-private:
+  };
+  class Clock : public Task
+  {
+  private:
     /* data */
 
-public:
+  public:
     Clock(Scheduler *runner);
 
     bool Callback();
@@ -42,4 +43,5 @@ public:
 
     float getBpmPercentage();
     void increaseBpm(int increase);
-};
+  };
+}

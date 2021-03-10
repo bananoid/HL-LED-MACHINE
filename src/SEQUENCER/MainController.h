@@ -15,5 +15,5 @@ public:
     MainController(Scheduler *runner);
     void update();
 
-    Sequencer *sequencer;
+    HLSequencer::Sequencer *sequencer;
 };

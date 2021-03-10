@@ -1,24 +1,51 @@
 #include "Sequencer.h"
 
-Sequencer::Sequencer(Scheduler *runner)
+namespace HLSequencer
 {
-  clock = new Clock(runner);
-  clock->delegate = this;
-  clock->play();
-
-  pinMode(13, OUTPUT);
-}
-
-void Sequencer::clockTick()
-{
-
-  if ((clock->tickCounter) % 24 == 0)
+  Sequencer::Sequencer(Scheduler *runner)
   {
-    Serial.printf("clockTick %i  %i\n", clock->clockInterval, clock->tickCounter);
-    digitalWrite(13, true);
+    clock = new Clock(runner);
+    clock->delegate = this;
+    clock->play();
+
+    tracks = new LinkedList<Track *>();
+
+    pinMode(13, OUTPUT);
   }
-  if ((clock->tickCounter - 12) % 24 == 0)
+
+  void Sequencer::clockTick()
   {
-    digitalWrite(13, false);
+
+    Track *track;
+    for (int trackInx = 0; trackInx < tracks->size(); trackInx++)
+    {
+      if ((clock->tickCounter) % 6 == 0)
+      {
+        track = tracks->get(trackInx);
+        int timeInx = clock->tickCounter / 6;
+        int noteIndex = track->suqences->get(0)->isOn(timeInx);
+
+        Serial.printf("%i %i\n", timeInx, noteIndex);
+        if (noteIndex > 0)
+        {
+          digitalWrite(13, true);
+          track->instrument->noteOn();
+        }
+        else
+        {
+          digitalWrite(13, false);
+        }
+      }
+    }
+  }
+
+  long Sequencer::getClockTime()
+  {
+    return clock->clockInterval;
+  }
+
+  void Sequencer::appendTrack(Track *track)
+  {
+    tracks->add(track);
   }
 }
