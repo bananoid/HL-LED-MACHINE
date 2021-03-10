@@ -16,13 +16,9 @@ void Sequencer::clockTick()
   {
     Serial.printf("clockTick %i  %i\n", clock->clockInterval, clock->tickCounter);
     digitalWrite(13, true);
-    // usbMIDI.sendRealTime(usbMIDI.Start);
   }
   if ((clock->tickCounter - 12) % 24 == 0)
   {
     digitalWrite(13, false);
   }
-
-  // usbMIDI.sendTimeCodeQuarterFrame();
-  usbMIDI.sendRealTime(usbMIDI.Clock);
 }
