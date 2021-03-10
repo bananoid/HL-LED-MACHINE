@@ -29,9 +29,17 @@ public:
     float getBpm();
     void setBpm(float bpm);
 
-    float bpm = 60;
-    const int clockDivider = 4;            // number of time intervals within a beat
+    float bpm = 120;
+    const int clockDivider = 24;           // number of time intervals within a beat
     unsigned long clockInterval = 1000000; // default value to 1 sec
     const float minBpm = 10;
     const float maxBpm = 400;
+
+    bool isPlaying = false;
+    void play();
+    void stop();
+    void playStop();
+
+    float getBpmPercentage();
+    void increaseBpm(int increase);
 };

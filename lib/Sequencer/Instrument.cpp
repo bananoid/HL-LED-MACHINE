@@ -11,7 +11,6 @@ Instrument::Instrument(int pin, Scheduler *runner) : Task(TASK_MILLISECOND * 100
 
 bool Instrument::Callback()
 {
-
     trig(false);
     disable();
 }
@@ -41,9 +40,12 @@ void Instrument::trig(bool on)
 {
     // digitalWrite(pin, on);
 
-    if(on){
+    if (on)
+    {
         analogWrite(pin, trigPWM);
-    }else{
+    }
+    else
+    {
         analogWrite(pin, 0);
     }
 
