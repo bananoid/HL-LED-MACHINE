@@ -10,7 +10,7 @@ namespace HLSequencer
   public:
     Instrument *instrument;
     Track(Instrument *instrument);
-    LinkedList<SequenceGenerator *> *suqences;
-    void appendSequence(SequenceGenerator *sequnce);
+    LinkedList<SequenceGenerator *> *sequences;
+    void appendSequence(SequenceGenerator *sequence);
   };
 }

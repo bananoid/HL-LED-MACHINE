@@ -23,7 +23,7 @@ namespace HLSequencer
       {
         track = tracks->get(trackInx);
         int timeInx = clock->tickCounter / 6;
-        int noteIndex = track->suqences->get(0)->isOn(timeInx);
+        int noteIndex = track->sequences->get(0)->isOn(timeInx);
 
         Serial.printf("%i %i\n", timeInx, noteIndex);
         if (noteIndex > 0)

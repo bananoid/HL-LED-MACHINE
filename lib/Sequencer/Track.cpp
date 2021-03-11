@@ -5,11 +5,11 @@ namespace HLSequencer
   Track::Track(Instrument *instrument)
   {
     this->instrument = instrument;
-    suqences = new LinkedList<SequenceGenerator *>();
+    sequences = new LinkedList<SequenceGenerator *>();
   }
 
   void Track::appendSequence(SequenceGenerator *sequnce)
   {
-    suqences->add(sequnce);
+    sequences->add(sequnce);
   }
 }
