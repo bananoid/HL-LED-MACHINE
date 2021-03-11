@@ -2,8 +2,9 @@
 
 namespace HLSequencer
 {
-  int SequenceGenerator::isOn(int index)
+  Step *SequenceGenerator::isOn(int index)
   {
-    return 3;
+    counter++;
+    return nullptr;
   }
 }

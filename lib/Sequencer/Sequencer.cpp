@@ -23,13 +23,14 @@ namespace HLSequencer
       {
         track = tracks->get(trackInx);
         int timeInx = clock->tickCounter / 6;
-        int noteIndex = track->sequences->get(0)->isOn(timeInx);
+        Step *step = track->sequences->get(0)->isOn(timeInx);
 
-        Serial.printf("%i %i\n", timeInx, noteIndex);
-        if (noteIndex > 0)
+        if (step)
         {
+          int note = step->note * 5 + 41;
+          // Serial.printf("%i %i\n", timeInx, step->note);
           digitalWrite(13, true);
-          track->instrument->noteOn();
+          track->instrument->noteOn(note);
         }
         else
         {

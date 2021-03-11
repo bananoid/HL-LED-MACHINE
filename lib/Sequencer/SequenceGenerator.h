@@ -3,9 +3,16 @@
 
 namespace HLSequencer
 {
+  struct Step
+  {
+    int note = 1;
+    int velocity = 127;
+  };
+
   class SequenceGenerator
   {
   public:
-    virtual int isOn(int index);
+    int counter;
+    virtual Step *isOn(int index);
   };
 }

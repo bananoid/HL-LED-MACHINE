@@ -17,17 +17,24 @@ namespace HLSequencer
     const int maxOffset = 16;
     const int minOffset = 0;
 
-    int isOn(int index) override
+    Step *isOn(int index) override
     {
       if (events == 0)
       {
-        return false;
+        return nullptr;
       }
       int x = (index + steps * 2 - offset) % steps;
       float step = (float)steps / (float)events;
       float fMod = fmodf(x, step);
 
-      return floor(fMod) == 0;
+      if (floor(fMod) == 0)
+      {
+        counter++;
+        Step *step = new Step();
+        step->note = counter % events;
+        return step;
+      }
+      return nullptr;
     }
   };
 }
