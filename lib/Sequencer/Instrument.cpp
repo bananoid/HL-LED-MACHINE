@@ -12,6 +12,7 @@ namespace HLSequencer
     {
         noteOff(lastNote);
         disable();
+        return false;
     }
 
     void Instrument::toggleEnabled()
@@ -19,15 +20,32 @@ namespace HLSequencer
         isEnabled = !isEnabled;
     }
 
-    void Instrument::noteOn(int note, int vel)
+    void Instrument::noteOn(int note, int vel, int autoReleaseLength)
     {
-        if (autoRelease)
+        if (lastNote != -1)
         {
-            long trigTime = min(delegate->getClockTime() * 0.9, this->trigTime);
+            noteOff(lastNote);
+        }
+
+        lastNote = note;
+
+        if (autoReleaseLength != 0)
+        {
+            long trigTime;
+            if (autoReleaseLength > 0)
+            {
+                trigTime = delegate->getClockTime() * autoReleaseLength;
+            }
+            else
+            {
+                trigTime = this->trigTime;
+                trigTime = min(delegate->getClockTime() * 0.5, trigTime);
+            }
             restartDelayed(trigTime);
         }
     }
     void Instrument::noteOff(int note)
     {
+        lastNote = -1;
     }
 }

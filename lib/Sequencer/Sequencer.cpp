@@ -33,9 +33,8 @@ namespace HLSequencer
         if (step)
         {
           int note = currentScale->getMidiNote(currentKey, step->note);
-          // Serial.printf("%i %i\n", timeInx, step->note);
           digitalWrite(13, true);
-          track->instrument->noteOn(note);
+          track->instrument->noteOn(note, 127, (timeInx % 4) * 4);
         }
         else
         {

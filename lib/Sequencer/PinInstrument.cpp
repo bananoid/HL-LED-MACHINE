@@ -8,9 +8,9 @@ namespace HLSequencer
     pinMode(pin, OUTPUT);
   }
 
-  void PinIntrument::noteOn(int note, int vel)
+  void PinIntrument::noteOn(int note, int vel, int autoReleaseLength)
   {
-    Instrument::noteOn(note, vel);
+    Instrument::noteOn(note, vel, autoReleaseLength);
     analogWrite(pin, trigPWM);
   }
 

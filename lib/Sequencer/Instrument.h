@@ -24,14 +24,13 @@ namespace HLSequencer
         const int minTrigTime = 1 * TASK_MILLISECOND;
         const int maxTrigTime = 100 * TASK_MILLISECOND;
         long trigTime = TASK_MILLISECOND * 30;
-        bool autoRelease = true;
 
         bool isEnabled = false;
         void toggleEnabled();
 
         int lastNote;
         int defaultNote = 36; // Kick
-        virtual void noteOn(int note = 0, int vel = 127);
+        virtual void noteOn(int note = 0, int vel = 127, int autoReleaseLength = 0);
         virtual void noteOff(int note = 0);
     };
 }

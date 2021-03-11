@@ -8,14 +8,16 @@ namespace HLSequencer
     this->channel = channel;
   }
 
-  void MIDIInstrument::noteOn(int note = 0, int vel = 127)
+  void MIDIInstrument::noteOn(int note, int vel, int autoReleaseLength)
   {
     if (note == 0)
     {
       note = defaultNote;
     }
 
-    Instrument::noteOn(note, vel);
+    Instrument::noteOn(note, vel, autoReleaseLength);
+    Serial.printf("noteOn %i\n", note);
+
 #ifdef MIDI_INTERFACE
     usbMIDI.sendNoteOn(note, vel, channel);
 #endif
@@ -29,6 +31,8 @@ namespace HLSequencer
     }
 
     Instrument::noteOff(note);
+    Serial.printf("noteOff %i\n", note);
+
 #ifdef MIDI_INTERFACE
     usbMIDI.sendNoteOff(note, 0, channel);
 #endif

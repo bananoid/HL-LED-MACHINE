@@ -14,7 +14,7 @@ namespace HLSequencer
     const int maxTrigPWM = 255;
     int trigPWM = 255;
 
-    void noteOn(int note, int vel) override;
+    void noteOn(int note = 0, int vel = 127, int autoReleaseLength = -1) override;
     void noteOff(int note) override;
   };
 }
