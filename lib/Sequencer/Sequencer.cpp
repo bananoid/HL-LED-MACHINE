@@ -16,6 +16,11 @@ namespace HLSequencer
   void Sequencer::clockTick()
   {
 
+    if ((clock->tickCounter) % (clock->clockDivider * 4 * 4) == 0)
+    {
+      pickNextHarmony();
+    }
+
     Track *track;
     for (int trackInx = 0; trackInx < tracks->size(); trackInx++)
     {
@@ -27,7 +32,7 @@ namespace HLSequencer
 
         if (step)
         {
-          int note = step->note * 5 + 41;
+          int note = currentScale->getMidiNote(currentKey, step->note);
           // Serial.printf("%i %i\n", timeInx, step->note);
           digitalWrite(13, true);
           track->instrument->noteOn(note);
@@ -48,5 +53,14 @@ namespace HLSequencer
   void Sequencer::appendTrack(Track *track)
   {
     tracks->add(track);
+  }
+
+  void Sequencer::pickNextHarmony()
+  {
+    currentScale = random(1) == 0 ? &MusicTheory::Scale::minor : &MusicTheory::Scale::major;
+    currentKey = static_cast<MusicTheory::NoteType>(random(12));
+    seed++;
+
+    Serial.println("pickNextHarmony");
   }
 }

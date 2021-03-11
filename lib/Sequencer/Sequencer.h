@@ -7,6 +7,7 @@
 #include "Clock.h"
 #include <LinkedList.h>
 #include "Track.h"
+#include <Scale.hpp>
 
 namespace HLSequencer
 {
@@ -17,12 +18,16 @@ namespace HLSequencer
 
   public:
     Sequencer(Scheduler *runner);
-
     Clock *clock;
     void clockTick() override;
 
     void appendTrack(Track *track);
 
     long getClockTime() override;
+
+    unsigned long seed = 0;
+    MusicTheory::Scale *currentScale;
+    MusicTheory::NoteType currentKey;
+    void pickNextHarmony();
   };
 }
