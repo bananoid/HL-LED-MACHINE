@@ -10,11 +10,6 @@ namespace HLSequencer
 
   void MIDIInstrument::noteOn(int note, int vel, int autoReleaseLength)
   {
-    if (note == 0)
-    {
-      note = defaultNote;
-    }
-
     Instrument::noteOn(note, vel, autoReleaseLength);
     // Serial.printf("noteOn %i\n", note);
 
@@ -25,11 +20,6 @@ namespace HLSequencer
 
   void MIDIInstrument::noteOff(int note = 0)
   {
-    if (note == 0)
-    {
-      note = defaultNote;
-    }
-
     Instrument::noteOff(note);
     // Serial.printf("noteOff %i\n", note);
 

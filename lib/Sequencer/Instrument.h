@@ -29,7 +29,6 @@ namespace HLSequencer
         void toggleEnabled();
 
         int lastNote;
-        int defaultNote = 36; // Kick
         virtual void noteOn(int note = 0, int vel = 127, int autoReleaseLength = 0);
         virtual void noteOff(int note = 0);
     };
