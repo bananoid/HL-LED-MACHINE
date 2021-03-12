@@ -7,10 +7,13 @@
 #include "Clock.h"
 #include <LinkedList.h>
 #include "Track.h"
-#include <Scale.hpp>
+#include "Scale.hpp"
+
+using namespace MusicTheory;
 
 namespace HLSequencer
 {
+  class Track;
   class Sequencer : public ClockDelegate, public InstrumentDelegate
   {
   private:
@@ -26,8 +29,10 @@ namespace HLSequencer
     long getClockTime() override;
 
     unsigned long seed = 0;
-    MusicTheory::Scale *currentScale;
-    MusicTheory::NoteType currentKey;
+    Scale *currentScale;
+    NoteType currentKey;
     void pickNextHarmony();
+
+    Note getNote(int inx, int octave);
   };
 }

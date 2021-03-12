@@ -23,7 +23,7 @@ MainController::MainController(Scheduler *runner)
     sequence->steps = 32;
     sequence->events = 19;
 
-    track = new Track(instrument);
+    track = new Track(sequencer, instrument);
     track->appendSequence(sequence);
 
     sequencer->appendTrack(track);
@@ -38,7 +38,7 @@ MainController::MainController(Scheduler *runner)
     sequence->events = 2;
     sequence->offset = 4;
 
-    track = new Track(instrument);
+    track = new Track(sequencer, instrument);
     track->appendSequence(sequence);
 
     sequencer->appendTrack(track);
@@ -53,7 +53,7 @@ MainController::MainController(Scheduler *runner)
     sequence->events = 7;
     sequence->offset = 0;
 
-    track = new Track(instrument);
+    track = new Track(sequencer, instrument);
     track->appendSequence(sequence);
 
     sequencer->appendTrack(track);
@@ -68,7 +68,7 @@ MainController::MainController(Scheduler *runner)
     sequence->events = 6;
     sequence->offset = 2;
 
-    track = new Track(instrument);
+    track = new Track(sequencer, instrument);
     track->appendSequence(sequence);
 
     sequencer->appendTrack(track);
