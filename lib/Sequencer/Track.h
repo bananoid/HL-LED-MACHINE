@@ -5,7 +5,7 @@
 
 #include "Instrument.h"
 #include "SequenceGenerator.h"
-
+#include "EuclideanSequence.h"
 #include "Sequencer.h"
 
 using namespace MusicTheory;
@@ -17,17 +17,13 @@ namespace HLSequencer
   {
   public:
     int gridSize = 24;
-
-    int retrigSize = 6;
-    bool retrig = false;
+    int retrig = 0;
 
     Sequencer *sequencer;
+    EuclideanSequence *generator;
 
     Instrument *instrument;
     Track(Sequencer *sequencer, Instrument *instrument);
-
-    LinkedList<SequenceGenerator *> *sequences;
-    void appendSequence(SequenceGenerator *sequence);
 
     void clockTick(int counter);
   };

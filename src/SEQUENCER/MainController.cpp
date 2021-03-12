@@ -10,67 +10,37 @@ MainController::MainController(Scheduler *runner)
 {
     sequencer = new Sequencer(runner);
 
-    MIDIInstrument *instrument;
     Track *track;
-    EuclideanSequence *sequence;
 
     //////////////////////////
-    instrument = new MIDIInstrument(1, runner);
-    instrument->delegate = sequencer;
-    instrument->defaultNote = 36; // Kick
-
-    sequence = new EuclideanSequence();
-    sequence->steps = 32;
-    sequence->events = 19;
-
-    track = new Track(sequencer, instrument);
-    track->appendSequence(sequence);
-
+    track = new Track(sequencer, new MIDIInstrument(1, runner));
+    track->gridSize = 6;
+    track->generator->steps = 32;
+    track->generator->events = 19;
+    track->generator->offset = 0;
     sequencer->appendTrack(track);
 
-    /////////////////////////
-    instrument = new MIDIInstrument(2, runner);
-    instrument->delegate = sequencer;
-    instrument->defaultNote = 38; // Snare
-
-    sequence = new EuclideanSequence();
-    sequence->steps = 16;
-    sequence->events = 2;
-    sequence->offset = 4;
-
-    track = new Track(sequencer, instrument);
-    track->appendSequence(sequence);
-
+    //////////////////////////
+    track = new Track(sequencer, new MIDIInstrument(2, runner));
+    track->gridSize = 6;
+    track->retrig = 6;
+    track->generator->steps = 16;
+    track->generator->events = 2;
+    track->generator->offset = 4;
     sequencer->appendTrack(track);
 
-    /////////////////////////
-    instrument = new MIDIInstrument(3, runner);
-    instrument->delegate = sequencer;
-    instrument->defaultNote = 42; // Hihat
-
-    sequence = new EuclideanSequence();
-    sequence->steps = 16;
-    sequence->events = 7;
-    sequence->offset = 0;
-
-    track = new Track(sequencer, instrument);
-    track->appendSequence(sequence);
-
+    //////////////////////////
+    track = new Track(sequencer, new MIDIInstrument(3, runner));
+    track->generator->steps = 16;
+    track->generator->events = 7;
+    track->generator->offset = 1;
     sequencer->appendTrack(track);
 
-    /////////////////////////
-    instrument = new MIDIInstrument(4, runner);
-    instrument->delegate = sequencer;
-    instrument->defaultNote = 37; // Rim
-
-    sequence = new EuclideanSequence();
-    sequence->steps = 12;
-    sequence->events = 6;
-    sequence->offset = 2;
-
-    track = new Track(sequencer, instrument);
-    track->appendSequence(sequence);
-
+    //////////////////////////
+    track = new Track(sequencer, new MIDIInstrument(4, runner));
+    track->generator->steps = 12;
+    track->generator->events = 6;
+    track->generator->offset = 2;
     sequencer->appendTrack(track);
 }
 

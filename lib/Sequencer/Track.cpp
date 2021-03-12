@@ -6,17 +6,13 @@ namespace HLSequencer
   {
     this->sequencer = sequencer;
     this->instrument = instrument;
-    sequences = new LinkedList<SequenceGenerator *>();
-  }
-
-  void Track::appendSequence(SequenceGenerator *sequnce)
-  {
-    sequences->add(sequnce);
+    instrument->delegate = sequencer;
+    generator = new EuclideanSequence();
   }
 
   void Track::clockTick(int counter)
   {
-    if ((counter) % (retrig ? retrigSize : gridSize) != 0)
+    if ((counter) % (retrig > 0 ? retrig : gridSize) != 0)
     {
       return;
     }
@@ -27,12 +23,10 @@ namespace HLSequencer
 
     int timeInx = counter / gridSize;
 
-    SequenceGenerator *generator = sequences->get(0);
-
     bool isOn = generator->isOn(timeInx);
     Step *step = &generator->lastStep;
 
-    if (isOn || retrig)
+    if (isOn || retrig > 0)
     {
       Note note = sequencer->getNote((step->note % 4) * 3, 3);
       int midiNote = note.getMIDINoteNumber();
