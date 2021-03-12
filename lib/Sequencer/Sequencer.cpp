@@ -1,5 +1,7 @@
 #include "Sequencer.h"
 
+using namespace MusicTheory;
+
 namespace HLSequencer
 {
   Sequencer::Sequencer(Scheduler *runner)
@@ -32,9 +34,10 @@ namespace HLSequencer
 
         if (step)
         {
-          int note = currentScale->getMidiNote(currentKey, step->note);
+          MusicTheory::Note note = currentScale->getNote(currentKey, (step->note % 3) * 2, 3);
+          int midiNote = note.getMIDINoteNumber();
           digitalWrite(13, true);
-          track->instrument->noteOn(note, 127, (timeInx % 4) * 4);
+          track->instrument->noteOn(midiNote, (timeInx % 4) * 40 + 30, (timeInx % 4) * 4);
         }
         else
         {
@@ -60,6 +63,6 @@ namespace HLSequencer
     currentKey = static_cast<MusicTheory::NoteType>(random(12));
     seed++;
 
-    Serial.println("pickNextHarmony");
+    std::vector<MusicTheory::Note> notes = currentScale->getNotes(currentKey, 1);
   }
 }

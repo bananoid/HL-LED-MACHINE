@@ -1,18 +1,12 @@
-//
-//  Scale.cpp
-//  MusicTheory
-//
-//  Created by Cem Olcay on 27.01.2018.
-//
-
 #include "Scale.hpp"
+#include <Arduino.h>
 
 namespace MusicTheory
 {
 
-  Scale::Scale(Interval *intervals)
+  Scale::Scale(Interval *intervals, int length)
   {
-    int length = sizeof(intervals) / sizeof(intervals[0]);
+    this->length = length;
     this->intervals.assign(intervals, intervals + length);
   }
 
@@ -22,27 +16,30 @@ namespace MusicTheory
     notes.reserve(this->intervals.size());
 
     Note root = Note(key, octave);
-    for (int i = 0; i < this->intervals.size(); i++)
+    for (Interval current : intervals)
     {
-      Interval current = this->intervals[i];
       notes.push_back(root + current);
     }
 
     return notes;
   }
 
-  int Scale::getMidiNote(NoteType key, int noteInx)
+  Note Scale::getNote(NoteType key, int noteInx, int octave)
   {
-    int inx = noteInx % intervals.size();
-    int octave = noteInx / intervals.size();
+    int intervalSize = this->intervals.size();
+    int inx = noteInx % intervalSize;
+    octave += noteInx / intervalSize;
     Note root = Note(key, octave);
     Interval current = this->intervals[inx];
     Note note = root + current;
-    return note.getMIDINoteNumber();
+
+    // Serial.printf("intSize %i octave %i inx %i interval %i\n", intervalSize, octave, inx, current);
+
+    return note;
   }
 
   Interval majorIntervals[] = {Interval::P1, Interval::M2, Interval::M3, Interval::P4, Interval::P5, Interval::M6, Interval::M7};
-  const Scale Scale::major = Scale(majorIntervals);
+  const Scale Scale::major = Scale(majorIntervals, 7);
   Interval minorIntervals[] = {Interval::P1, Interval::M2, Interval::m3, Interval::P4, Interval::P5, Interval::m6, Interval::m7};
-  const Scale Scale::minor = Scale(minorIntervals);
+  const Scale Scale::minor = Scale(minorIntervals, 7);
 }

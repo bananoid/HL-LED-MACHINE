@@ -1,19 +1,13 @@
-//
-//  MusicTheory.hpp
-//  MusicTheory
-//
-//  Created by Cem Olcay on 17.01.2018.
-//  Copyright © 2018 cemolcay. All rights reserved.
-//
-
 #ifndef MusicTheory_hpp
 #define MusicTheory_hpp
 
 #include <stdio.h>
 
-namespace MusicTheory {
+namespace MusicTheory
+{
 
-  struct Interval {
+  struct Interval
+  {
     Interval(int halfsteps);
     int halfsteps;
 
@@ -35,8 +29,9 @@ namespace MusicTheory {
     const static Interval M7; // Major Seventh
     const static Interval P8; // Octave
   };
-  
-  enum NoteType {
+
+  enum NoteType
+  {
     C,
     DFlat,
     D,
@@ -51,7 +46,8 @@ namespace MusicTheory {
     B
   };
 
-  class Note {
+  class Note
+  {
   public:
     Note(int midiNoteNumber);
     Note(NoteType noteType, int octave);
@@ -60,7 +56,7 @@ namespace MusicTheory {
     int getMIDINoteNumber();
     int getPianoKeyIndex();
     double getFrequency(double base = 440.0);
-    
+
     NoteType type;
     int octave;
 
