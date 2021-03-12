@@ -23,7 +23,7 @@ MainController::MainController(Scheduler *runner)
     //////////////////////////
     track = new Track(sequencer, new MIDIInstrument(2, runner));
     track->gridSize = 6;
-    track->retrig = 6;
+    track->retrig = -1; //retrig lfo
     track->generator->steps = 16;
     track->generator->events = 2;
     track->generator->offset = 4;
