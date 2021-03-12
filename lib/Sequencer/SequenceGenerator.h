@@ -13,6 +13,8 @@ namespace HLSequencer
   {
   public:
     int counter;
-    virtual Step *isOn(int index);
+    Step lastStep;
+    int lastIndex = -1;
+    virtual bool isOn(int index);
   };
 }

@@ -17,12 +17,19 @@ namespace HLSequencer
     const int maxOffset = 16;
     const int minOffset = 0;
 
-    Step *isOn(int index) override
+    bool isOn(int index) override
     {
       if (events == 0)
       {
-        return nullptr;
+        return false;
       }
+
+      if (lastIndex == index)
+      {
+        return false;
+      }
+      lastIndex = index;
+
       int x = (index + steps * 2 - offset) % steps;
       float step = (float)steps / (float)events;
       float fMod = fmodf(x, step);
@@ -30,11 +37,10 @@ namespace HLSequencer
       if (floor(fMod) == 0)
       {
         counter++;
-        Step *step = new Step();
-        step->note = counter % events;
-        return step;
+        lastStep.note = counter % events;
+        return true;
       }
-      return nullptr;
+      return false;
     }
   };
 }
