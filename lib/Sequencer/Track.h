@@ -21,6 +21,10 @@ namespace HLSequencer
     // 0 is disable -1 is auto with lfo
     int retrig = 0;
 
+    int octave = 3;
+    int noteCount = 4;
+    int noteSpread = 2;
+
     Sequencer *sequencer;
     EuclideanSequence *generator;
 

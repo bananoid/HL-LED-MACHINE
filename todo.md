@@ -1,5 +1,5 @@
-[ ] Move grid size to track
-[ ] Move retrig to track
+[x] Move grid size to track
+[x] Move retrig to track
 [?] Note lenght to track
 [ ] Retrig lfo in track
 [ ] Global harmony repeat
