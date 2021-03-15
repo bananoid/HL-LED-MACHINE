@@ -51,6 +51,16 @@ MainController::MainController(Scheduler *runner)
     track->generator->events = 7;
     track->generator->offset = 0;
     sequencer->appendTrack(track);
+
+    //////////////////////////
+    track = new Track(sequencer, new MIDIInstrument(5, runner));
+    track->gridSize = 96;
+    track->retrig = 96;
+    track->octave = 2;
+    track->generator->steps = 16;
+    track->generator->events = 6;
+    track->generator->offset = 0;
+    sequencer->appendTrack(track);
 }
 
 void MainController::update(){};

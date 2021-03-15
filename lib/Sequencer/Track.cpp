@@ -41,7 +41,8 @@ namespace HLSequencer
       int velocity = (97.0f / gridSize * counter) + 30;
       // int velocity = 127;
 
-      instrument->noteOn(midiNote, velocity, 100);
+      
+      instrument->noteOn(midiNote, velocity, 10000);
     }
   }
 }
