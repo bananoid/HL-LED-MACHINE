@@ -16,7 +16,7 @@ namespace HLSequencer
   class Track
   {
   public:
-    int gridSize = 24;
+    int stepLenght = 24;
 
     // 0 is disable -1 is auto with lfo
     int retrig = 0;

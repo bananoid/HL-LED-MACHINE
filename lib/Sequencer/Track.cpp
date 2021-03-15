@@ -22,12 +22,12 @@ namespace HLSequencer
       retrigSize = map(rLFO, -1.f, 1.f, 3.f, 24.f);
     }
 
-    if ((counter) % (retrigSize > 0 ? retrigSize : gridSize) != 0)
+    if ((counter) % (retrigSize > 0 ? retrigSize : stepLenght) != 0)
     {
       return;
     }
 
-    int timeInx = counter / gridSize;
+    int timeInx = counter / stepLenght;
 
     bool isOn = generator->isOn(timeInx);
     Step *step = &generator->lastStep;
@@ -38,10 +38,10 @@ namespace HLSequencer
       int midiNote = note.getMIDINoteNumber();
 
       // TODO: velocity modulation
-      int velocity = (97.0f / gridSize * counter) + 30;
+      int velocity = (97.0f / stepLenght * counter) + 30;
       // int velocity = 127;
 
-      
+
       instrument->noteOn(midiNote, velocity, 10000);
     }
   }
