@@ -17,10 +17,10 @@ namespace HLSequencer
     if (retrig < 0)
     {
       // TODO: parametrize retrig LFO
-      float rLFO = sinf(counter * 0.12442);
+      float rLFO = sinf(counter * 0.001);
       rLFO = asinf(rLFO) / HALF_PI;
-      retrigSize = map(rLFO, -1.f, 1.f, 1.f, 4.f);
-      retrigSize = powf(2, retrigSize);
+      retrigSize = map(rLFO, -1.f, 1.f, 0.f, 4.f);
+      retrigSize = 3 * powf(2, retrigSize);
     }
 
     if ((counter) % (retrigSize > 0 ? retrigSize : stepLenght) != 0)
