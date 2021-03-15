@@ -17,6 +17,9 @@ namespace HLSequencer
 
   class Instrument : VoiceDelegate
   {
+  private:
+    int lastNote = -1;
+
   public:
     Instrument(Scheduler *runner, int voiceCount = 1);
     InstrumentDelegate *delegate;

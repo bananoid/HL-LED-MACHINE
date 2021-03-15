@@ -26,9 +26,14 @@ namespace HLSequencer
 
   void Instrument::trigNote(int note, int vel, int noteLenght)
   {
+    if (note != lastNote)
+    {
+      voiceIndex++;
+    }
     voiceIndex = voiceIndex % voices.size();
     voices[voiceIndex]->noteOn(note, vel, noteLenght);
-    voiceIndex++;
+
+    lastNote = note;
   }
 
   void Instrument::noteOn(int note, int vel)

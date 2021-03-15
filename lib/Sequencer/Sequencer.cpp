@@ -47,12 +47,18 @@ namespace HLSequencer
   {
     if (currentScale == nullptr)
     {
-      currentKey = static_cast<NoteType>(random(12));
+      // currentScale = &Scale::major;
       currentScale = &Scale::minor;
+      // currentKey = static_cast<NoteType>(random(12));
+      currentKey = C;
     }
 
+    // currentScale = random(4) == 0 ? &Scale::minor : &Scale::major;
+
     std::vector<Note> notes = currentScale->getNotes(currentKey, 0);
-    currentKey = notes[3].type;
+    currentKey = notes[4].type;
+
+    Serial.printf("key %i\n", currentKey);
 
     seed++;
   }
@@ -62,3 +68,29 @@ namespace HLSequencer
     return currentScale->getNote(currentKey, inx, octave);
   }
 }
+
+// key 5
+// key 0
+// key 7
+// key 2
+// key 9
+// key 4
+// key 11
+// key 6
+// key 1
+// key 8
+// key 3
+// key 10
+// key 5
+// key 0
+// key 7
+// key 2
+// key 9
+// key 4
+// key 11
+// key 6
+// key 1
+// key 8
+// key 3
+// key 10
+// key 5

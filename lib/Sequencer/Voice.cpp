@@ -30,15 +30,13 @@ namespace HLSequencer
 
       long noteTime = delegate->getClockTime() * noteLenght;
       restartDelayed(noteTime);
-    }
-    else
-    {
-      noteOff(lastNote);
+
+      // Serial.printf("noteLenght %i %i \n", noteLenght, noteTime);
     }
   }
   void Voice::noteOff(int note)
   {
     delegate->noteOff(note);
-    lastNote = -1;
+    // lastNote = -1;
   }
 }
