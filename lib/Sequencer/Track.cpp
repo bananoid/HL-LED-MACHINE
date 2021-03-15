@@ -17,10 +17,12 @@ namespace HLSequencer
     if (retrig < 0)
     {
       // TODO: parametrize retrig LFO
-      float rLFO = sinf(counter * 0.001);
+      float rLFO = sinf(counter * 0.01);
       rLFO = asinf(rLFO) / HALF_PI;
-      retrigSize = map(rLFO, -1.f, 1.f, 0.f, 4.f);
-      retrigSize = 3 * powf(2, retrigSize);
+      retrigSize = map(rLFO, -1.f, 1.f, 1.f, 8.f);
+      int triplet = retrigSize % 2 == 0 ? 1 : 3;
+      // Serial.printf("retrigSize %i %i\n", retrigSize / 2, triplet);
+      retrigSize = triplet * powf(2, retrigSize / 2);
     }
 
     if ((counter) % (retrigSize > 0 ? retrigSize : stepLenght) != 0)
@@ -45,7 +47,7 @@ namespace HLSequencer
       retrigCount = 0;
     }
 
-    Serial.printf("isOn %i %i %i\n", isOn, retrigCount, stepInx);
+    // Serial.printf("isOn %i %i %i\n", isOn, retrigCount, stepInx);
     if (isOn)
     {
       int velocity = (97.0f / stepLenght * counter) + 30;
