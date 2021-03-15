@@ -12,9 +12,21 @@ using namespace MusicTheory;
 
 namespace HLSequencer
 {
+  struct Step
+  {
+    int note = 1;
+    int velocity = 127;
+  };
+
   class Sequencer;
   class Track
   {
+  private:
+    int lastStepInx = 0;
+    int retrigCount = 0;
+    Step lastStep;
+    int onCounter = 0;
+
   public:
     int stepLenght = 24;
 

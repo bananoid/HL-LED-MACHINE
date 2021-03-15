@@ -17,9 +17,10 @@ namespace HLSequencer
     if (retrig < 0)
     {
       // TODO: parametrize retrig LFO
-      float rLFO = sinf(counter * 0.012442);
+      float rLFO = sinf(counter * 0.12442);
       rLFO = asinf(rLFO) / HALF_PI;
-      retrigSize = map(rLFO, -1.f, 1.f, 3.f, 24.f);
+      retrigSize = map(rLFO, -1.f, 1.f, 1.f, 4.f);
+      retrigSize = powf(2, retrigSize);
     }
 
     if ((counter) % (retrigSize > 0 ? retrigSize : stepLenght) != 0)
@@ -27,22 +28,38 @@ namespace HLSequencer
       return;
     }
 
-    int timeInx = counter / stepLenght;
-
-    bool isOn = generator->isOn(timeInx);
-    Step *step = &generator->lastStep;
-
-    if (isOn || retrigSize > 0)
+    int stepInx = counter / stepLenght;
+    bool newStep = false;
+    if (lastStepInx != stepInx)
     {
-      Note note = sequencer->getNote((step->note % noteCount) * noteSpread, octave);
+      newStep = true;
+      lastStepInx = stepInx;
+    }
+
+    bool isOn = generator->isOn(stepInx);
+
+    if (newStep)
+    {
+      lastStep.note = onCounter % generator->events;
+      onCounter++;
+      retrigCount = 0;
+    }
+
+    Serial.printf("isOn %i %i %i\n", isOn, retrigCount, stepInx);
+    if (isOn)
+    {
+      Note note = sequencer->getNote((lastStep.note % noteCount) * noteSpread, octave);
       int midiNote = note.getMIDINoteNumber();
 
       // TODO: velocity modulation
       int velocity = (97.0f / stepLenght * counter) + 30;
       // int velocity = 127;
 
+      int noteLeght = retrigSize > 0 ? retrigSize : stepLenght;
 
-      instrument->noteOn(midiNote, velocity, 10000);
+      instrument->noteOn(midiNote, velocity, noteLeght);
+
+      retrigCount++;
     }
   }
 }

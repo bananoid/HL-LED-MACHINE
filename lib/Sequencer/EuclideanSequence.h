@@ -24,20 +24,12 @@ namespace HLSequencer
         return false;
       }
 
-      if (lastIndex == index)
-      {
-        return false;
-      }
-      lastIndex = index;
-
       int x = (index + steps * 2 - offset) % steps;
       float step = (float)steps / (float)events;
       float fMod = fmodf(x, step);
 
       if (floor(fMod) == 0)
       {
-        counter++;
-        lastStep.note = counter % events;
         return true;
       }
       return false;

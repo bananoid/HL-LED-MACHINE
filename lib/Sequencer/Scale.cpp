@@ -42,4 +42,5 @@ namespace MusicTheory
   const Scale Scale::major = Scale(majorIntervals, 7);
   Interval minorIntervals[] = {Interval::P1, Interval::M2, Interval::m3, Interval::P4, Interval::P5, Interval::m6, Interval::m7};
   const Scale Scale::minor = Scale(minorIntervals, 7);
+
 }

@@ -3,18 +3,12 @@
 
 namespace HLSequencer
 {
-  struct Step
-  {
-    int note = 1;
-    int velocity = 127;
-  };
 
   class SequenceGenerator
   {
   public:
-    int counter;
-    Step lastStep;
-    int lastIndex = -1;
+    // int counter;
+
     virtual bool isOn(int index);
   };
 }

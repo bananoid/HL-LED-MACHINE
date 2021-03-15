@@ -47,7 +47,8 @@ namespace HLSequencer
   {
     // TODO: pick next scale from prev chord
 
-    currentScale = random(1) == 0 ? &MusicTheory::Scale::minor : &MusicTheory::Scale::major;
+    // currentScale = random(1) == 0 ? &MusicTheory::Scale::minor : &MusicTheory::Scale::major;
+    currentScale = &MusicTheory::Scale::minor;
     currentKey = static_cast<MusicTheory::NoteType>(random(12));
     seed++;
 
