@@ -11,6 +11,11 @@ namespace HLSequencer
     tracks = new LinkedList<Track *>();
 
     pinMode(13, OUTPUT);
+    pinMode(19, INPUT);
+
+    randomSeed(analogRead(19));
+
+    pickNextHarmony();
   }
 
   void Sequencer::clockTick()
@@ -40,6 +45,8 @@ namespace HLSequencer
 
   void Sequencer::pickNextHarmony()
   {
+    // TODO: pick next scale from prev chord
+
     currentScale = random(1) == 0 ? &MusicTheory::Scale::minor : &MusicTheory::Scale::major;
     currentKey = static_cast<MusicTheory::NoteType>(random(12));
     seed++;
