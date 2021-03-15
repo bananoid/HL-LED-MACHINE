@@ -48,16 +48,25 @@ namespace HLSequencer
     Serial.printf("isOn %i %i %i\n", isOn, retrigCount, stepInx);
     if (isOn)
     {
-      Note note = sequencer->getNote((lastStep.note % noteCount) * noteSpread, octave);
-      int midiNote = note.getMIDINoteNumber();
-
-      // TODO: velocity modulation
       int velocity = (97.0f / stepLenght * counter) + 30;
-      // int velocity = 127;
-
       int noteLeght = retrigSize > 0 ? retrigSize : stepLenght;
 
-      instrument->noteOn(midiNote, velocity, noteLeght);
+      if (chord == 0)
+      {
+        Note note = sequencer->getNote((lastStep.note % noteCount) * noteSpread, octave);
+        int midiNote = note.getMIDINoteNumber();
+        instrument->noteOn(midiNote, velocity, noteLeght);
+      }
+      else
+      {
+        int chordCount = chord == 1 ? 3 : 4;
+        for (int i = 0; i < chordCount; i++)
+        {
+          Note note = sequencer->getNote(i * 2, octave);
+          int midiNote = note.getMIDINoteNumber();
+          instrument->noteOn(midiNote, velocity, noteLeght);
+        }
+      }
 
       retrigCount++;
     }

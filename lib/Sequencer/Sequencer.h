@@ -29,7 +29,7 @@ namespace HLSequencer
     long getClockTime() override;
 
     unsigned long seed = 0;
-    Scale *currentScale;
+    Scale *currentScale = nullptr;
     NoteType currentKey;
     void pickNextHarmony();
 

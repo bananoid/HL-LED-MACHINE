@@ -36,6 +36,7 @@ namespace HLSequencer
     int octave = 3;
     int noteCount = 4;
     int noteSpread = 2;
+    int chord = 0;
 
     Sequencer *sequencer;
     EuclideanSequence *generator;

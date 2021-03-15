@@ -20,7 +20,7 @@ namespace HLSequencer
 
   void Sequencer::clockTick()
   {
-    if ((clock->tickCounter) % (clock->clockDivider * 4 * 4) == 0)
+    if ((clock->tickCounter) % (clock->clockDivider * 4) == 0)
     {
       pickNextHarmony();
     }
@@ -45,14 +45,16 @@ namespace HLSequencer
 
   void Sequencer::pickNextHarmony()
   {
-    // TODO: pick next scale from prev chord
+    if (currentScale == nullptr)
+    {
+      currentKey = static_cast<NoteType>(random(12));
+      currentScale = &Scale::minor;
+    }
 
-    // currentScale = random(1) == 0 ? &MusicTheory::Scale::minor : &MusicTheory::Scale::major;
-    currentScale = &MusicTheory::Scale::minor;
-    currentKey = static_cast<MusicTheory::NoteType>(random(12));
+    std::vector<Note> notes = currentScale->getNotes(currentKey, 0);
+    currentKey = notes[3].type;
+
     seed++;
-
-    std::vector<MusicTheory::Note> notes = currentScale->getNotes(currentKey, 1);
   }
 
   Note Sequencer::getNote(int inx, int octave)
