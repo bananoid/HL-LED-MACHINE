@@ -3,49 +3,40 @@
 
 namespace HLSequencer
 {
-    Instrument::Instrument(Scheduler *runner) : Task(TASK_MILLISECOND * 100, TASK_FOREVER, runner, false)
+  Instrument::Instrument(Scheduler *runner, int voiceCount)
+  {
+    voices.reserve(voiceCount);
+    for (int i = 0; i < voiceCount; i++)
     {
-        disable();
+      Voice *voice = new Voice(runner);
+      voice->delegate = this;
+      voices.push_back(voice);
     }
+  }
 
-    bool Instrument::Callback()
-    {
-        noteOff(lastNote);
-        disable();
-        return false;
-    }
+  void Instrument::toggleEnabled()
+  {
+    isEnabled = !isEnabled;
+  }
 
-    void Instrument::toggleEnabled()
-    {
-        isEnabled = !isEnabled;
-    }
+  long Instrument::getClockTime()
+  {
+    return delegate->getClockTime();
+  }
 
-    void Instrument::noteOn(int note, int vel, int autoReleaseLength)
-    {
-        if (lastNote != -1)
-        {
-            noteOff(lastNote);
-        }
+  void Instrument::trigNote(int note, int vel, int noteLenght)
+  {
+    voiceIndex = voiceIndex % voices.size();
+    voices[voiceIndex]->noteOn(note, vel, noteLenght);
+    voiceIndex++;
+  }
 
-        lastNote = note;
+  void Instrument::noteOn(int note, int vel)
+  {
+  }
 
-        if (autoReleaseLength != 0)
-        {
-            long trigTime;
-            if (autoReleaseLength > 0)
-            {
-                trigTime = delegate->getClockTime() * autoReleaseLength;
-            }
-            else
-            {
-                trigTime = this->trigTime;
-                trigTime = min(delegate->getClockTime() * 0.5, trigTime);
-            }
-            restartDelayed(trigTime);
-        }
-    }
-    void Instrument::noteOff(int note)
-    {
-        lastNote = -1;
-    }
+  void Instrument::noteOff(int note)
+  {
+  }
+
 }

@@ -15,8 +15,8 @@ MainController::MainController(Scheduler *runner)
     //////////////////////////
     track = new Track(sequencer, new MIDIInstrument(1, runner));
     sequencer->appendTrack(track);
-    track->stepLenght = 32;
-    track->retrig = -1;
+    track->stepLenght = 24;
+    track->retrig = 16;
     track->octave = 2;
     track->noteCount = 4;
     track->noteSpread = 2;

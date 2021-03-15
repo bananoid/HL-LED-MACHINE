@@ -8,9 +8,9 @@ namespace HLSequencer
   {
   public:
     int channel;
-    MIDIInstrument(int channel, Scheduler *runner);
+    MIDIInstrument(int channel, Scheduler *runner, int voiceCount = 4);
 
-    void noteOn(int note = 0, int vel = 127, int autoReleaseLength = 1) override;
+    void noteOn(int note = 0, int vel = 127) override;
     void noteOff(int note) override;
   };
 }

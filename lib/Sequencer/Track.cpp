@@ -55,7 +55,8 @@ namespace HLSequencer
       {
         Note note = sequencer->getNote((lastStep.note % noteCount) * noteSpread, octave);
         int midiNote = note.getMIDINoteNumber();
-        instrument->noteOn(midiNote, velocity, noteLeght);
+
+        instrument->trigNote(midiNote, velocity, noteLeght);
       }
       else
       {
@@ -64,7 +65,7 @@ namespace HLSequencer
         {
           Note note = sequencer->getNote(i * 2, octave);
           int midiNote = note.getMIDINoteNumber();
-          instrument->noteOn(midiNote, velocity, noteLeght);
+          instrument->trigNote(midiNote, velocity, noteLeght);
         }
       }
 

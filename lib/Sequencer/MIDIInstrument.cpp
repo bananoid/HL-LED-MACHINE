@@ -3,14 +3,13 @@
 
 namespace HLSequencer
 {
-  MIDIInstrument::MIDIInstrument(int channel, Scheduler *runner) : Instrument(runner)
+  MIDIInstrument::MIDIInstrument(int channel, Scheduler *runner, int voiceCount) : Instrument(runner, voiceCount)
   {
     this->channel = channel;
   }
 
-  void MIDIInstrument::noteOn(int note, int vel, int autoReleaseLength)
+  void MIDIInstrument::noteOn(int note, int vel)
   {
-    Instrument::noteOn(note, vel, autoReleaseLength);
     // Serial.printf("noteOn %i\n", note);
 
 #ifdef MIDI_INTERFACE
@@ -20,7 +19,6 @@ namespace HLSequencer
 
   void MIDIInstrument::noteOff(int note = 0)
   {
-    Instrument::noteOff(note);
     // Serial.printf("noteOff %i\n", note);
 
 #ifdef MIDI_INTERFACE

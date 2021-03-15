@@ -1,7 +1,6 @@
 #ifndef Scale_hpp
 #define Scale_hpp
 
-#include <stdio.h>
 #include <vector>
 #include "MusicTheory.hpp"
 

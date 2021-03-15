@@ -21,6 +21,8 @@ namespace HLSequencer
     setInterval(clockInterval);
     delegate->clockTick();
     tickCounter++;
+
+    return true;
   }
 
   void Clock::setBpm(float bpm)
