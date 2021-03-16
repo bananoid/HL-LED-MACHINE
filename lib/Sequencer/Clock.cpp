@@ -5,16 +5,21 @@ namespace HLSequencer
 {
   Clock::Clock(Scheduler *runner) : Task(1 * TASK_SECOND, TASK_FOREVER, runner, false)
   {
+    pinMode(13, OUTPUT);
   }
 
   bool Clock::Callback()
   {
+    if (tickCounter % (24) == 0)
+    {
+      digitalWrite(13, true);
+    }
+    else if ((tickCounter + 12) % (24) == 0)
+    {
+      digitalWrite(13, false);
+    }
 
 #ifdef MIDI_INTERFACE
-    if (tickCounter == 0)
-    {
-      usbMIDI.sendRealTime(usbMIDI.Start);
-    }
     usbMIDI.sendRealTime(usbMIDI.Clock);
 #endif
 
@@ -49,6 +54,10 @@ namespace HLSequencer
     setBpm(bpm);
     setInterval(clockInterval);
     enable();
+
+#ifdef MIDI_INTERFACE
+    usbMIDI.sendRealTime(usbMIDI.Start);
+#endif
   };
 
   void Clock::stop()
@@ -57,6 +66,10 @@ namespace HLSequencer
     Serial.println("Stop");
 
     disable();
+
+#ifdef MIDI_INTERFACE
+    usbMIDI.sendRealTime(usbMIDI.Stop);
+#endif
   };
 
   void Clock::playStop()

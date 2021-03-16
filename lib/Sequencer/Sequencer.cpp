@@ -10,7 +10,6 @@ namespace HLSequencer
 
     tracks = new LinkedList<Track *>();
 
-    pinMode(13, OUTPUT);
     pinMode(19, INPUT);
 
     randomSeed(analogRead(19));
@@ -58,7 +57,7 @@ namespace HLSequencer
     std::vector<Note> notes = currentScale->getNotes(currentKey, 0);
     currentKey = notes[4].type;
 
-    Serial.printf("key %i\n", currentKey);
+    // Serial.printf("key %i\n", currentKey);
 
     seed++;
   }
@@ -68,29 +67,3 @@ namespace HLSequencer
     return currentScale->getNote(currentKey, inx, octave);
   }
 }
-
-// key 5
-// key 0
-// key 7
-// key 2
-// key 9
-// key 4
-// key 11
-// key 6
-// key 1
-// key 8
-// key 3
-// key 10
-// key 5
-// key 0
-// key 7
-// key 2
-// key 9
-// key 4
-// key 11
-// key 6
-// key 1
-// key 8
-// key 3
-// key 10
-// key 5
