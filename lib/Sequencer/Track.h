@@ -2,6 +2,7 @@
 
 #include <LinkedList.h>
 #include "Scale.hpp"
+#include "MusicTheory.hpp"
 
 #include "Instrument.h"
 #include "SequenceGenerator.h"
@@ -12,6 +13,12 @@ using namespace MusicTheory;
 
 namespace HLSequencer
 {
+  enum Type
+  {
+    MELODY,
+    PERCUSSION
+  };
+
   struct Step
   {
     int note = 1;
@@ -28,6 +35,9 @@ namespace HLSequencer
     int onCounter = 0;
 
   public:
+    Type type = MELODY;
+    Note percussionNote = Note(24);
+
     int stepLenght = 24;
 
     // 0 is disable -1 is auto with lfo

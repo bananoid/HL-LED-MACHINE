@@ -52,22 +52,29 @@ namespace HLSequencer
       int velocity = (97.0f / stepLenght * counter) + 30;
       int noteLeght = retrigSize > 0 ? retrigSize : stepLenght;
 
-      if (chord == 0)
+      if (type == MELODY)
       {
-        Note note = sequencer->getNote((lastStep.note % noteCount) * noteSpread, octave);
-        int midiNote = note.getMIDINoteNumber();
-
-        instrument->trigNote(midiNote, velocity, noteLeght);
-      }
-      else
-      {
-        int chordCount = chord == 1 ? 3 : 4;
-        for (int i = 0; i < chordCount; i++)
+        if (chord == 0)
         {
-          Note note = sequencer->getNote(i * 2, octave);
+          Note note = sequencer->getNote((lastStep.note % noteCount) * noteSpread, octave);
           int midiNote = note.getMIDINoteNumber();
           instrument->trigNote(midiNote, velocity, noteLeght);
         }
+        else
+        {
+          int chordCount = chord == 1 ? 3 : 4;
+          for (int i = 0; i < chordCount; i++)
+          {
+            Note note = sequencer->getNote(i * 2, octave);
+            int midiNote = note.getMIDINoteNumber();
+            instrument->trigNote(midiNote, velocity, noteLeght);
+          }
+        }
+      }
+      else
+      {
+        int midiNote = percussionNote.getMIDINoteNumber();
+        instrument->trigNote(midiNote, velocity, noteLeght);
       }
 
       retrigCount++;

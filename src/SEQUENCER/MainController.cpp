@@ -105,6 +105,67 @@ MainController::MainController(Scheduler *runner)
   track->generator->offset = 3;
   track->chord = 0;
 
+  //Percussions
+  //// Kick
+  track = new Track(sequencer, new MIDIInstrument(6, runner));
+  sequencer->appendTrack(track);
+  track->type = PERCUSSION;
+  track->percussionNote = Note(36); // Kick
+  track->stepLenght = 6;
+  track->generator->steps = 16;
+  track->generator->events = 3;
+  track->generator->offset = 0;
+  //// Kick
+  track = new Track(sequencer, new MIDIInstrument(6, runner));
+  sequencer->appendTrack(track);
+  track->type = PERCUSSION;
+  track->percussionNote = Note(36); // Kick
+  track->stepLenght = 6;
+  track->generator->steps = 40;
+  track->generator->events = 3;
+  track->generator->offset = 4;
+
+  //// Rim
+  track = new Track(sequencer, new MIDIInstrument(6, runner));
+  sequencer->appendTrack(track);
+  track->type = PERCUSSION;
+  track->percussionNote = Note(37); // Rim
+  track->stepLenght = 6;
+  track->retrig = 0;
+  track->generator->steps = 32;
+  track->generator->events = 17;
+  track->generator->offset = 2;
+
+  //// Snare
+  track = new Track(sequencer, new MIDIInstrument(6, runner));
+  sequencer->appendTrack(track);
+  track->type = PERCUSSION;
+  track->percussionNote = Note(38); // Snare
+  track->stepLenght = 6;
+  track->generator->steps = 16;
+  track->generator->events = 2;
+  track->generator->offset = 4;
+  //// Snare
+  track = new Track(sequencer, new MIDIInstrument(6, runner));
+  sequencer->appendTrack(track);
+  track->type = PERCUSSION;
+  track->percussionNote = Note(38); // Snare
+  track->stepLenght = 6;
+  track->generator->steps = 37;
+  track->generator->events = 3;
+  track->generator->offset = 6;
+
+  //// Hihat
+  track = new Track(sequencer, new MIDIInstrument(6, runner));
+  sequencer->appendTrack(track);
+  track->type = PERCUSSION;
+  track->percussionNote = Note(42); // Hihat
+  track->stepLenght = 6;
+  track->retrig = 0;
+  track->generator->steps = 16;
+  track->generator->events = 13;
+  track->generator->offset = 0;
+
   //Start Stop button
   startStopButton.attach(9, INPUT_PULLUP); // USE EXTERNAL PULL-UP
   startStopButton.interval(5);

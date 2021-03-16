@@ -1,7 +1,7 @@
 [x] Move grid size to track
 [x] Move retrig to track
 [?] Note lenght to track
-[ ] Retrig lfo in track
+[x] Retrig lfo in track
 [ ] Global harmony repeat
 [ ] Arpegio modes (lfo or UP DOWN UPDOWN)
 [ ] Track group by type octave speed complexity (kick snare clap hihatClose hihatOpen perck1 perck2 perck3 ...) ( bass drone arp melo1 melo2 texture ... )
