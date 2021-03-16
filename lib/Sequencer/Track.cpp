@@ -17,11 +17,10 @@ namespace HLSequencer
     if (retrig < 0)
     {
       // TODO: parametrize retrig LFO
-      float rLFO = sinf(counter * 0.01);
+      float rLFO = sinf(counter / 24.0f * TWO_PI * (1.0 / retrigLFO));
       rLFO = asinf(rLFO) / HALF_PI;
-      retrigSize = map(rLFO, -1.f, 1.f, 1.f, 8.f);
+      retrigSize = map(rLFO, -1.f, 1.f, retrigLFOMin, retrigLFOMax);
       int triplet = retrigSize % 2 == 0 ? 1 : 3;
-      // Serial.printf("retrigSize %i %i\n", retrigSize / 2, triplet);
       retrigSize = triplet * powf(2, retrigSize / 2);
     }
 

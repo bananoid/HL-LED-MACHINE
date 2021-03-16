@@ -17,6 +17,7 @@ MainController::MainController(Scheduler *runner)
   sequencer->appendTrack(track);
   track->stepLenght = 24;
   track->retrig = -1;
+  track->retrigLFO = 64;
   track->octave = 3;
   track->noteCount = 4;
   track->noteSpread = 2;
@@ -30,6 +31,7 @@ MainController::MainController(Scheduler *runner)
   sequencer->appendTrack(track);
   track->stepLenght = 12;
   track->retrig = -1;
+  track->retrigLFO = 23;
   track->octave = 4;
   track->noteCount = 6;
   track->noteSpread = 2;

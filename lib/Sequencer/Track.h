@@ -32,6 +32,9 @@ namespace HLSequencer
 
     // 0 is disable -1 is auto with lfo
     int retrig = 0;
+    float retrigLFO = 32;
+    int retrigLFOMin = 1;
+    int retrigLFOMax = 8;
 
     int octave = 3;
     int noteCount = 4;
