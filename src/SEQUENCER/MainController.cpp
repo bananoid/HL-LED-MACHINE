@@ -25,6 +25,8 @@ MainController::MainController(Scheduler *runner)
   track->generator->events = 12;
   track->generator->offset = 0;
   track->chord = 2;
+  track->velocity = -1;
+  track->velocityLFO = 2;
 
   //////////////////////////
   track = new Track(sequencer, new MIDIInstrument(1, runner));
@@ -39,6 +41,8 @@ MainController::MainController(Scheduler *runner)
   track->generator->events = 7;
   track->generator->offset = 0;
   track->chord = 0;
+  track->velocity = -1;
+  track->velocityLFO = 4.2;
 
   ////////////////////////
   track = new Track(sequencer, new MIDIInstrument(2, runner));
@@ -52,6 +56,8 @@ MainController::MainController(Scheduler *runner)
   track->generator->events = 2;
   track->generator->offset = 4;
   track->chord = 0;
+  track->velocity = -1;
+  track->velocityLFO = 23.24;
 
   ////////////////////////
   track = new Track(sequencer, new MIDIInstrument(3, runner));
@@ -65,6 +71,8 @@ MainController::MainController(Scheduler *runner)
   track->generator->events = 10;
   track->generator->offset = 0;
   track->chord = 0;
+  track->velocity = -1;
+  track->velocityLFO = 26.24;
 
   ////////////////////////
   track = new Track(sequencer, new MIDIInstrument(4, runner));
@@ -78,6 +86,8 @@ MainController::MainController(Scheduler *runner)
   track->generator->events = 7;
   track->generator->offset = 0;
   track->chord = 0;
+  track->velocity = -1;
+  track->velocityLFO = 29.24;
 
   //////////////////////////
   track = new Track(sequencer, new MIDIInstrument(5, runner));
@@ -91,6 +101,8 @@ MainController::MainController(Scheduler *runner)
   track->generator->events = 11;
   track->generator->offset = 0;
   track->chord = 0;
+  track->velocity = -1;
+  track->velocityLFO = 34.24;
 
   //////////////////////////
   track = new Track(sequencer, new MIDIInstrument(5, runner));
@@ -104,6 +116,8 @@ MainController::MainController(Scheduler *runner)
   track->generator->events = 5;
   track->generator->offset = 3;
   track->chord = 0;
+  track->velocity = -1;
+  track->velocityLFO = 37.24;
 
   //Percussions
   //// Kick

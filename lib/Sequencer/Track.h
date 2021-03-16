@@ -40,11 +40,15 @@ namespace HLSequencer
 
     int stepLenght = 24;
 
-    // 0 is disable -1 is auto with lfo
-    int retrig = 0;
+    int retrig = 0; // 0 is disable -1 is auto with lfo
     float retrigLFO = 32;
     int retrigLFOMin = 1;
     int retrigLFOMax = 8;
+
+    int velocity = 127; // -1 enable lfo
+    float velocityLFO = 16;
+    int velocityLFOMin = 30;
+    int velocityLFOMax = 127;
 
     int octave = 3;
     int noteCount = 4;

@@ -49,8 +49,15 @@ namespace HLSequencer
     // Serial.printf("isOn %i %i %i\n", isOn, retrigCount, stepInx);
     if (isOn)
     {
-      int velocity = (97.0f / stepLenght * counter) + 30;
       int noteLeght = retrigSize > 0 ? retrigSize : stepLenght;
+
+      int vel = velocity;
+      if (vel == -1)
+      {
+        float vLFO = sinf(counter / 24.0f * TWO_PI * (1.0 / velocityLFO));
+        vLFO = asinf(vLFO) / HALF_PI;
+        vel = map(vLFO, -1.f, 1.f, velocityLFOMin, velocityLFOMax);
+      }
 
       if (type == MELODY)
       {
@@ -58,7 +65,7 @@ namespace HLSequencer
         {
           Note note = sequencer->getNote((lastStep.note % noteCount) * noteSpread, octave);
           int midiNote = note.getMIDINoteNumber();
-          instrument->trigNote(midiNote, velocity, noteLeght);
+          instrument->trigNote(midiNote, vel, noteLeght);
         }
         else
         {
@@ -67,14 +74,14 @@ namespace HLSequencer
           {
             Note note = sequencer->getNote(i * 2, octave);
             int midiNote = note.getMIDINoteNumber();
-            instrument->trigNote(midiNote, velocity, noteLeght);
+            instrument->trigNote(midiNote, vel, noteLeght);
           }
         }
       }
       else
       {
         int midiNote = percussionNote.getMIDINoteNumber();
-        instrument->trigNote(midiNote, velocity, noteLeght);
+        instrument->trigNote(midiNote, vel, noteLeght);
       }
 
       retrigCount++;
