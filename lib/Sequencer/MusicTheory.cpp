@@ -88,4 +88,47 @@ namespace MusicTheory
   {
     return Note(getMIDINoteNumber() - lhs);
   }
+
+  void Note::printNoteType(NoteType type)
+  {
+    switch (type)
+    {
+    case C:
+      Serial.print("C");
+      break;
+    case DFlat:
+      Serial.print("DFlat");
+      break;
+    case D:
+      Serial.print("D");
+      break;
+    case EFlat:
+      Serial.print("EFlat");
+      break;
+    case E:
+      Serial.print("E");
+      break;
+    case F:
+      Serial.print("F");
+      break;
+    case GFlat:
+      Serial.print("GFlat");
+      break;
+    case G:
+      Serial.print("G");
+      break;
+    case AFlat:
+      Serial.print("AFlat");
+      break;
+    case A:
+      Serial.print("A");
+      break;
+    case BFlat:
+      Serial.print("BFlat");
+      break;
+    case B:
+      Serial.print("B");
+      break;
+    }
+  }
 }
