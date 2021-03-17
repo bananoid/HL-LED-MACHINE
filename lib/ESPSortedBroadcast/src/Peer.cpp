@@ -38,7 +38,6 @@ namespace ESPSortedBroadcast
 
   void Peer::begin()
   {
-
     WiFi.mode(WIFI_STA);
     Serial.println(WiFi.macAddress());
     WiFi.disconnect();
@@ -95,5 +94,10 @@ namespace ESPSortedBroadcast
   void Peer::broadcastData(const uint8_t *data, size_t len)
   {
     esp_now_send(broadcastAddr, data, len);
+  }
+
+  void Peer::sendDataToAddress(uint8_t *macaddr, const uint8_t *data, size_t len)
+  {
+    esp_now_send((uint8_t *)&macaddr, data, len);
   }
 } // namespace ESPSortedBroadcast
