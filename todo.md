@@ -2,8 +2,8 @@
 [x] Move retrig to track
 [?] Note lenght to track
 [x] Retrig lfo in track
-[ ] Global harmony repeat
 [ ] Arpegio modes (lfo or UP DOWN UPDOWN)
+[ ] Global harmony repeat
 [ ] Track group by type octave speed complexity (kick snare clap hihatClose hihatOpen perck1 perck2 perck3 ...) ( bass drone arp melo1 melo2 texture ... )
     Select random parameter Ranges depend on type
   [ ] MIDI
@@ -11,7 +11,7 @@
 
 [ ] Sensor Interaction ( Hardware related )
   [ ] Touch sensor sequence generator
-      Use two touch sensor per parameter, on for increase and one to decrease and.
+      Time base parameter rotation
       [ ] Events 2 Touch
       [ ] Offset 2 Touch
       [ ] Grid Size 2 Touch

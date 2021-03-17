@@ -46,20 +46,50 @@ namespace HLSequencer
   {
     if (currentScale == nullptr)
     {
-      // currentScale = &Scale::major;
-      currentScale = &Scale::minor;
+      currentScale = &Scale::major;
+      // currentScale = &Scale::minor;
       // currentKey = static_cast<NoteType>(random(12));
       currentKey = C;
+    }
+    else
+    {
+      std::vector<Note> notes = currentScale->getNotes(currentKey, 0);
+      for (Note note : notes)
+      {
+        Serial.print("[ ");
+        Note::printNoteType(note.type);
+        Serial.print(" ]");
+      }
+      Serial.print("\n");
+
+      if (harmonyCounter % 16 == 0)
+      {
+        progressionInterval = random(0, 6);
+        Serial.printf("change progressionInterval %i \n", progressionInterval);
+
+        // if (progressionIntervalCounter % 2 == 0)
+        // {
+        //   currentScale = &Scale::major;
+        //   Serial.println("Major");
+        // }
+        // else
+        // {
+        //   currentScale = &Scale::minor;
+        //   Serial.println("Minor");
+        // }
+
+        progressionIntervalCounter++;
+      }
+
+      currentKey = notes[progressionInterval].type;
     }
 
     // currentScale = random(4) == 0 ? &Scale::minor : &Scale::major;
 
-    std::vector<Note> notes = currentScale->getNotes(currentKey, 0);
-    currentKey = notes[4].type;
+    Note::printNoteType(currentKey);
+    Serial.printf(" key %i\n", currentKey);
 
-    // Serial.printf("key %i\n", currentKey);
-
-    seed++;
+    harmonyCounter++;
   }
 
   Note Sequencer::getNote(int inx, int octave)
