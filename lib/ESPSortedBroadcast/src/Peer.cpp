@@ -50,7 +50,6 @@ namespace ESPSortedBroadcast
 
     register_recv_cb();
 
-    // register broadcast address
     esp_now_peer_info_t peerInfo;
     peerInfo.channel = 3;
     peerInfo.encrypt = false;

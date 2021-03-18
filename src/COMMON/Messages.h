@@ -7,16 +7,16 @@
 // A message is defined by the board that generates (e.g. sensor) or display (e.g. leds) the data
 
 // FLOWER messages:
-#define FLOWER_MESSAGE_TYPES FLOWER_TOUCH, FLOWER_LED
+#define FLOWER_MESSAGE_TYPES FLOWER_TOUCH, FLOWER_GYRO, FLOWER_LED
 
-// SOLENOID messages:
-#define SOLENOID_MESSAGE_TYPES SOLENOID_STATE
+// BRANCH messages:
+#define BRANCH_MESSAGE_TYPES BRANCH_STATE
 
 enum MessageTypes
 {
   BASE_MESSAGE_TYPES,
   FLOWER_MESSAGE_TYPES,
-  SOLENOID_MESSAGE_TYPES
+  BRANCH_MESSAGE_TYPES
 };
 
 struct BaseMessage
@@ -28,17 +28,22 @@ struct BaseMessage
   uint sourceId = 0;
 };
 
-struct FlowerTouch : public BaseMessage
-{ 
+struct FlowerTouchMessage : public BaseMessage
+{
   uint8_t messageType = FLOWER_TOUCH;
 };
 
-struct FlowerLed : public BaseMessage
-{ 
+struct FlowerGyroMessage : public BaseMessage
+{
+  uint8_t messageType = FLOWER_GYRO;
+};
+
+struct FlowerLedMessage : public BaseMessage
+{
   uint8_t messageType = FLOWER_LED;
 };
 
-struct SolenoidState : public BaseMessage
-{ 
-  uint8_t messageType = SOLENOID_STATE;
+struct BranchStateMessage : public BaseMessage
+{
+  uint8_t messageType = BRANCH_STATE;
 };

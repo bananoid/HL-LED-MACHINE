@@ -2,7 +2,7 @@
 
 #define _TASK_STD_FUNCTION
 #include <TaskScheduler.h>
-#include "Tree.h"
+#include "Branch.h"
 
 Scheduler runner;
 
@@ -14,18 +14,17 @@ void setup()
 {
   Serial.begin(115200);
 
-  TreeSingleton->begin();
-  TreeSingleton->beginServer(); //TODO call begin (from parent) inside beginServer
+  BranchSingleton->begin();
+  BranchSingleton->beginServer(); //TODO call begin (from parent) inside beginServer
 
   runner.startNow();
-
-  pinMode(2, OUTPUT);
 }
-
 void loop()
 {
   runner.execute();
   delay(1000);
 
-  // TreeSingleton->ping();
+  BranchSingleton->ping();
+
+  // Serial.println(touchRead(13));
 }

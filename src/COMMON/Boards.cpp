@@ -15,7 +15,7 @@ board_info getBoardInfo(String macAddress)
       {"3C:61:05:2E:85:74", "Tree", TREE},
       {"24:0A:C4:ED:92:0C", "Flower", FLOWER},
       {"3C:61:05:2F:A9:7C", "Flower", FLOWER},
-      {"3C:61:05:2B:01:05", "Solenoid", SOLENOID},
+      {"3C:61:05:2B:01:04", "Branch", BRANCH},
   };
 
   board_info boardInfo;
@@ -24,7 +24,7 @@ board_info getBoardInfo(String macAddress)
   {
     if (macAddress == boards[i].macAddress)
     {
-      boardInfo.boardId = i+1;
+      boardInfo.boardId = i + 1;
       boardInfo.macAddress = macAddress;
       boardInfo.boardType = boards[i].boardType;
       boardInfo.boardTypeName = boards[i].boardTypeName;

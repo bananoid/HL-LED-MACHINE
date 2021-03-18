@@ -1,16 +1,16 @@
 #pragma once
 #include <Peer.h>
 
-#include "Screen.h"
-#include "COMMON/Messages.h"
-#include "COMMON/Boards.h"
+// #include "Screen.h"
+#include "Messages.h"
+#include "Boards.h"
 
 class HLPeer : public ESPSortedBroadcast::Peer
 {
 public:
     HLPeer();
 
-    Screen *screen;
+    // Screen *screen;
 
     board_info boardInfo;
 
@@ -21,7 +21,7 @@ public:
 
     void getOwnBoardInformation();
 
-    void displayHeader();
+    // void displayHeader();
 
     BaseMessage getRandomMessage();
 
