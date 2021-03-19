@@ -58,46 +58,54 @@ void loop()
 
   Serial.println(FlowerSingleton->boardInfo.boardName);
 
-  if (touchSensor.touchReads[0] < 50)
+  for (int i = 0; i < 5; i++)
   {
-    Serial.println("Touch A!");
-    int targetId = 1;
-    FlowerTouchMessage message = {};
-    message.sourceId = FlowerSingleton->boardInfo.boardId;
-    message.targetId = targetId;
-
-    FlowerSingleton->broadcastData((uint8_t *)&message, sizeof(FlowerTouchMessage));
-
-    FlowerSingleton->screen->print("Sending data to 1", 16);
+    if (touchSensor.touchReads[i] < 50)
+    {
+      Serial.printf("Tocuh %i \n", i);
+    }
   }
 
-  if (touchSensor.touchReads[1] < 50)
-  {
-    /* code */
-    Serial.println("Touch B! Sending ping to 1");
-    int targetId = 2;
-    FlowerTouchMessage message = {};
-    message.sourceId = FlowerSingleton->boardInfo.boardId;
-    message.targetId = targetId;
+  // if (touchSensor.touchReads[0] < 50)
+  // {
+  //   Serial.println("Touch A!");
+  //   int targetId = 1;
+  //   FlowerTouchMessage message = {};
+  //   message.sourceId = FlowerSingleton->boardInfo.boardId;
+  //   message.targetId = targetId;
 
-    FlowerSingleton->broadcastData((uint8_t *)&message, sizeof(FlowerTouchMessage));
+  //   FlowerSingleton->broadcastData((uint8_t *)&message, sizeof(FlowerTouchMessage));
 
-    FlowerSingleton->screen->print("Sending data to 2", 24);
-  }
+  //   FlowerSingleton->screen->print("Sending data to 1", 16);
+  // }
 
-  if (touchSensor.touchReads[2] < 50)
-  {
-    /* code */
-    Serial.println("Touch C!");
-    int targetId = 3;
-    BranchStateMessage message = {};
-    message.sourceId = FlowerSingleton->boardInfo.boardId;
-    message.targetId = targetId;
+  // if (touchSensor.touchReads[1] < 50)
+  // {
+  //   /* code */
+  //   Serial.println("Touch B! Sending ping to 1");
+  //   int targetId = 2;
+  //   FlowerTouchMessage message = {};
+  //   message.sourceId = FlowerSingleton->boardInfo.boardId;
+  //   message.targetId = targetId;
 
-    FlowerSingleton->broadcastData((uint8_t *)&message, sizeof(BranchStateMessage));
+  //   FlowerSingleton->broadcastData((uint8_t *)&message, sizeof(FlowerTouchMessage));
 
-    FlowerSingleton->screen->print("Sending data to 3", 32);
-  }
+  //   FlowerSingleton->screen->print("Sending data to 2", 24);
+  // }
+
+  // if (touchSensor.touchReads[2] < 50)
+  // {
+  //   /* code */
+  //   Serial.println("Touch C!");
+  //   int targetId = 3;
+  //   BranchStateMessage message = {};
+  //   message.sourceId = FlowerSingleton->boardInfo.boardId;
+  //   message.targetId = targetId;
+
+  //   FlowerSingleton->broadcastData((uint8_t *)&message, sizeof(BranchStateMessage));
+
+  //   FlowerSingleton->screen->print("Sending data to 3", 32);
+  // }
 
   // FlowerSingleton->screen->displayScreen();
 }
