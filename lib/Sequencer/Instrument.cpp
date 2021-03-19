@@ -31,6 +31,7 @@ namespace HLSequencer
       voiceIndex++;
     }
     voiceIndex = voiceIndex % voices.size();
+
     voices[voiceIndex]->noteOn(note, vel, noteLenght);
 
     lastNote = note;

@@ -93,10 +93,6 @@ namespace ESPSortedBroadcast
 
   void Peer::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int len)
   {
-    Serial.println("Receiving data");
-    digitalWrite(2, HIGH);
-    delay(500);
-    digitalWrite(2, LOW);
   }
 
   void Peer::broadcastData(const uint8_t *data, size_t len)

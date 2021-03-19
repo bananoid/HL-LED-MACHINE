@@ -46,7 +46,7 @@ namespace HLSequencer
   {
     if (currentScale == nullptr)
     {
-      currentScale = &Scale::major;
+      currentScale = const_cast<Scale *>(&Scale::major);
       // currentScale = &Scale::minor;
       // currentKey = static_cast<NoteType>(random(12));
       currentKey = C;

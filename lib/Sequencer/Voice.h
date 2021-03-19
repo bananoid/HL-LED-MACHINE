@@ -22,6 +22,8 @@ namespace HLSequencer
 
     bool Callback();
 
+    long trigTime = 0;
+
     int lastNote;
     virtual void noteOn(int note, int vel, int noteLenght);
     virtual void noteOff(int note = 0);

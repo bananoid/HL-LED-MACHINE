@@ -28,7 +28,17 @@ namespace HLSequencer
     {
       delegate->noteOn(note, vel);
 
-      long noteTime = delegate->getClockTime() * noteLenght;
+      long noteTime;
+
+      if (trigTime > 0)
+      {
+        noteTime = trigTime;
+      }
+      else
+      {
+        delegate->getClockTime() * noteLenght;
+      }
+
       restartDelayed(noteTime);
 
       // Serial.printf("noteLenght %i %i \n", noteLenght, noteTime);

@@ -29,7 +29,6 @@ namespace HLSequencer
 
     const int minTrigTime = 1 * TASK_MILLISECOND;
     const int maxTrigTime = 100 * TASK_MILLISECOND;
-    long trigTime = TASK_MILLISECOND * 30;
 
     bool isEnabled = false;
     void toggleEnabled();

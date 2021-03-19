@@ -47,3 +47,9 @@
   [ ] Time Sync
   [ ] Id auto assignment
   [ ] Parameter broadcast
+
+  ------------------------------------------------------
+
+  - Yellow  SCL 22 
+  - Green   SDA 21 
+  - Brown   LED 5
