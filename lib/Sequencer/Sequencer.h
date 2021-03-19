@@ -28,10 +28,12 @@ namespace HLSequencer
 
     long getClockTime() override;
 
-    unsigned long seed = 0;
     Scale *currentScale = nullptr;
     NoteType currentKey;
     void pickNextHarmony();
+    int harmonyCounter = 0;
+    int progressionInterval = 3;
+    int progressionIntervalCounter = 0;
 
     Note getNote(int inx, int octave);
   };

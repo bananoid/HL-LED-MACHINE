@@ -43,7 +43,6 @@ namespace HLSequencer
     {
       lastStep.note = onCounter % generator->events;
       onCounter++;
-      retrigCount = 0;
     }
 
     // Serial.printf("isOn %i %i %i\n", isOn, retrigCount, stepInx);
@@ -61,11 +60,29 @@ namespace HLSequencer
 
       if (type == MELODY)
       {
-        if (chord == 0)
+        if (chord == 0) // Arpeggio
         {
-          Note note = sequencer->getNote((lastStep.note % noteCount) * noteSpread, octave);
+          int noteInx = 0;
+
+          if (arpeggioType == ArpeggioType_Eucledian)
+          {
+            noteInx = (lastStep.note % noteCount) * noteSpread;
+          }
+          else if (arpeggioType == ArpeggioType_LFO)
+          {
+            float phase = counter / 24.0f * (1.0 / arpeggioLFO);
+            float aLFO = sinf(phase * TWO_PI);
+            aLFO = asinf(aLFO) / HALF_PI;
+            aLFO = map(aLFO, -1.f, 1.f, 0, noteCount);
+            noteInx = round(aLFO);
+            noteInx *= noteSpread;
+          }
+
+          Note note = sequencer->getNote(noteInx, octave);
           int midiNote = note.getMIDINoteNumber();
           instrument->trigNote(midiNote, vel, noteLeght);
+
+          // Serial.printf("noteInx %i %f\n", noteInx);
         }
         else
         {
@@ -83,8 +100,6 @@ namespace HLSequencer
         int midiNote = percussionNote.getMIDINoteNumber();
         instrument->trigNote(midiNote, vel, noteLeght);
       }
-
-      retrigCount++;
     }
   }
 }

@@ -19,6 +19,12 @@ namespace HLSequencer
     PERCUSSION
   };
 
+  enum ArpeggioType
+  {
+    ArpeggioType_Eucledian,
+    ArpeggioType_LFO
+  };
+
   struct Step
   {
     int note = 1;
@@ -30,7 +36,6 @@ namespace HLSequencer
   {
   private:
     int lastStepInx = 0;
-    int retrigCount = 0;
     Step lastStep;
     int onCounter = 0;
 
@@ -39,6 +44,14 @@ namespace HLSequencer
     Note percussionNote = Note(24);
 
     int stepLenght = 24;
+
+    int octave = 3;
+    int noteCount = 4;
+    int noteSpread = 2;
+    ArpeggioType arpeggioType = ArpeggioType_Eucledian;
+    int arpeggioLFO = 3;
+
+    int chord = 0;
 
     int retrig = 0; // 0 is disable -1 is auto with lfo
     float retrigLFO = 32;
@@ -49,11 +62,6 @@ namespace HLSequencer
     float velocityLFO = 16;
     int velocityLFOMin = 30;
     int velocityLFOMax = 127;
-
-    int octave = 3;
-    int noteCount = 4;
-    int noteSpread = 2;
-    int chord = 0;
 
     Sequencer *sequencer;
     EuclideanSequence *generator;

@@ -2,10 +2,10 @@
 #define MusicTheory_hpp
 
 #include <stdio.h>
+#include <Arduino.h>
 
 namespace MusicTheory
 {
-
   struct Interval
   {
     Interval(int halfsteps);
@@ -65,6 +65,8 @@ namespace MusicTheory
     Note operator-(const Interval &lhs);
     Note operator+(const int &lhs);
     Note operator-(const int &lhs);
+
+    static void printNoteType(NoteType type);
   };
 }
 
