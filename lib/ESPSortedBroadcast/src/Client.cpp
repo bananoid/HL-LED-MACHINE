@@ -2,7 +2,7 @@
 
 namespace ESPSortedBroadcast
 {
-  void Client::register_recv_cb()
+  void Client::registerReceiveDataCB()
   {
     esp_now_register_recv_cb([](const uint8_t *macaddr, const uint8_t *incomingData, int len) {
       ClientSingleton->recv_cb(macaddr, incomingData, len);
@@ -11,7 +11,7 @@ namespace ESPSortedBroadcast
 
   void Client::recv_cb(const uint8_t *macaddr, const uint8_t *incomingData, int len)
   {
-    uint8_t action = getActionTypeFromData(incomingData);
+    uint8_t action = getMessageTypeFromData(incomingData);
 
     if (action != SYNC)
     {

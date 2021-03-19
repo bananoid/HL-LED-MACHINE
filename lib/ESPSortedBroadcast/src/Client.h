@@ -20,11 +20,13 @@ namespace ESPSortedBroadcast
     ClientDelegate *delegate;
     int clientId = 0;
 
-    void register_recv_cb() override;
+    void registerReceiveDataCB() override;
 
     void recv_cb(const uint8_t *macaddr, const uint8_t *incomingData, int len);
 
     void requestClientIndex();
+
+    void receiveDataCB();
   };
 
   extern Client *ClientSingleton;

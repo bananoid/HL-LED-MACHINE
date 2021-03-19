@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <esp_now.h>
 #include "Actions.h"
+#include "Boards.h"
 
 namespace ESPSortedBroadcast
 {
@@ -19,11 +20,18 @@ namespace ESPSortedBroadcast
     Peer();
     ~Peer();
 
-    virtual void begin();
-    virtual void register_recv_cb();
+    int channel;
+
+    virtual void begin(int channel = 0);
+    virtual void registerReceiveDataCB();
+    virtual void receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int len);
+
+    board *boardList;
+    board_info boardInfo;
+    // void getOwnBoardInformation();
 
     static void printMacAddr(const uint8_t *macaddr);
-    static uint8_t getActionTypeFromData(const uint8_t *data);
+    static uint8_t getMessageTypeFromData(const uint8_t *data);
 
     void broadcastData(const uint8_t *data, size_t len);
 

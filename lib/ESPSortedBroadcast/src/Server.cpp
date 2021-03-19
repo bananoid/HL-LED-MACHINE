@@ -2,11 +2,11 @@
 
 namespace ESPSortedBroadcast
 {
-  Server::Server()
-  {
-  }
+  // Server::Server()
+  // {
+  // }
 
-  void Server::register_recv_cb()
+  void Server::registerReceiveDataCB()
   {
     Serial.println("Register Server receive callback");
     esp_now_register_recv_cb([](const uint8_t *macaddr, const uint8_t *incomingData, int len) {
@@ -16,7 +16,7 @@ namespace ESPSortedBroadcast
 
   void Server::recv_cb(const uint8_t *macaddr, const uint8_t *incomingData, int len)
   {
-    uint8_t actionType = Server::getActionTypeFromData(incomingData);
+    uint8_t actionType = Server::getMessageTypeFromData(incomingData);
 
     Serial.print("Receive Action :: ");
     Serial.println(actionType);

@@ -13,16 +13,18 @@ namespace ESPSortedBroadcast
     int clientsIdCounter = 0;
     uint8_t idsMap[256][6];
 
-    Server();
+    // Server();
 
     int getIdForAddress(const uint8_t *macaddr);
 
-    void register_recv_cb() override;
+    void registerReceiveDataCB() override;
 
     void recv_cb(const uint8_t *macaddr, const uint8_t *incomingData, int len);
 
     void broadcastCurrentId(const uint8_t *macaddr);
     void broadcastCurrentPosition();
+
+    void receiveDataCB();
   };
 
   extern Server *ServerSingleton;

@@ -1,5 +1,4 @@
 #include "Peer.h"
-
 #include <WiFi.h>
 
 namespace ESPSortedBroadcast
@@ -21,7 +20,7 @@ namespace ESPSortedBroadcast
     Serial.println();
   }
 
-  uint8_t Peer::getActionTypeFromData(const uint8_t *data)
+  uint8_t Peer::getMessageTypeFromData(const uint8_t *data)
   {
     int action;
     memcpy(&action, data, sizeof(action));
@@ -36,7 +35,7 @@ namespace ESPSortedBroadcast
   {
   }
 
-  void Peer::begin()
+  void Peer::begin(int channel)
   {
     WiFi.mode(WIFI_STA);
     Serial.println(WiFi.macAddress());
@@ -48,10 +47,12 @@ namespace ESPSortedBroadcast
       return;
     }
 
-    register_recv_cb();
+    boardInfo = getBoardInfo(WiFi.macAddress(), boardList);
+
+    registerReceiveDataCB();
 
     esp_now_peer_info_t peerInfo;
-    peerInfo.channel = 3;
+    peerInfo.channel = channel;
     peerInfo.encrypt = false;
 
     memcpy(peerInfo.peer_addr, broadcastAddr, 6);
@@ -86,8 +87,16 @@ namespace ESPSortedBroadcast
     Serial.println("Broadcast Peer added");
   }
 
-  void Peer::register_recv_cb()
+  void Peer::registerReceiveDataCB()
   {
+  }
+
+  void Peer::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int len)
+  {
+    Serial.println("Receiving data");
+    digitalWrite(2, HIGH);
+    delay(500);
+    digitalWrite(2, LOW);
   }
 
   void Peer::broadcastData(const uint8_t *data, size_t len)
@@ -99,4 +108,9 @@ namespace ESPSortedBroadcast
   {
     esp_now_send((uint8_t *)&macaddr, data, len);
   }
+
+  // void Peer::getOwnBoardInformation()
+  // {
+  //   boardInfo = getBoardInfo(WiFi.macAddress(), boardList);
+  // }
 } // namespace ESPSortedBroadcast

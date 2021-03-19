@@ -14,15 +14,13 @@ typedef struct Board
   board_type boardType;
 } board;
 
-typedef struct board_info
+typedef struct BoardInfo
 {
   int boardId;
   String macAddress;
   board_type boardType;
   String boardTypeName;
   String boardName;
-
 } board_info;
 
-// extern board boards[] = {"3C:61:05:2E:85:74", "Tree", TREE};
-board_info getBoardInfo(String macAddress);
+board_info getBoardInfo(String macAddress, Board *boardList);

@@ -10,8 +10,22 @@
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-Screen::Screen()
+Screen::Screen(Scheduler *runner) : Task(10 * TASK_MILLISECOND, TASK_FOREVER, runner, true)
 {
+}
+
+bool Screen::Callback()
+{
+  invalid = !invalid;
+  if (invalid)
+  {
+    clear();
+  }
+  else
+  {
+    displayScreen();
+  }
+  return true;
 }
 
 void Screen::begin()
@@ -33,12 +47,12 @@ void Screen::displayScreen()
 
 void Screen::sayHello(uint line)
 {
-  display.setCursor(0, line);
-  display.printf("hello %i", random(0, 50));
+  print("hello " + String(random(0, 50)), 0);
 };
 
 void Screen::print(String message, uint line)
 {
+  // invalid = true;
   display.setCursor(0, line);
   display.println(message);
 };
