@@ -1,6 +1,5 @@
 #pragma once
 #include <Peer.h>
-#include "AOYAMA_TREE/COMMON/Screen.h"
 
 #include "AOYAMA_TREE/COMMON/config.h"
 #include <TaskSchedulerDeclarations.h>
@@ -24,7 +23,6 @@ public:
   void begin(int wifiChannel, Scheduler *runner);
 
   Sequencer *sequencer;
-  Screen *screen;
 };
 
 extern Branch *BranchSingleton;

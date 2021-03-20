@@ -6,57 +6,55 @@ Branch *BranchSingleton = new Branch();
 void Branch::begin(int wifiChannel, Scheduler *runner)
 {
   ESPSortedBroadcast::Peer::begin(wifiChannel);
-  screen = new Screen(runner);
-  screen->begin();
 
   sequencer = new Sequencer(runner);
 
   Track *track;
 
   //////////////////////////
-  track = new Track(sequencer, new PinIntrument(32, runner));
+  track = new Track(sequencer, new PinIntrument(32, runner)); //ok
   sequencer->appendTrack(track);
-  track->stepLenght = 48;
-  track->retrig = -1;
+  track->stepLenght = 6;
+  // track->retrig = -1;
   track->retrigLFO = 13;
   track->generator->steps = 16;
-  track->generator->events = 4;
+  track->generator->events = 8;
   track->generator->offset = 0;
   track->velocity = 127;
   // track->velocityLFO = 2;
 
   //////////////////////////
-  track = new Track(sequencer, new PinIntrument(35, runner));
+  track = new Track(sequencer, new PinIntrument(25, runner));
   sequencer->appendTrack(track);
-  track->stepLenght = 24;
-  track->retrig = -1;
+  track->stepLenght = 6;
+  // track->retrig = -1;
   track->retrigLFO = 6;
   track->generator->steps = 16;
-  track->generator->events = 7;
+  track->generator->events = 8;
   track->generator->offset = 0;
   track->velocity = 127;
   // track->velocityLFO = 2;
 
   //////////////////////////
-  track = new Track(sequencer, new PinIntrument(34, runner));
+  track = new Track(sequencer, new PinIntrument(26, runner));
   sequencer->appendTrack(track);
-  track->stepLenght = 24;
-  track->retrig = -1;
-  track->retrigLFO = 6;
+  track->stepLenght = 6;
+  // track->retrig = -1;
+  track->retrigLFO = 96;
   track->generator->steps = 16;
-  track->generator->events = 7;
+  track->generator->events = 8;
   track->generator->offset = 0;
   track->velocity = 127;
   // track->velocityLFO = 2;
 
   //////////////////////////
-  track = new Track(sequencer, new PinIntrument(34, runner));
+  track = new Track(sequencer, new PinIntrument(33, runner)); //ok
   sequencer->appendTrack(track);
-  track->stepLenght = 24;
-  track->retrig = -1;
-  track->retrigLFO = 6;
+  track->stepLenght = 6;
+  // track->retrig = -1;
+  track->retrigLFO = 38;
   track->generator->steps = 16;
-  track->generator->events = 7;
+  track->generator->events = 8;
   track->generator->offset = 0;
   track->velocity = 127;
   // track->velocityLFO = 2;
@@ -117,8 +115,6 @@ void Branch::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     break;
   }
   Serial.println("Receiving:" + String(sourceId) + "->" + String(targetId) + "[" + messageTypeName + "]");
-  screen->print(String(sourceId) + "->" + String(targetId) + "[" + messageTypeName + "]", 40);
-  // screen->displayScreen();
 }
 
 void Branch::registerReceiveDataCB()

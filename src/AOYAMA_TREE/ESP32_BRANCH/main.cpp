@@ -2,7 +2,6 @@
 
 #include "Branch.h"
 #include "AOYAMA_TREE/COMMON/Messages.h"
-#include "AOYAMA_TREE/COMMON/Screen.h"
 #include "AOYAMA_TREE/COMMON/config.h"
 
 #include <TaskScheduler.h>
@@ -23,7 +22,6 @@ void setup()
   BranchSingleton->boardList = boardList;
 
   BranchSingleton->begin(WIFI_CHANNEL, &runner);
-  BranchSingleton->screen->begin();
 
   runner.startNow();
 }
@@ -31,7 +29,4 @@ void loop()
 {
   runner.execute();
   pinMode(2, OUTPUT);
-
-  BranchSingleton->screen->print(BranchSingleton->boardInfo.boardName, 0);
-  BranchSingleton->screen->print(BranchSingleton->boardInfo.macAddress, 8);
 }
