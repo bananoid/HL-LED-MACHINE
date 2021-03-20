@@ -13,11 +13,10 @@ namespace LEDStrips
   {
   }
 
-  void FastLEDRenderer::begin()
+  void FastLEDRenderer::begin(CRGB *leds, int numberOfPixel)
   {
-    leds = new CRGB[LS_NUM_LEDS_PER_STRIP * LS_NUM_STRIPS];
-
-    FastLED.addLeds<WS2812B, LS_DATA_PIN, GRB>(leds, LS_NUM_LEDS_PER_STRIP);
+    this->leds = leds;
+    this->numberOfPixel = numberOfPixel;
 
     FastLED.setDither(0);
     FastLED.setBrightness(255);

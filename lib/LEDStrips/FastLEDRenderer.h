@@ -11,12 +11,13 @@ namespace LEDStrips
   {
   private:
   public:
-    struct CRGB *leds;
+    CRGB *leds;
+    int numberOfPixel;
 
     FastLEDRenderer();
     ~FastLEDRenderer();
 
-    void begin() override;
+    void begin(CRGB *leds, int numberOfPixel);
     void setPixel(int inx, GFXUtils::fRGB color) override;
     void show() override;
   };

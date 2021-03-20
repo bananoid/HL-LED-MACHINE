@@ -5,9 +5,15 @@
 namespace LEDSynth
 {
 
-  LEDSynth::LEDSynth(LEDStrips::LEDStripsRenderer *renderer)
+  LEDSynth::LEDSynth(int numberOfPixel, LEDStrips::LEDStripsRenderer *renderer, Scheduler *runner) : Task(16 * TASK_MILLISECOND, TASK_FOREVER, runner, true)
   {
     this->renderer = renderer;
+    this->numberOfPixel = numberOfPixel;
+  }
+
+  bool LEDSynth::Callback()
+  {
+    update();
   }
 
   void LEDSynth::update()
@@ -26,7 +32,7 @@ namespace LEDSynth
 
     int realNumOffPix = 16;
 
-    for (size_t i = 0; i < LS_NUM_LEDS_PER_STRIP; i++)
+    for (size_t i = 0; i < numberOfPixel; i++)
     {
       phase = (i + index * realNumOffPix) * 0.1f;
 
@@ -36,10 +42,10 @@ namespace LEDSynth
       // oscB = sinf(fmodf(1.0 + fmodf(t * 1.521354f + phase * 5.43123, TWO_PI), TWO_PI)) * 0.5 + 0.5;
       // oscB = oscB * oscB * oscB;
 
-      float x = t * 6 + phase * 2;
-      oscB = GFXUtils::GFXUtils::chaserNoise(x, 0.1);
+      float x = t * 0.145;
+      oscB = GFXUtils::GFXUtils::snoise(x);
 
-      color = GFXUtils::GFXUtils::hsv(x / 10, 1, oscB);
+      color = GFXUtils::GFXUtils::hsv(x * 0.012355, 1, oscB);
       renderer->setPixel(i, color);
     }
 

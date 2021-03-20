@@ -1,21 +1,33 @@
 #include "Flower.h"
 #include "AOYAMA_TREE/COMMON/Messages.h"
+#include "FastLED.h"
 
 Flower *FlowerSingleton = new Flower();
 
 void Flower::begin(int wifiChannel, Scheduler *runner)
 {
   ESPSortedBroadcast::Peer::begin(wifiChannel);
-  screen = new Screen(runner);
-  screen->begin();
+
+  CRGB *leds;
+
+  leds = new CRGB[24];
+  FastLED.addLeds<WS2812B, 18, GRB>(leds, 24); // top
+  topRingLEDRenderer.begin(leds, 24);
+  topRingLEDSynth = new LEDSynth::LEDSynth(24, &topRingLEDRenderer, runner);
+
+  leds = new CRGB[24];
+  FastLED.addLeds<WS2812B, 5, GRB>(leds, 24); // bottom
+  bottomRingLEDRenderer.begin(leds, 24);
+  bottomRingLEDSynth = new LEDSynth::LEDSynth(24, &bottomRingLEDRenderer, runner);
+
+  leds = new CRGB[1];
+  FastLED.addLeds<WS2812B, 19, GRB>(leds, 1); // dot
+  ballDotLEDRenderer.begin(leds, 1);
+  ballDotLEDSynth = new LEDSynth::LEDSynth(1, &ballDotLEDRenderer, runner);
 }
 
 void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int len)
 {
-  digitalWrite(2, HIGH);
-  delay(500);
-  digitalWrite(2, LOW);
-
   uint8_t messageType = getMessageTypeFromData(incomingData);
   uint targetId;
   uint sourceId;
@@ -69,8 +81,6 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     break;
   }
   Serial.println("Receiving:" + String(sourceId) + "->" + String(targetId) + "[" + messageTypeName + "]");
-  screen->print(String(sourceId) + "->" + String(targetId) + "[" + messageTypeName + "]", 40);
-  // screen->displayScreen();
 }
 
 void Flower::registerReceiveDataCB()
