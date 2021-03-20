@@ -24,6 +24,19 @@ void Flower::begin(int wifiChannel, Scheduler *runner)
   FastLED.addLeds<WS2812B, 19, GRB>(leds, 1); // dot
   ballDotLEDRenderer.begin(leds, 1);
   ballDotLEDSynth = new LEDSynth::LEDSynth(1, &ballDotLEDRenderer, runner);
+
+  imu = new IMUSensor(runner, this);
+  imu->begin();
+}
+
+void Flower::onIMUOrientationData(sensors_event_t *orientationData)
+{
+  double x, y, z;
+  x = orientationData->orientation.x;
+  y = orientationData->orientation.y;
+  z = orientationData->orientation.z;
+
+  // Serial.printf("%f %f %f \n", x, y, z);
 }
 
 void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int len)

@@ -9,7 +9,9 @@
 #include <LEDSynth.h>
 #include <GFXUtils.h>
 
-class Flower : public ESPSortedBroadcast::Peer
+#include "IMUSensor.h"
+
+class Flower : public ESPSortedBroadcast::Peer, public IMUSensorDelegate
 {
 private:
 public:
@@ -28,6 +30,9 @@ public:
   LEDSynth::LEDSynth *ballDotLEDSynth;
 
   void frameRender();
+
+  IMUSensor *imu;
+  void onIMUOrientationData(sensors_event_t *orientationData) override;
 };
 
 extern Flower *FlowerSingleton;

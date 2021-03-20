@@ -2,9 +2,7 @@
 
 #include "Flower.h"
 #include "TouchSensor.h"
-#include "GyroSensor.h"
 #include "AOYAMA_TREE/COMMON/Messages.h"
-#include "AOYAMA_TREE/COMMON/Screen.h"
 #include "AOYAMA_TREE/COMMON/config.h"
 
 #include <TaskScheduler.h>

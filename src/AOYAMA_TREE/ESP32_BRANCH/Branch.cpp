@@ -14,7 +14,7 @@ void Branch::begin(int wifiChannel, Scheduler *runner)
   Track *track;
 
   //////////////////////////
-  track = new Track(sequencer, new PinIntrument(32, runner)); // 33 25 26
+  track = new Track(sequencer, new PinIntrument(32, runner));
   sequencer->appendTrack(track);
   track->stepLenght = 48;
   track->retrig = -1;
@@ -26,7 +26,31 @@ void Branch::begin(int wifiChannel, Scheduler *runner)
   // track->velocityLFO = 2;
 
   //////////////////////////
-  track = new Track(sequencer, new PinIntrument(25, runner)); // 33 25 26
+  track = new Track(sequencer, new PinIntrument(35, runner));
+  sequencer->appendTrack(track);
+  track->stepLenght = 24;
+  track->retrig = -1;
+  track->retrigLFO = 6;
+  track->generator->steps = 16;
+  track->generator->events = 7;
+  track->generator->offset = 0;
+  track->velocity = 127;
+  // track->velocityLFO = 2;
+
+  //////////////////////////
+  track = new Track(sequencer, new PinIntrument(34, runner));
+  sequencer->appendTrack(track);
+  track->stepLenght = 24;
+  track->retrig = -1;
+  track->retrigLFO = 6;
+  track->generator->steps = 16;
+  track->generator->events = 7;
+  track->generator->offset = 0;
+  track->velocity = 127;
+  // track->velocityLFO = 2;
+
+  //////////////////////////
+  track = new Track(sequencer, new PinIntrument(34, runner));
   sequencer->appendTrack(track);
   track->stepLenght = 24;
   track->retrig = -1;
