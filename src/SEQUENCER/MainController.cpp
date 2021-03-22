@@ -3,7 +3,6 @@
 #include <MIDIInstrument.h>
 #include <PinInstrument.h>
 #include <Sequencer.h>
-#include <EuclideanSequence.h>
 #include <Track.h>
 
 using namespace HLMusicMachine;
@@ -18,33 +17,33 @@ MainController::MainController(Scheduler *runner)
   track = new Track(tracker, new MIDIInstrument(1, runner));
   //////////////////////////
   sequencer = track->addSequencer();
-  sequencer->stepLenght = 24;
-  sequencer->retrig = 0;
-  sequencer->retrigLFO = 64;
-  sequencer->octave = 3;
-  sequencer->noteCount = 4;
-  sequencer->noteSpread = 2;
-  sequencer->generator->steps = 16;
-  sequencer->generator->events = 12;
-  sequencer->generator->offset = 0;
-  sequencer->chord = 2;
-  sequencer->velocity = -1;
-  sequencer->velocityLFO = 2;
+  sequencer->parameters.stepLenght = 24;
+  sequencer->parameters.retrig = 0;
+  sequencer->parameters.retrigLFO = 64;
+  sequencer->parameters.octave = 3;
+  sequencer->parameters.noteCount = 4;
+  sequencer->parameters.noteSpread = 2;
+  sequencer->parameters.steps = 16;
+  sequencer->parameters.events = 12;
+  sequencer->parameters.offset = 0;
+  sequencer->parameters.chord = 2;
+  sequencer->parameters.velocity = -1;
+  sequencer->parameters.velocityLFO = 2;
 
   //////////////////////////
   sequencer = track->addSequencer();
-  sequencer->stepLenght = 12;
-  sequencer->retrig = 0;
-  sequencer->retrigLFO = 23;
-  sequencer->octave = 4;
-  sequencer->noteCount = 6;
-  sequencer->noteSpread = 2;
-  sequencer->generator->steps = 16;
-  sequencer->generator->events = 7;
-  sequencer->generator->offset = 0;
-  sequencer->chord = 0;
-  sequencer->velocity = -1;
-  sequencer->velocityLFO = 4.2;
+  sequencer->parameters.stepLenght = 12;
+  sequencer->parameters.retrig = 0;
+  sequencer->parameters.retrigLFO = 23;
+  sequencer->parameters.octave = 4;
+  sequencer->parameters.noteCount = 6;
+  sequencer->parameters.noteSpread = 2;
+  sequencer->parameters.steps = 16;
+  sequencer->parameters.events = 7;
+  sequencer->parameters.offset = 0;
+  sequencer->parameters.chord = 0;
+  sequencer->parameters.velocity = -1;
+  sequencer->parameters.velocityLFO = 4.2;
 
   tracker->appendTrack(track);
 

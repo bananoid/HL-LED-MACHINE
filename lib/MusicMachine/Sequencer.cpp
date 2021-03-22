@@ -7,29 +7,46 @@ namespace HLMusicMachine
     this->tracker = tracker;
     this->instrument = instrument;
     instrument->delegate = tracker;
-    generator = new EuclideanSequence();
+  }
+
+  bool Sequencer::isEuclidean(int stepInx)
+  {
+    if (parameters.events == 0)
+    {
+      return false;
+    }
+
+    int x = (stepInx + parameters.steps * 2 - parameters.offset) % parameters.steps;
+    float step = (float)parameters.steps / (float)parameters.events;
+    float fMod = fmodf(x, step);
+
+    if (floor(fMod) == 0)
+    {
+      return true;
+    }
+    return false;
   }
 
   void Sequencer::clockTick(int counter)
   {
-    int retrigSize = retrig;
+    int retrigSize = parameters.retrig;
 
-    if (retrig < 0)
+    if (parameters.retrig < 0)
     {
       // TODO: parametrize retrig LFO
-      float rLFO = sinf(counter / 24.0f * TWO_PI * (1.0 / retrigLFO));
+      float rLFO = sinf(counter / 24.0f * TWO_PI * (1.0 / parameters.retrigLFO));
       rLFO = asinf(rLFO) / HALF_PI;
-      retrigSize = map(rLFO, -1.f, 1.f, retrigLFOMin, retrigLFOMax);
+      retrigSize = map(rLFO, -1.f, 1.f, parameters.retrigLFOMin, parameters.retrigLFOMax);
       int triplet = retrigSize % 2 == 0 ? 1 : 3;
       retrigSize = triplet * powf(2, retrigSize / 2);
     }
 
-    if ((counter) % (retrigSize > 0 ? retrigSize : stepLenght) != 0)
+    if ((counter) % (retrigSize > 0 ? retrigSize : parameters.stepLenght) != 0)
     {
       return;
     }
 
-    int stepInx = counter / stepLenght;
+    int stepInx = counter / parameters.stepLenght;
     bool newStep = false;
     if (lastStepInx != stepInx)
     {
@@ -37,48 +54,48 @@ namespace HLMusicMachine
       lastStepInx = stepInx;
     }
 
-    bool isOn = generator->isOn(stepInx);
+    bool isOn = isEuclidean(stepInx);
 
     if (newStep)
     {
-      lastStep.note = onCounter % generator->events;
+      lastStep.note = onCounter % parameters.events;
       onCounter++;
     }
 
     // Serial.printf("isOn %i %i %i\n", isOn, retrigCount, stepInx);
     if (isOn)
     {
-      int noteLeght = retrigSize > 0 ? retrigSize : stepLenght;
+      int noteLeght = retrigSize > 0 ? retrigSize : parameters.stepLenght;
 
-      int vel = velocity;
+      int vel = parameters.velocity;
       if (vel == -1)
       {
-        float vLFO = sinf(counter / 24.0f * TWO_PI * (1.0 / velocityLFO));
+        float vLFO = sinf(counter / 24.0f * TWO_PI * (1.0 / parameters.velocityLFO));
         vLFO = asinf(vLFO) / HALF_PI;
-        vel = map(vLFO, -1.f, 1.f, velocityLFOMin, velocityLFOMax);
+        vel = map(vLFO, -1.f, 1.f, parameters.velocityLFOMin, parameters.velocityLFOMax);
       }
 
       if (type == MELODY)
       {
-        if (chord == 0) // Arpeggio
+        if (parameters.chord == 0) // Arpeggio
         {
           int noteInx = 0;
 
-          if (arpeggioType == ArpeggioType_Eucledian)
+          if (parameters.arpeggioType == ArpeggioType_Eucledian)
           {
-            noteInx = (lastStep.note % noteCount) * noteSpread;
+            noteInx = (lastStep.note % parameters.noteCount) * parameters.noteSpread;
           }
-          else if (arpeggioType == ArpeggioType_LFO)
+          else if (parameters.arpeggioType == ArpeggioType_LFO)
           {
-            float phase = counter / 24.0f * (1.0 / arpeggioLFO);
+            float phase = counter / 24.0f * (1.0 / parameters.arpeggioLFO);
             float aLFO = sinf(phase * TWO_PI);
             aLFO = asinf(aLFO) / HALF_PI;
-            aLFO = map(aLFO, -1.f, 1.f, 0, noteCount);
+            aLFO = map(aLFO, -1.f, 1.f, 0, parameters.noteCount);
             noteInx = round(aLFO);
-            noteInx *= noteSpread;
+            noteInx *= parameters.noteSpread;
           }
 
-          Note note = tracker->getNote(noteInx, octave);
+          Note note = tracker->getNote(noteInx, parameters.octave);
           int midiNote = note.getMIDINoteNumber();
           instrument->trigNote(midiNote, vel, noteLeght);
 
@@ -86,10 +103,10 @@ namespace HLMusicMachine
         }
         else
         {
-          int chordCount = chord == 1 ? 3 : 4;
+          int chordCount = parameters.chord == 1 ? 3 : 4;
           for (int i = 0; i < chordCount; i++)
           {
-            Note note = tracker->getNote(i * 2, octave);
+            Note note = tracker->getNote(i * 2, parameters.octave);
             int midiNote = note.getMIDINoteNumber();
             instrument->trigNote(midiNote, vel, noteLeght);
           }
