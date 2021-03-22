@@ -7,7 +7,7 @@
 #include "Instrument.h"
 #include "SequenceGenerator.h"
 #include "EuclideanSequence.h"
-#include "Sequencer.h"
+#include "Tracker.h"
 
 using namespace MusicTheory;
 
@@ -31,7 +31,7 @@ namespace HLSequencer
     int velocity = 127;
   };
 
-  class Sequencer;
+  class Tracker;
   class Track
   {
   private:
@@ -63,11 +63,11 @@ namespace HLSequencer
     int velocityLFOMin = 30;
     int velocityLFOMax = 127;
 
-    Sequencer *sequencer;
+    Tracker *tracker;
     EuclideanSequence *generator;
 
     Instrument *instrument;
-    Track(Sequencer *sequencer, Instrument *instrument);
+    Track(Tracker *tracker, Instrument *instrument);
 
     void clockTick(int counter);
   };

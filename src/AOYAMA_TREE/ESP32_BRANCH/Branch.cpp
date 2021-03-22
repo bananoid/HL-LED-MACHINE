@@ -7,13 +7,13 @@ void Branch::begin(int wifiChannel, Scheduler *runner)
 {
   ESPSortedBroadcast::Peer::begin(wifiChannel);
 
-  sequencer = new Sequencer(runner);
+  tracker = new Tracker(runner);
 
   Track *track;
 
   //////////////////////////
-  track = new Track(sequencer, new PinIntrument(32, runner)); //ok
-  sequencer->appendTrack(track);
+  track = new Track(tracker, new PinIntrument(32, runner)); //ok
+  tracker->appendTrack(track);
   track->stepLenght = 6;
   // track->retrig = -1;
   track->retrigLFO = 13;
@@ -24,8 +24,8 @@ void Branch::begin(int wifiChannel, Scheduler *runner)
   // track->velocityLFO = 2;
 
   //////////////////////////
-  track = new Track(sequencer, new PinIntrument(25, runner));
-  sequencer->appendTrack(track);
+  track = new Track(tracker, new PinIntrument(25, runner));
+  tracker->appendTrack(track);
   track->stepLenght = 6;
   // track->retrig = -1;
   track->retrigLFO = 6;
@@ -36,8 +36,8 @@ void Branch::begin(int wifiChannel, Scheduler *runner)
   // track->velocityLFO = 2;
 
   //////////////////////////
-  track = new Track(sequencer, new PinIntrument(26, runner));
-  sequencer->appendTrack(track);
+  track = new Track(tracker, new PinIntrument(26, runner));
+  tracker->appendTrack(track);
   track->stepLenght = 6;
   // track->retrig = -1;
   track->retrigLFO = 96;
@@ -48,8 +48,8 @@ void Branch::begin(int wifiChannel, Scheduler *runner)
   // track->velocityLFO = 2;
 
   //////////////////////////
-  track = new Track(sequencer, new PinIntrument(33, runner)); //ok
-  sequencer->appendTrack(track);
+  track = new Track(tracker, new PinIntrument(33, runner)); //ok
+  tracker->appendTrack(track);
   track->stepLenght = 6;
   // track->retrig = -1;
   track->retrigLFO = 38;

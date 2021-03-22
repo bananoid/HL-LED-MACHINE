@@ -4,7 +4,7 @@
 #include "AOYAMA_TREE/COMMON/config.h"
 #include <TaskSchedulerDeclarations.h>
 
-#include <Sequencer.h>
+#include <Tracker.h>
 #include <Track.h>
 #include <EuclideanSequence.h>
 #include <PinInstrument.h>
@@ -22,7 +22,7 @@ public:
 
   void begin(int wifiChannel, Scheduler *runner);
 
-  Sequencer *sequencer;
+  Tracker *tracker;
 };
 
 extern Branch *BranchSingleton;

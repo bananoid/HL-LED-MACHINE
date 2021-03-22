@@ -2,11 +2,11 @@
 
 namespace HLSequencer
 {
-  Track::Track(Sequencer *sequencer, Instrument *instrument)
+  Track::Track(Tracker *tracker, Instrument *instrument)
   {
-    this->sequencer = sequencer;
+    this->tracker = tracker;
     this->instrument = instrument;
-    instrument->delegate = sequencer;
+    instrument->delegate = tracker;
     generator = new EuclideanSequence();
   }
 
@@ -78,7 +78,7 @@ namespace HLSequencer
             noteInx *= noteSpread;
           }
 
-          Note note = sequencer->getNote(noteInx, octave);
+          Note note = tracker->getNote(noteInx, octave);
           int midiNote = note.getMIDINoteNumber();
           instrument->trigNote(midiNote, vel, noteLeght);
 
@@ -89,7 +89,7 @@ namespace HLSequencer
           int chordCount = chord == 1 ? 3 : 4;
           for (int i = 0; i < chordCount; i++)
           {
-            Note note = sequencer->getNote(i * 2, octave);
+            Note note = tracker->getNote(i * 2, octave);
             int midiNote = note.getMIDINoteNumber();
             instrument->trigNote(midiNote, vel, noteLeght);
           }

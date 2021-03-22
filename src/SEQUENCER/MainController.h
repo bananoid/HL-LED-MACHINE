@@ -5,7 +5,7 @@
 #include "config.h"
 #include <TaskSchedulerDeclarations.h>
 
-#include <Sequencer.h>
+#include <Tracker.h>
 #include <Bounce2.h>
 
 class MainController
@@ -17,5 +17,5 @@ public:
     void update();
     Bounce2::Button startStopButton = Bounce2::Button();
 
-    HLSequencer::Sequencer *sequencer;
+    HLSequencer::Tracker *tracker;
 };

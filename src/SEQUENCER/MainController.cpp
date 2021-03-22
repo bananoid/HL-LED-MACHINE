@@ -9,13 +9,13 @@ using namespace HLSequencer;
 
 MainController::MainController(Scheduler *runner)
 {
-  sequencer = new Sequencer(runner);
+  tracker = new Tracker(runner);
 
   Track *track;
 
   //////////////////////////
-  track = new Track(sequencer, new MIDIInstrument(1, runner));
-  sequencer->appendTrack(track);
+  track = new Track(tracker, new MIDIInstrument(1, runner));
+  tracker->appendTrack(track);
   track->stepLenght = 24;
   track->retrig = -1;
   track->retrigLFO = 64;
@@ -30,8 +30,8 @@ MainController::MainController(Scheduler *runner)
   track->velocityLFO = 2;
 
   //////////////////////////
-  track = new Track(sequencer, new MIDIInstrument(1, runner));
-  sequencer->appendTrack(track);
+  track = new Track(tracker, new MIDIInstrument(1, runner));
+  tracker->appendTrack(track);
   track->stepLenght = 12;
   track->retrig = -1;
   track->retrigLFO = 23;
@@ -46,8 +46,8 @@ MainController::MainController(Scheduler *runner)
   track->velocityLFO = 4.2;
 
   ////////////////////////
-  track = new Track(sequencer, new MIDIInstrument(2, runner));
-  sequencer->appendTrack(track);
+  track = new Track(tracker, new MIDIInstrument(2, runner));
+  tracker->appendTrack(track);
   track->stepLenght = 24;
   track->retrig = 12;
   track->octave = 3;
@@ -61,8 +61,8 @@ MainController::MainController(Scheduler *runner)
   track->velocityLFO = 23.24;
 
   ////////////////////////
-  track = new Track(sequencer, new MIDIInstrument(3, runner));
-  sequencer->appendTrack(track);
+  track = new Track(tracker, new MIDIInstrument(3, runner));
+  tracker->appendTrack(track);
   track->stepLenght = 6;
   track->retrig = 0;
   track->octave = 3;
@@ -76,8 +76,8 @@ MainController::MainController(Scheduler *runner)
   track->velocityLFO = 26.24;
 
   ////////////////////////
-  track = new Track(sequencer, new MIDIInstrument(4, runner));
-  sequencer->appendTrack(track);
+  track = new Track(tracker, new MIDIInstrument(4, runner));
+  tracker->appendTrack(track);
   track->stepLenght = 48;
   track->retrig = 0;
   track->octave = 3;
@@ -91,8 +91,8 @@ MainController::MainController(Scheduler *runner)
   track->velocityLFO = 29.24;
 
   //////////////////////////
-  track = new Track(sequencer, new MIDIInstrument(5, runner));
-  sequencer->appendTrack(track);
+  track = new Track(tracker, new MIDIInstrument(5, runner));
+  tracker->appendTrack(track);
   track->stepLenght = 24;
   track->retrig = 12;
   track->octave = 1;
@@ -106,8 +106,8 @@ MainController::MainController(Scheduler *runner)
   track->velocityLFO = 34.24;
 
   //////////////////////////
-  track = new Track(sequencer, new MIDIInstrument(5, runner));
-  sequencer->appendTrack(track);
+  track = new Track(tracker, new MIDIInstrument(5, runner));
+  tracker->appendTrack(track);
   track->stepLenght = 48;
   track->retrig = 16;
   track->octave = 2;
@@ -122,8 +122,8 @@ MainController::MainController(Scheduler *runner)
 
   //Percussions
   //// Kick
-  track = new Track(sequencer, new MIDIInstrument(6, runner));
-  sequencer->appendTrack(track);
+  track = new Track(tracker, new MIDIInstrument(6, runner));
+  tracker->appendTrack(track);
   track->type = PERCUSSION;
   track->percussionNote = Note(36); // Kick
   track->stepLenght = 6;
@@ -131,8 +131,8 @@ MainController::MainController(Scheduler *runner)
   track->generator->events = 4;
   track->generator->offset = 0;
   // //// Kick
-  // track = new Track(sequencer, new MIDIInstrument(6, runner));
-  // sequencer->appendTrack(track);
+  // track = new Track(tracker, new MIDIInstrument(6, runner));
+  // tracker->appendTrack(track);
   // track->type = PERCUSSION;
   // track->percussionNote = Note(36); // Kick
   // track->stepLenght = 6;
@@ -141,8 +141,8 @@ MainController::MainController(Scheduler *runner)
   // track->generator->offset = 4;
 
   //// Rim
-  track = new Track(sequencer, new MIDIInstrument(6, runner));
-  sequencer->appendTrack(track);
+  track = new Track(tracker, new MIDIInstrument(6, runner));
+  tracker->appendTrack(track);
   track->type = PERCUSSION;
   track->percussionNote = Note(37); // Rim
   track->stepLenght = 6;
@@ -152,8 +152,8 @@ MainController::MainController(Scheduler *runner)
   track->generator->offset = 0;
 
   // //// Snare
-  // track = new Track(sequencer, new MIDIInstrument(6, runner));
-  // sequencer->appendTrack(track);
+  // track = new Track(tracker, new MIDIInstrument(6, runner));
+  // tracker->appendTrack(track);
   // track->type = PERCUSSION;
   // track->percussionNote = Note(38); // Snare
   // track->stepLenght = 6;
@@ -161,8 +161,8 @@ MainController::MainController(Scheduler *runner)
   // track->generator->events = 2;
   // track->generator->offset = 4;
   // //// Snare
-  // track = new Track(sequencer, new MIDIInstrument(6, runner));
-  // sequencer->appendTrack(track);
+  // track = new Track(tracker, new MIDIInstrument(6, runner));
+  // tracker->appendTrack(track);
   // track->type = PERCUSSION;
   // track->percussionNote = Note(38); // Snare
   // track->stepLenght = 6;
@@ -171,8 +171,8 @@ MainController::MainController(Scheduler *runner)
   // track->generator->offset = 6;
 
   //// Hihat
-  track = new Track(sequencer, new MIDIInstrument(6, runner));
-  sequencer->appendTrack(track);
+  track = new Track(tracker, new MIDIInstrument(6, runner));
+  tracker->appendTrack(track);
   track->type = PERCUSSION;
   track->percussionNote = Note(42); // Hihat
   track->stepLenght = 6;
@@ -183,8 +183,8 @@ MainController::MainController(Scheduler *runner)
 
   // Solenoid
   //////////////////////////
-  track = new Track(sequencer, new PinIntrument(2, runner)); //ok
-  sequencer->appendTrack(track);
+  track = new Track(tracker, new PinIntrument(2, runner)); //ok
+  tracker->appendTrack(track);
   track->stepLenght = 6 * 32;
   // track->retrig = -1;
   track->retrigLFO = 13;
@@ -196,8 +196,8 @@ MainController::MainController(Scheduler *runner)
 
   // Solenoid
   //////////////////////////
-  track = new Track(sequencer, new PinIntrument(2, runner)); //ok
-  sequencer->appendTrack(track);
+  track = new Track(tracker, new PinIntrument(2, runner)); //ok
+  tracker->appendTrack(track);
   track->stepLenght = 6;
   // track->retrig = -1;
   track->retrigLFO = 13;
@@ -208,8 +208,8 @@ MainController::MainController(Scheduler *runner)
   // track->velocityLFO = 2;
 
   //////////////////////////
-  track = new Track(sequencer, new PinIntrument(2, runner)); //ok
-  sequencer->appendTrack(track);
+  track = new Track(tracker, new PinIntrument(2, runner)); //ok
+  tracker->appendTrack(track);
   track->stepLenght = 6 * 32;
   track->retrig = -1;
   track->retrigLFO = 95;
@@ -220,8 +220,8 @@ MainController::MainController(Scheduler *runner)
   // track->velocityLFO = 2;
 
   //////////////////////////
-  track = new Track(sequencer, new PinIntrument(3, runner)); //ok
-  sequencer->appendTrack(track);
+  track = new Track(tracker, new PinIntrument(3, runner)); //ok
+  tracker->appendTrack(track);
   track->stepLenght = 6 * 32;
   track->retrig = -1;
   track->retrigLFO = 13;
@@ -232,8 +232,8 @@ MainController::MainController(Scheduler *runner)
   // track->velocityLFO = 2;
 
   //////////////////////////
-  track = new Track(sequencer, new PinIntrument(3, runner)); //ok
-  sequencer->appendTrack(track);
+  track = new Track(tracker, new PinIntrument(3, runner)); //ok
+  tracker->appendTrack(track);
   track->stepLenght = 6;
   // track->retrig = -1;
   track->retrigLFO = 13;
@@ -255,7 +255,7 @@ void MainController::update()
   startStopButton.update();
   if (startStopButton.pressed())
   {
-    sequencer->clock->playStop();
+    tracker->clock->playStop();
     Serial.println("button press");
   }
 };

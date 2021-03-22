@@ -1,8 +1,8 @@
-#include "Sequencer.h"
+#include "Tracker.h"
 
 namespace HLSequencer
 {
-  Sequencer::Sequencer(Scheduler *runner)
+  Tracker::Tracker(Scheduler *runner)
   {
     clock = new Clock(runner);
     clock->delegate = this;
@@ -17,7 +17,7 @@ namespace HLSequencer
     pickNextHarmony();
   }
 
-  void Sequencer::clockTick()
+  void Tracker::clockTick()
   {
     if ((clock->tickCounter) % (clock->clockDivider * 4) == 0)
     {
@@ -32,17 +32,17 @@ namespace HLSequencer
     }
   }
 
-  long Sequencer::getClockTime()
+  long Tracker::getClockTime()
   {
     return clock->clockInterval;
   }
 
-  void Sequencer::appendTrack(Track *track)
+  void Tracker::appendTrack(Track *track)
   {
     tracks->add(track);
   }
 
-  void Sequencer::pickNextHarmony()
+  void Tracker::pickNextHarmony()
   {
     if (currentScale == nullptr)
     {
@@ -92,7 +92,7 @@ namespace HLSequencer
     harmonyCounter++;
   }
 
-  Note Sequencer::getNote(int inx, int octave)
+  Note Tracker::getNote(int inx, int octave)
   {
     return currentScale->getNote(currentKey, inx, octave);
   }

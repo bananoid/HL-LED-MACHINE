@@ -14,13 +14,13 @@ using namespace MusicTheory;
 namespace HLSequencer
 {
   class Track;
-  class Sequencer : public ClockDelegate, public InstrumentDelegate
+  class Tracker : public ClockDelegate, public InstrumentDelegate
   {
   private:
     LinkedList<Track *> *tracks;
 
   public:
-    Sequencer(Scheduler *runner);
+    Tracker(Scheduler *runner);
     Clock *clock;
     void clockTick() override;
 
