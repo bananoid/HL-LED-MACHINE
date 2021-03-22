@@ -45,4 +45,7 @@ namespace HLMusicMachine
   {
   }
 
+  void Instrument::randomize()
+  {
+  }
 }

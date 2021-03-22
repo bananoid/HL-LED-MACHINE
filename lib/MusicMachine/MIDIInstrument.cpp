@@ -25,4 +25,14 @@ namespace HLMusicMachine
     usbMIDI.sendNoteOff(note, 0, channel);
 #endif
   }
+
+  void MIDIInstrument::randomize()
+  {
+
+#ifdef MIDI_INTERFACE
+    int program = random(0, 6);
+    Serial.printf("Program change %i\n", program);
+    usbMIDI.sendProgramChange(program, channel);
+#endif
+  }
 }

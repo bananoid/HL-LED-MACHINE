@@ -32,6 +32,13 @@ namespace HLMusicMachine
     for (it = tracks.begin(); it != tracks.end(); ++it)
     {
       track = *it;
+
+      if (clock->tickCounter == 0)
+      {
+        track->radomize();
+        Serial.println("randomize");
+      }
+
       track->clockTick(clock->tickCounter);
     }
   }
@@ -45,8 +52,8 @@ namespace HLMusicMachine
   {
     if (currentScale == nullptr)
     {
-      currentScale = const_cast<Scale *>(&Scale::major);
-      // currentScale = &Scale::minor;
+      // currentScale = const_cast<Scale *>(&Scale::major);
+      currentScale = const_cast<Scale *>(&Scale::minor);
       // currentKey = static_cast<NoteType>(random(12));
       currentKey = C;
     }
@@ -68,12 +75,12 @@ namespace HLMusicMachine
 
         // if (progressionIntervalCounter % 2 == 0)
         // {
-        //   currentScale = &Scale::major;
+        //   currentScale = const_cast<Scale *>(&Scale::major);
         //   Serial.println("Major");
         // }
         // else
         // {
-        //   currentScale = &Scale::minor;
+        //   currentScale = const_cast<Scale *>(&Scale::minor);
         //   Serial.println("Minor");
         // }
 

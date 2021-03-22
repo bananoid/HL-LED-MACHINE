@@ -2,6 +2,7 @@
 
 #include "config.h"
 #include <TaskSchedulerDeclarations.h>
+#include <Arduino.h>
 
 namespace HLMusicMachine
 {
@@ -43,5 +44,11 @@ namespace HLMusicMachine
 
     float getBpmPercentage();
     void increaseBpm(int increase);
+
+    static int getQuntizedTimePulses(int timeInx)
+    {
+      int triplet = timeInx % 2 == 0 ? 1 : 3;
+      return triplet * powf(2, timeInx / 2);
+    }
   };
 }

@@ -37,6 +37,7 @@ namespace HLMusicMachine
 
     virtual void noteOn(int note = 0, int vel = 127);
     virtual void noteOff(int note = 0);
+    virtual void randomize();
 
     long getClockTime() override;
   };

@@ -1,4 +1,5 @@
 #include "Sequencer.h"
+#include <Arduino.h>
 
 namespace HLMusicMachine
 {
@@ -27,9 +28,24 @@ namespace HLMusicMachine
     return false;
   }
 
+  void Sequencer::randomize()
+  {
+    parameters.steps = random(minParameters.steps, maxParameters.steps + 1);
+
+    parameters.events = random(minParameters.events, maxParameters.events + 1);
+
+    parameters.offset = random(minParameters.offset, maxParameters.offset + 1);
+
+    parameters.stepLenght = random(minParameters.stepLenght, maxParameters.stepLenght + 1);
+
+    parameters.noteCount = random(minParameters.noteCount, maxParameters.noteCount + 1);
+  }
+
   void Sequencer::clockTick(int counter)
   {
     int retrigSize = parameters.retrig;
+
+    int stepLenght = Clock::getQuntizedTimePulses(parameters.stepLenght);
 
     if (parameters.retrig < 0)
     {
@@ -37,16 +53,15 @@ namespace HLMusicMachine
       float rLFO = sinf(counter / 24.0f * TWO_PI * (1.0 / parameters.retrigLFO));
       rLFO = asinf(rLFO) / HALF_PI;
       retrigSize = map(rLFO, -1.f, 1.f, parameters.retrigLFOMin, parameters.retrigLFOMax);
-      int triplet = retrigSize % 2 == 0 ? 1 : 3;
-      retrigSize = triplet * powf(2, retrigSize / 2);
+      retrigSize = Clock::getQuntizedTimePulses(retrigSize);
     }
 
-    if ((counter) % (retrigSize > 0 ? retrigSize : parameters.stepLenght) != 0)
+    if ((counter) % (retrigSize > 0 ? retrigSize : stepLenght) != 0)
     {
       return;
     }
 
-    int stepInx = counter / parameters.stepLenght;
+    int stepInx = counter / stepLenght;
     bool newStep = false;
     if (lastStepInx != stepInx)
     {
@@ -65,7 +80,7 @@ namespace HLMusicMachine
     // Serial.printf("isOn %i %i %i\n", isOn, retrigCount, stepInx);
     if (isOn)
     {
-      int noteLeght = retrigSize > 0 ? retrigSize : parameters.stepLenght;
+      int noteLeght = retrigSize > 0 ? retrigSize : stepLenght;
 
       int vel = parameters.velocity;
       if (vel == -1)

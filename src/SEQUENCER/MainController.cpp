@@ -15,35 +15,59 @@ MainController::MainController(Scheduler *runner)
   Sequencer *sequencer;
 
   track = new Track(tracker, new MIDIInstrument(1, runner));
+  Sequencer::Parameters params;
   //////////////////////////
+  params.stepLenght = 3;
+  params.retrig = -1;
+  params.retrigLFO = 64;
+  params.octave = 3;
+  params.noteCount = 4;
+  params.noteSpread = 2;
+  params.steps = 32;
+  params.events = 12;
+  params.offset = 0;
+  params.chord = 2;
+  params.velocity = -1;
+  params.velocityLFO = 2;
+
   sequencer = track->addSequencer();
-  sequencer->parameters.stepLenght = 24;
-  sequencer->parameters.retrig = 0;
-  sequencer->parameters.retrigLFO = 64;
-  sequencer->parameters.octave = 3;
-  sequencer->parameters.noteCount = 4;
-  sequencer->parameters.noteSpread = 2;
-  sequencer->parameters.steps = 16;
-  sequencer->parameters.events = 12;
-  sequencer->parameters.offset = 0;
-  sequencer->parameters.chord = 2;
-  sequencer->parameters.velocity = -1;
-  sequencer->parameters.velocityLFO = 2;
+  sequencer->parameters = params;
+  params.events = 1;
+  params.stepLenght = 1;
+  params.noteCount = 1;
+  sequencer->minParameters = params;
+  params.events = 16;
+  params.stepLenght = 8;
+  params.noteCount = 7;
+  sequencer->maxParameters = params;
+  sequencer->randomize();
 
   //////////////////////////
   sequencer = track->addSequencer();
-  sequencer->parameters.stepLenght = 12;
-  sequencer->parameters.retrig = 0;
-  sequencer->parameters.retrigLFO = 23;
-  sequencer->parameters.octave = 4;
-  sequencer->parameters.noteCount = 6;
-  sequencer->parameters.noteSpread = 2;
-  sequencer->parameters.steps = 16;
-  sequencer->parameters.events = 7;
-  sequencer->parameters.offset = 0;
-  sequencer->parameters.chord = 0;
-  sequencer->parameters.velocity = -1;
-  sequencer->parameters.velocityLFO = 4.2;
+  params.stepLenght = 3;
+  params.retrig = -1;
+  params.retrigLFO = 23;
+  params.octave = 4;
+  params.noteCount = 6;
+  params.noteSpread = 2;
+  params.steps = 32;
+  params.events = 7;
+  params.offset = 0;
+  params.chord = 0;
+  params.velocity = -1;
+  params.velocityLFO = 4.2;
+
+  sequencer = track->addSequencer();
+  sequencer->parameters = params;
+  params.events = 1;
+  params.stepLenght = 3;
+  params.noteCount = 1;
+  sequencer->minParameters = params;
+  params.events = 16;
+  params.stepLenght = 6;
+  params.noteCount = 8;
+  sequencer->maxParameters = params;
+  sequencer->randomize();
 
   tracker->appendTrack(track);
 

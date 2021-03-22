@@ -25,4 +25,16 @@ namespace HLMusicMachine
       seq->clockTick(counter);
     }
   }
+
+  void Track::radomize()
+  {
+    instrument->randomize();
+    list<Sequencer *>::iterator it;
+    Sequencer *seq;
+    for (it = sequencers.begin(); it != sequencers.end(); ++it)
+    {
+      seq = *it;
+      seq->randomize();
+    }
+  }
 }

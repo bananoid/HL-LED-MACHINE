@@ -10,40 +10,36 @@ using namespace MusicTheory;
 
 namespace HLMusicMachine
 {
-  enum Type
-  {
-    MELODY,
-    PERCUSSION
-  };
-
-  enum ArpeggioType
-  {
-    ArpeggioType_Eucledian,
-    ArpeggioType_LFO
-  };
-
-  struct Step
-  {
-    int note = 1;
-    int velocity = 127;
-  };
 
   class Tracker;
   class Sequencer
   {
-  private:
-    int lastStepInx = 0;
-    Step lastStep;
-    int onCounter = 0;
-
   public:
+    enum Type
+    {
+      MELODY,
+      PERCUSSION
+    };
+
+    enum ArpeggioType
+    {
+      ArpeggioType_Eucledian,
+      ArpeggioType_LFO
+    };
+
+    struct Step
+    {
+      int note = 1;
+      int velocity = 127;
+    };
+
     struct Parameters
     {
       int steps = 16;
       int events = 4;
       int offset = 0;
 
-      int stepLenght = 24;
+      int stepLenght = 4;
 
       int octave = 3;
       int noteCount = 4;
@@ -68,6 +64,10 @@ namespace HLMusicMachine
     Note percussionNote = Note(24);
 
     Parameters parameters;
+    Parameters minParameters;
+    Parameters maxParameters;
+
+    void randomize();
 
     Tracker *tracker;
 
@@ -77,5 +77,10 @@ namespace HLMusicMachine
     bool isEuclidean(int stepInx);
 
     void clockTick(int counter);
+
+  private:
+    int lastStepInx = 0;
+    Step lastStep;
+    int onCounter = 0;
   };
 }

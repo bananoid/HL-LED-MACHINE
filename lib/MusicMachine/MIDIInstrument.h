@@ -12,5 +12,6 @@ namespace HLMusicMachine
 
     void noteOn(int note = 0, int vel = 127) override;
     void noteOff(int note) override;
+    void randomize() override;
   };
 }
