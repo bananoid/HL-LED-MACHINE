@@ -1,6 +1,5 @@
 #pragma once
 
-#include <LinkedList.h>
 #include "Scale.hpp"
 #include "MusicTheory.hpp"
 

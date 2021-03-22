@@ -5,26 +5,30 @@
 #include "config.h"
 #include <TaskSchedulerDeclarations.h>
 #include "Clock.h"
-#include <LinkedList.h>
 #include "Sequencer.h"
 #include "Scale.hpp"
+#include "Track.h"
 
+#include <list>
+#include <iterator>
+
+using namespace std;
 using namespace MusicTheory;
 
 namespace HLMusicMachine
 {
-  class Sequencer;
+  class Track;
   class Tracker : public ClockDelegate, public InstrumentDelegate
   {
   private:
-    LinkedList<Sequencer *> *tracks;
+    list<Track *> tracks;
 
   public:
     Tracker(Scheduler *runner);
     Clock *clock;
     void clockTick() override;
 
-    void appendTrack(Sequencer *track);
+    void appendTrack(Track *track);
 
     long getClockTime() override;
 

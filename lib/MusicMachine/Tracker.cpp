@@ -8,13 +8,16 @@ namespace HLMusicMachine
     clock->delegate = this;
     clock->play();
 
-    tracks = new LinkedList<Sequencer *>();
-
     pinMode(19, INPUT);
 
     randomSeed(analogRead(19));
 
     pickNextHarmony();
+  }
+
+  void Tracker::appendTrack(Track *track)
+  {
+    tracks.push_back(track);
   }
 
   void Tracker::clockTick()
@@ -24,10 +27,11 @@ namespace HLMusicMachine
       pickNextHarmony();
     }
 
-    Sequencer *track;
-    for (int trackInx = 0; trackInx < tracks->size(); trackInx++)
+    Track *track;
+    list<Track *>::iterator it;
+    for (it = tracks.begin(); it != tracks.end(); ++it)
     {
-      track = tracks->get(trackInx);
+      track = *it;
       track->clockTick(clock->tickCounter);
     }
   }
@@ -35,11 +39,6 @@ namespace HLMusicMachine
   long Tracker::getClockTime()
   {
     return clock->clockInterval;
-  }
-
-  void Tracker::appendTrack(Sequencer *track)
-  {
-    tracks->add(track);
   }
 
   void Tracker::pickNextHarmony()
