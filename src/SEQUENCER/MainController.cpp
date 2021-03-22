@@ -1,6 +1,7 @@
 #include "MainController.h"
 
 #include <MIDIInstrument.h>
+#include <PinInstrument.h>
 #include <Track.h>
 #include <EuclideanSequence.h>
 
@@ -179,6 +180,68 @@ MainController::MainController(Scheduler *runner)
   track->generator->steps = 16;
   track->generator->events = 6;
   track->generator->offset = 0;
+
+  // Solenoid
+  //////////////////////////
+  track = new Track(sequencer, new PinIntrument(2, runner)); //ok
+  sequencer->appendTrack(track);
+  track->stepLenght = 6 * 32;
+  // track->retrig = -1;
+  track->retrigLFO = 13;
+  track->generator->steps = 16;
+  track->generator->events = 8;
+  track->generator->offset = 0;
+  track->velocity = 127;
+  // track->velocityLFO = 2;
+
+  // Solenoid
+  //////////////////////////
+  track = new Track(sequencer, new PinIntrument(2, runner)); //ok
+  sequencer->appendTrack(track);
+  track->stepLenght = 6;
+  // track->retrig = -1;
+  track->retrigLFO = 13;
+  track->generator->steps = 32;
+  track->generator->events = 8;
+  track->generator->offset = 0;
+  track->velocity = 127;
+  // track->velocityLFO = 2;
+
+  //////////////////////////
+  track = new Track(sequencer, new PinIntrument(2, runner)); //ok
+  sequencer->appendTrack(track);
+  track->stepLenght = 6 * 32;
+  track->retrig = -1;
+  track->retrigLFO = 95;
+  track->generator->steps = 32;
+  track->generator->events = 7;
+  track->generator->offset = 0;
+  track->velocity = 127;
+  // track->velocityLFO = 2;
+
+  //////////////////////////
+  track = new Track(sequencer, new PinIntrument(3, runner)); //ok
+  sequencer->appendTrack(track);
+  track->stepLenght = 6 * 32;
+  track->retrig = -1;
+  track->retrigLFO = 13;
+  track->generator->steps = 16;
+  track->generator->events = 5;
+  track->generator->offset = 0;
+  track->velocity = 127;
+  // track->velocityLFO = 2;
+
+  //////////////////////////
+  track = new Track(sequencer, new PinIntrument(3, runner)); //ok
+  sequencer->appendTrack(track);
+  track->stepLenght = 6;
+  // track->retrig = -1;
+  track->retrigLFO = 13;
+  track->generator->steps = 16;
+  track->generator->events = 5;
+  track->generator->offset = 0;
+  track->velocity = 127;
+  // track->velocityLFO = 2;
 
   //Start Stop button
   startStopButton.attach(9, INPUT_PULLUP); // USE EXTERNAL PULL-UP
