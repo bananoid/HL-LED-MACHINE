@@ -5,7 +5,7 @@
 #include <TaskSchedulerDeclarations.h>
 
 #include <Tracker.h>
-#include <Track.h>
+#include <Sequencer.h>
 #include <EuclideanSequence.h>
 #include <PinInstrument.h>
 

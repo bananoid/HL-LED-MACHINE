@@ -6,25 +6,25 @@
 #include <TaskSchedulerDeclarations.h>
 #include "Clock.h"
 #include <LinkedList.h>
-#include "Track.h"
+#include "Sequencer.h"
 #include "Scale.hpp"
 
 using namespace MusicTheory;
 
 namespace HLMusicMachine
 {
-  class Track;
+  class Sequencer;
   class Tracker : public ClockDelegate, public InstrumentDelegate
   {
   private:
-    LinkedList<Track *> *tracks;
+    LinkedList<Sequencer *> *tracks;
 
   public:
     Tracker(Scheduler *runner);
     Clock *clock;
     void clockTick() override;
 
-    void appendTrack(Track *track);
+    void appendTrack(Sequencer *track);
 
     long getClockTime() override;
 

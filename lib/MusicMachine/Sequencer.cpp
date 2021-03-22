@@ -1,8 +1,8 @@
-#include "Track.h"
+#include "Sequencer.h"
 
 namespace HLMusicMachine
 {
-  Track::Track(Tracker *tracker, Instrument *instrument)
+  Sequencer::Sequencer(Tracker *tracker, Instrument *instrument)
   {
     this->tracker = tracker;
     this->instrument = instrument;
@@ -10,7 +10,7 @@ namespace HLMusicMachine
     generator = new EuclideanSequence();
   }
 
-  void Track::clockTick(int counter)
+  void Sequencer::clockTick(int counter)
   {
     int retrigSize = retrig;
 

@@ -32,7 +32,7 @@ namespace HLMusicMachine
   };
 
   class Tracker;
-  class Track
+  class Sequencer
   {
   private:
     int lastStepInx = 0;
@@ -67,7 +67,7 @@ namespace HLMusicMachine
     EuclideanSequence *generator;
 
     Instrument *instrument;
-    Track(Tracker *tracker, Instrument *instrument);
+    Sequencer(Tracker *tracker, Instrument *instrument);
 
     void clockTick(int counter);
   };

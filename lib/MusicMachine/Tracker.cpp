@@ -8,7 +8,7 @@ namespace HLMusicMachine
     clock->delegate = this;
     clock->play();
 
-    tracks = new LinkedList<Track *>();
+    tracks = new LinkedList<Sequencer *>();
 
     pinMode(19, INPUT);
 
@@ -24,7 +24,7 @@ namespace HLMusicMachine
       pickNextHarmony();
     }
 
-    Track *track;
+    Sequencer *track;
     for (int trackInx = 0; trackInx < tracks->size(); trackInx++)
     {
       track = tracks->get(trackInx);
@@ -37,7 +37,7 @@ namespace HLMusicMachine
     return clock->clockInterval;
   }
 
-  void Tracker::appendTrack(Track *track)
+  void Tracker::appendTrack(Sequencer *track)
   {
     tracks->add(track);
   }

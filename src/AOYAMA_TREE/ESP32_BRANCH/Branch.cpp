@@ -9,54 +9,54 @@ void Branch::begin(int wifiChannel, Scheduler *runner)
 
   tracker = new Tracker(runner);
 
-  Track *track;
+  Sequencer *sequencer;
 
   //////////////////////////
-  track = new Track(tracker, new PinIntrument(32, runner)); //ok
-  tracker->appendTrack(track);
-  track->stepLenght = 6;
+  sequencer = new Sequencer(tracker, new PinIntrument(32, runner)); //ok
+  tracker->appendTrack(sequencer);
+  sequencer->stepLenght = 6;
   // track->retrig = -1;
-  track->retrigLFO = 13;
-  track->generator->steps = 16;
-  track->generator->events = 8;
-  track->generator->offset = 0;
-  track->velocity = 127;
+  sequencer->retrigLFO = 13;
+  sequencer->generator->steps = 16;
+  sequencer->generator->events = 8;
+  sequencer->generator->offset = 0;
+  sequencer->velocity = 127;
   // track->velocityLFO = 2;
 
   //////////////////////////
-  track = new Track(tracker, new PinIntrument(25, runner));
-  tracker->appendTrack(track);
-  track->stepLenght = 6;
+  sequencer = new Sequencer(tracker, new PinIntrument(25, runner));
+  tracker->appendTrack(sequencer);
+  sequencer->stepLenght = 6;
   // track->retrig = -1;
-  track->retrigLFO = 6;
-  track->generator->steps = 16;
-  track->generator->events = 8;
-  track->generator->offset = 0;
-  track->velocity = 127;
+  sequencer->retrigLFO = 6;
+  sequencer->generator->steps = 16;
+  sequencer->generator->events = 8;
+  sequencer->generator->offset = 0;
+  sequencer->velocity = 127;
   // track->velocityLFO = 2;
 
   //////////////////////////
-  track = new Track(tracker, new PinIntrument(26, runner));
-  tracker->appendTrack(track);
-  track->stepLenght = 6;
+  sequencer = new Sequencer(tracker, new PinIntrument(26, runner));
+  tracker->appendTrack(sequencer);
+  sequencer->stepLenght = 6;
   // track->retrig = -1;
-  track->retrigLFO = 96;
-  track->generator->steps = 16;
-  track->generator->events = 8;
-  track->generator->offset = 0;
-  track->velocity = 127;
+  sequencer->retrigLFO = 96;
+  sequencer->generator->steps = 16;
+  sequencer->generator->events = 8;
+  sequencer->generator->offset = 0;
+  sequencer->velocity = 127;
   // track->velocityLFO = 2;
 
   //////////////////////////
-  track = new Track(tracker, new PinIntrument(33, runner)); //ok
-  tracker->appendTrack(track);
-  track->stepLenght = 6;
+  sequencer = new Sequencer(tracker, new PinIntrument(33, runner)); //ok
+  tracker->appendTrack(sequencer);
+  sequencer->stepLenght = 6;
   // track->retrig = -1;
-  track->retrigLFO = 38;
-  track->generator->steps = 16;
-  track->generator->events = 8;
-  track->generator->offset = 0;
-  track->velocity = 127;
+  sequencer->retrigLFO = 38;
+  sequencer->generator->steps = 16;
+  sequencer->generator->events = 8;
+  sequencer->generator->offset = 0;
+  sequencer->velocity = 127;
   // track->velocityLFO = 2;
 }
 
