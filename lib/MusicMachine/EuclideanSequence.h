@@ -1,6 +1,6 @@
 #pragma once
 #include "SequenceGenerator.h"
-namespace HLSequencer
+namespace HLMusicMachine
 {
   class EuclideanSequence : public SequenceGenerator
   {

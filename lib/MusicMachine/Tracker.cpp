@@ -1,6 +1,6 @@
 #include "Tracker.h"
 
-namespace HLSequencer
+namespace HLMusicMachine
 {
   Tracker::Tracker(Scheduler *runner)
   {

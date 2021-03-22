@@ -4,7 +4,7 @@
 // #define _TASK_TIMEOUT
 #include <TaskSchedulerDeclarations.h>
 
-namespace HLSequencer
+namespace HLMusicMachine
 {
   class VoiceDelegate
   {

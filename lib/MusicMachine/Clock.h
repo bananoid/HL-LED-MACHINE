@@ -3,7 +3,7 @@
 #include "config.h"
 #include <TaskSchedulerDeclarations.h>
 
-namespace HLSequencer
+namespace HLMusicMachine
 {
   // Delegation: this is to allow clock tick to be called by main controller
   class ClockDelegate

@@ -1,7 +1,7 @@
 #pragma once
 #include <Arduino.h>
 
-namespace HLSequencer
+namespace HLMusicMachine
 {
 
   class SequenceGenerator

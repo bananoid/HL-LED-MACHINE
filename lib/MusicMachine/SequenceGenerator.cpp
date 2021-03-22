@@ -1,6 +1,6 @@
 #include "SequenceGenerator.h"
 
-namespace HLSequencer
+namespace HLMusicMachine
 {
   bool SequenceGenerator::isOn(int index)
   {

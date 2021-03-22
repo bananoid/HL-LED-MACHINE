@@ -1,7 +1,7 @@
 #include "Instrument.h"
 #include <Arduino.h>
 
-namespace HLSequencer
+namespace HLMusicMachine
 {
   Instrument::Instrument(Scheduler *runner, int voiceCount)
   {

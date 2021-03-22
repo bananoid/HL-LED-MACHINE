@@ -1,5 +1,5 @@
 #include "PinInstrument.h"
-namespace HLSequencer
+namespace HLMusicMachine
 {
   PinIntrument::PinIntrument(int pin, Scheduler *runner) : Instrument(runner, 1)
   {

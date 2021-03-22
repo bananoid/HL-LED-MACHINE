@@ -7,7 +7,7 @@
 #include <vector>
 #include "Voice.h"
 
-namespace HLSequencer
+namespace HLMusicMachine
 {
   class InstrumentDelegate
   {

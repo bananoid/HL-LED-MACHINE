@@ -9,7 +9,7 @@
 #include <EuclideanSequence.h>
 #include <PinInstrument.h>
 
-using namespace HLSequencer;
+using namespace HLMusicMachine;
 
 class Branch : public ESPSortedBroadcast::Peer
 {

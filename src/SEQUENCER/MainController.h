@@ -17,5 +17,5 @@ public:
     void update();
     Bounce2::Button startStopButton = Bounce2::Button();
 
-    HLSequencer::Tracker *tracker;
+    HLMusicMachine::Tracker *tracker;
 };

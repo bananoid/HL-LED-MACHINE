@@ -1,7 +1,7 @@
 #include "MIDIInstrument.h"
 #include <Arduino.h>
 
-namespace HLSequencer
+namespace HLMusicMachine
 {
   MIDIInstrument::MIDIInstrument(int channel, Scheduler *runner, int voiceCount) : Instrument(runner, voiceCount)
   {

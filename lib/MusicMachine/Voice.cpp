@@ -1,7 +1,7 @@
 #include "Instrument.h"
 #include <Arduino.h>
 
-namespace HLSequencer
+namespace HLMusicMachine
 {
   Voice::Voice(Scheduler *runner) : Task(TASK_MILLISECOND * 100, TASK_FOREVER, runner, false)
   {
@@ -36,7 +36,7 @@ namespace HLSequencer
       }
       else
       {
-        delegate->getClockTime() * noteLenght;
+        noteTime = delegate->getClockTime() * noteLenght;
       }
 
       restartDelayed(noteTime);

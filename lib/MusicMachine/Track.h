@@ -11,7 +11,7 @@
 
 using namespace MusicTheory;
 
-namespace HLSequencer
+namespace HLMusicMachine
 {
   enum Type
   {

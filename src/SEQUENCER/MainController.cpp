@@ -5,7 +5,7 @@
 #include <Track.h>
 #include <EuclideanSequence.h>
 
-using namespace HLSequencer;
+using namespace HLMusicMachine;
 
 MainController::MainController(Scheduler *runner)
 {

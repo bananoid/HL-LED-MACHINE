@@ -1,7 +1,7 @@
 #include "Clock.h"
 #include <Arduino.h>
 
-namespace HLSequencer
+namespace HLMusicMachine
 {
   Clock::Clock(Scheduler *runner) : Task(1 * TASK_SECOND, TASK_FOREVER, runner, false)
   {

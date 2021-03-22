@@ -1,6 +1,6 @@
 #include "Track.h"
 
-namespace HLSequencer
+namespace HLMusicMachine
 {
   Track::Track(Tracker *tracker, Instrument *instrument)
   {

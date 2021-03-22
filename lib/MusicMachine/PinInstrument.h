@@ -2,7 +2,7 @@
 #include <Arduino.h>
 #include "Instrument.h"
 
-namespace HLSequencer
+namespace HLMusicMachine
 {
   class PinIntrument : public Instrument
   {
