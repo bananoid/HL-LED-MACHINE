@@ -4,7 +4,7 @@
 #include "LEDStripsRenderer.h"
 #include <FastLED.h>
 
-namespace LEDStrips
+namespace LEDSynth
 {
 
   class FastLEDRenderer : public LEDStripsRenderer
@@ -18,7 +18,7 @@ namespace LEDStrips
     ~FastLEDRenderer();
 
     void begin(CRGB *leds, int numberOfPixel);
-    void setPixel(int inx, GFXUtils::fRGB color) override;
+    void setPixel(int inx, fRGB color) override;
     void show() override;
   };
 

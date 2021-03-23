@@ -2,7 +2,7 @@
 
 #include <FastLED.h>
 
-namespace LEDStrips
+namespace LEDSynth
 {
 
   FastLEDRenderer::FastLEDRenderer()
@@ -22,7 +22,7 @@ namespace LEDStrips
     FastLED.setBrightness(255);
   }
 
-  void FastLEDRenderer::setPixel(int inx, GFXUtils::fRGB color)
+  void FastLEDRenderer::setPixel(int inx, fRGB color)
   {
     leds[inx] = CRGB(color.r * 255, color.g * 255, color.b * 255);
   }
@@ -31,4 +31,4 @@ namespace LEDStrips
     FastLED.show();
   }
 
-} // namespace LEDStrips
+}

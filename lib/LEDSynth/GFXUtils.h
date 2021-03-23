@@ -1,8 +1,7 @@
-#ifndef GFX_UTILS_H
-#define GFX_UTILS_H
+#pragma once
 
 #include <Arduino.h>
-namespace GFXUtils
+namespace LEDSynth
 {
 
   typedef struct
@@ -49,6 +48,13 @@ namespace GFXUtils
       this->r += c.r;
       this->g += c.g;
       this->b += c.b;
+    }
+
+    void mult(float v)
+    {
+      this->r *= v;
+      this->g *= v;
+      this->b *= v;
     }
 
     static fRGB sum(fRGB a, fRGB b)
@@ -236,5 +242,4 @@ namespace GFXUtils
       return fRGB(r + m, g + m, b + m);
     }
   };
-} // namespace GFXUtils
-#endif
+}

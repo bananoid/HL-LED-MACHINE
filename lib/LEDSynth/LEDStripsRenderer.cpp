@@ -1,6 +1,6 @@
 #include "LEDStripsRenderer.h"
 
-namespace LEDStrips
+namespace LEDSynth
 {
   LEDStripsRenderer::LEDStripsRenderer()
   {
@@ -14,7 +14,7 @@ namespace LEDStrips
   {
   }
 
-  void LEDStripsRenderer::setPixel(int inx, GFXUtils::fRGB color)
+  void LEDStripsRenderer::setPixel(int inx, fRGB color)
   {
   }
 

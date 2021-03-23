@@ -1,0 +1,97 @@
+#pragma once
+
+#include "LEDShader.h"
+
+namespace LEDSynth
+{
+  class LEDShaderSynth : LEDShader
+  {
+  private:
+  public:
+    struct LEDShaderSynthState
+    {
+      float scale = 1.f;
+      float speed = 1.f;
+
+      float que = 2.3f;
+      float sym = 0.9f;
+      float fmAmo = 4.f;
+      float fmFrq = 1.f;
+
+      float hue = 0.55f;
+      float hueRad = 0.1f;
+      float intensity = 1;
+      // float hueSpeed = 2.f;
+
+      float saturation = 1.0f;
+    };
+
+    LEDShaderSynthState state;
+    LEDShaderSynthState *targetState;
+
+    bool enabled = true;
+
+    float position;
+
+    LEDShaderSynth()
+    {
+      position = 0;
+    }
+
+    void update(float gStep)
+    {
+      position += gStep * state.speed;
+    }
+
+    void interpolateState(float interpolationSpeed)
+    {
+      state.scale += (targetState->scale - state.scale) * interpolationSpeed;
+      state.speed += (targetState->speed - state.speed) * interpolationSpeed;
+
+      state.que += (targetState->que - state.que) * interpolationSpeed;
+      state.sym += (targetState->sym - state.sym) * interpolationSpeed;
+
+      state.fmAmo += (targetState->fmAmo - state.fmAmo) * interpolationSpeed;
+      state.fmFrq += (targetState->fmFrq - state.fmFrq) * interpolationSpeed;
+
+      state.hue += (targetState->hue - state.hue) * interpolationSpeed;
+      state.hueRad += (targetState->hueRad - state.hueRad) * interpolationSpeed;
+      state.saturation += (targetState->saturation - state.saturation) * interpolationSpeed;
+
+      // state.hueSpeed += (state.hueSpeed - targetState.hueSpeed) * interpolationSpeed;
+    }
+
+    fRGB renderPoint(float pixInxPos, float t)
+    {
+      float pixPos = position + pixInxPos * state.scale;
+
+      float hue = 0;
+      float saturation = 1;
+      float intensity;
+
+      fRGB color;
+
+      intensity = GFXUtils::waveFM(
+          pixPos,
+          state.que,
+          state.sym,
+          state.fmAmo,
+          state.fmFrq);
+
+      saturation = 1;
+
+      saturation = GFXUtils::clamp(saturation, 0.f, 1.f);
+
+      hue = state.hue + sinf(fmodf(pixPos * 2.234 + t, TWO_PI)) * state.hueRad;
+
+      color = GFXUtils::hsv(hue, saturation * state.saturation, intensity * state.intensity);
+
+      fRGB tColor = color;
+      tColor.mult(intensity * intensity * intensity);
+      color.add(tColor);
+
+      return color;
+    }
+  };
+
+}

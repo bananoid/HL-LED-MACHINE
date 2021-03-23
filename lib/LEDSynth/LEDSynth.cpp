@@ -5,7 +5,7 @@
 namespace LEDSynth
 {
 
-  LEDSynth::LEDSynth(int numberOfPixel, LEDStrips::LEDStripsRenderer *renderer, Scheduler *runner) : Task(16 * TASK_MILLISECOND, TASK_FOREVER, runner, true)
+  LEDSynth::LEDSynth(int numberOfPixel, LEDStripsRenderer *renderer, Scheduler *runner) : Task(16 * TASK_MILLISECOND, TASK_FOREVER, runner, true)
   {
     this->renderer = renderer;
     this->numberOfPixel = numberOfPixel;
@@ -14,6 +14,20 @@ namespace LEDSynth
   bool LEDSynth::Callback()
   {
     update();
+    return true;
+  }
+
+  void LEDSynth::appendShader(LEDShader *shader)
+  {
+    shaders.push_back(shader);
+  }
+
+  LEDShaderSynth *LEDSynth::addLEDShaderSynth(LEDShader::BlendingMode blendingMode)
+  {
+    LEDShaderSynth *shader = (new LEDShaderSynth());
+    appendShader((LEDShader *)shader);
+    // appendShader(shader);
+    return shader;
   }
 
   void LEDSynth::update()
@@ -23,47 +37,32 @@ namespace LEDSynth
     lastFrameTime = curTime;
 
     float t = position / 1000.0f;
-    // t *= 0.1;
-    // float oscA;
-    float oscB;
-    float phase;
 
-    GFXUtils::fRGB color = GFXUtils::fRGB(1, 1, 1);
+    LEDShader *shader;
+    list<LEDShader *>::iterator it;
+    float pixelPosition;
+    float scale = 0.01;
+    float speed = 0.1;
 
-    int realNumOffPix = 16;
+    fRGB color = {0, 0, 0};
 
-    for (size_t i = 0; i < numberOfPixel; i++)
+    for (it = shaders.begin(); it != shaders.end(); ++it)
     {
-      phase = (i + index * realNumOffPix) * 0.1f;
+      shader = *it;
+      for (size_t i = 0; i < numberOfPixel; i++)
+      {
+        pixelPosition = i * scale + t * speed;
 
-      // oscA = sinf(fmodf(1.0 + fmodf(t * 0.35f + phase * 3.243, TWO_PI), TWO_PI)) * 0.1 + 1;
-      // oscA = oscA * oscA * oscA;
-
-      // oscB = sinf(fmodf(1.0 + fmodf(t * 1.521354f + phase * 5.43123, TWO_PI), TWO_PI)) * 0.5 + 0.5;
-      // oscB = oscB * oscB * oscB;
-
-      float x = t * 0.145;
-      oscB = GFXUtils::GFXUtils::snoise(x);
-
-      color = GFXUtils::GFXUtils::hsv(x * 0.012355, 1, oscB);
-      renderer->setPixel(i, color);
+        fRGB sColor = shader->renderPoint(pixelPosition, t);
+        color.add(sColor);
+        renderer->setPixel(i, color);
+      }
     }
-
     renderer->show();
   }
 
   void LEDSynth::syncTo(unsigned long position) //position in ms
   {
-    long delataPosition = this->position - position;
-
-    // Serial.print("curPos :: ");
-    // Serial.print(this->position);
-    // Serial.print(" - recPos :: ");
-    // Serial.print(position);
-    // Serial.print(" - deltaPos :: ");
-    // Serial.println(delataPosition);
-
     this->position = position;
   }
-
-} // namespace LEDSynth
+}
