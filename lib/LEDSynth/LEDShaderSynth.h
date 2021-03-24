@@ -28,22 +28,21 @@ namespace LEDSynth
 
     LEDShaderSynthState state;
     LEDShaderSynthState *targetState;
-
-    bool enabled = true;
-
-    float position;
+    float interpolationSpeed = 1;
 
     LEDShaderSynth()
     {
       position = 0;
+      targetState = new LEDShaderSynthState();
     }
 
-    void update(float gStep)
+    void update(float gStep) override
     {
       position += gStep * state.speed;
+      interpolateState();
     }
 
-    void interpolateState(float interpolationSpeed)
+    void interpolateState()
     {
       state.scale += (targetState->scale - state.scale) * interpolationSpeed;
       state.speed += (targetState->speed - state.speed) * interpolationSpeed;
@@ -61,9 +60,9 @@ namespace LEDSynth
       // state.hueSpeed += (state.hueSpeed - targetState.hueSpeed) * interpolationSpeed;
     }
 
-    fRGB renderPoint(float pixInxPos, float t)
+    fRGB renderPoint(float pixelPosition, float time) override
     {
-      float pixPos = position + pixInxPos * state.scale;
+      float pixPos = position + pixelPosition * state.scale;
 
       float hue = 0;
       float saturation = 1;
@@ -82,7 +81,7 @@ namespace LEDSynth
 
       saturation = GFXUtils::clamp(saturation, 0.f, 1.f);
 
-      hue = state.hue + sinf(fmodf(pixPos * 2.234 + t, TWO_PI)) * state.hueRad;
+      hue = state.hue + sinf(fmodf(pixPos * 2.234 + time, TWO_PI)) * state.hueRad;
 
       color = GFXUtils::hsv(hue, saturation * state.saturation, intensity * state.intensity);
 

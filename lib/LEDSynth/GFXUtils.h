@@ -57,6 +57,13 @@ namespace LEDSynth
       this->b *= v;
     }
 
+    void mult(fRGB c)
+    {
+      this->r *= c.r;
+      this->g *= c.g;
+      this->b *= c.b;
+    }
+
     static fRGB sum(fRGB a, fRGB b)
     {
       return fRGB(a.r + b.r, a.g + b.g, a.b + b.b);

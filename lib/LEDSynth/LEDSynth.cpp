@@ -9,6 +9,13 @@ namespace LEDSynth
   {
     this->renderer = renderer;
     this->numberOfPixel = numberOfPixel;
+
+    calculatePixelScale(0.1);
+  }
+
+  void LEDSynth::calculatePixelScale(float scaleFactor)
+  {
+    pixelScale = scaleFactor / numberOfPixel;
   }
 
   bool LEDSynth::Callback()
@@ -17,52 +24,74 @@ namespace LEDSynth
     return true;
   }
 
-  void LEDSynth::appendShader(LEDShader *shader)
+  void LEDSynth::appendShader(LEDShader *shader, LEDShader::BlendingMode blendingMode)
   {
     shaders.push_back(shader);
+    shader->blendingMode = blendingMode;
   }
 
   LEDShaderSynth *LEDSynth::addLEDShaderSynth(LEDShader::BlendingMode blendingMode)
   {
     LEDShaderSynth *shader = (new LEDShaderSynth());
-    appendShader((LEDShader *)shader);
-    // appendShader(shader);
+    appendShader((LEDShader *)shader, blendingMode);
     return shader;
   }
 
   void LEDSynth::update()
   {
     unsigned long curTime = millis();
-    position += (curTime - lastFrameTime);
+    float time = curTime / 1000.0f;
+    float deltaTime = (curTime - lastFrameTime) / 1000.0f;
     lastFrameTime = curTime;
 
-    float t = position / 1000.0f;
+    float pixelPosition;
 
     LEDShader *shader;
     list<LEDShader *>::iterator it;
-    float pixelPosition;
-    float scale = 0.01;
-    float speed = 0.1;
-
-    fRGB color = {0, 0, 0};
 
     for (it = shaders.begin(); it != shaders.end(); ++it)
     {
       shader = *it;
-      for (size_t i = 0; i < numberOfPixel; i++)
-      {
-        pixelPosition = i * scale + t * speed;
+      shader->update(deltaTime);
+    }
 
-        fRGB sColor = shader->renderPoint(pixelPosition, t);
-        color.add(sColor);
-        renderer->setPixel(i, color);
+    for (size_t i = 0; i < numberOfPixel; i++)
+    {
+      fRGB color = {0, 0, 0};
+
+      for (it = shaders.begin(); it != shaders.end(); ++it)
+      {
+        shader = *it;
+        pixelPosition = i * pixelScale;
+
+        fRGB sColor = shader->renderPoint(pixelPosition, time);
+        if (shader->blendingMode == LEDShader::ADD)
+        {
+          color.add(sColor);
+        }
+        else if (shader->blendingMode == LEDShader::MULTIPLY)
+        {
+          color.mult(sColor);
+        }
+        else
+        {
+          color = sColor;
+        }
       }
+
+      renderer->setPixel(i, color);
     }
     renderer->show();
   }
 
-  void LEDSynth::syncTo(unsigned long position) //position in ms
+  void LEDSynth::syncTo(float position)
   {
-    this->position = position;
+    LEDShader *shader;
+    list<LEDShader *>::iterator it;
+    for (it = shaders.begin(); it != shaders.end(); ++it)
+    {
+      shader = *it;
+      shader->position = position;
+    }
   }
 }

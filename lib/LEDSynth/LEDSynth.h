@@ -19,23 +19,26 @@ namespace LEDSynth
   class LEDSynth : public Task
   {
   private:
+    unsigned long lastFrameTime = 0;
+
   public:
     list<LEDShader *> shaders;
 
     int numberOfPixel = 12;
-    unsigned long position = 0;
-    unsigned long lastFrameTime = 0;
-    int index = 0;
+    float pixelScale = 0.01;
+
+    void calculatePixelScale(float scaleFactor);
+
     LEDStripsRenderer *renderer;
     LEDSynth(int numberOfPixel, LEDStripsRenderer *renderer, Scheduler *runner);
     void update();
 
     bool Callback();
 
-    void appendShader(LEDShader *shader);
+    void appendShader(LEDShader *shader, LEDShader::BlendingMode blendingMode = LEDShader::ADD);
     LEDShaderSynth *addLEDShaderSynth(LEDShader::BlendingMode blendingMode = LEDShader::ADD);
 
-    void syncTo(unsigned long position);
+    void syncTo(float position);
   };
 
 }

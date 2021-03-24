@@ -24,6 +24,7 @@ namespace LEDSynth
 
   void FastLEDRenderer::setPixel(int inx, fRGB color)
   {
+    color = GFXUtils::clamp01(color);
     leds[inx] = CRGB(color.r * 255, color.g * 255, color.b * 255);
   }
   void FastLEDRenderer::show()

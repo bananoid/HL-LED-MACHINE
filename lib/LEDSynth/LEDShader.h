@@ -10,7 +10,6 @@ namespace LEDSynth
   public:
     enum BlendingMode
     {
-      BACKGROUND,
       NORMAL,
       ADD,
       MULTIPLY
@@ -18,13 +17,9 @@ namespace LEDSynth
     BlendingMode blendingMode = NORMAL;
     bool enabled = true;
 
-    float scale = 1;
-    float speed = 1;
+    float position;
 
-    virtual fRGB renderPoint(float position, float t)
-    {
-      return fRGB();
-    }
+    virtual void update(float gStep);
+    virtual fRGB renderPoint(float pixelPosition, float time);
   };
-
 }
