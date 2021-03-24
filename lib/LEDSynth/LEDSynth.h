@@ -37,8 +37,5 @@ namespace LEDSynth
 
     void appendShader(LEDShader *shader, LEDShader::BlendingMode blendingMode = LEDShader::ADD);
     LEDShaderSynth *addLEDShaderSynth(LEDShader::BlendingMode blendingMode = LEDShader::ADD);
-
-    void syncTo(float position);
   };
-
 }

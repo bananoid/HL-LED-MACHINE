@@ -27,7 +27,14 @@ namespace LEDSynth
   void LEDSynth::appendShader(LEDShader *shader, LEDShader::BlendingMode blendingMode)
   {
     shaders.push_back(shader);
-    shader->blendingMode = blendingMode;
+    if (shaders.size() == 1)
+    {
+      shader->blendingMode = LEDShader::NORMAL;
+    }
+    else
+    {
+      shader->blendingMode = blendingMode;
+    }
   }
 
   LEDShaderSynth *LEDSynth::addLEDShaderSynth(LEDShader::BlendingMode blendingMode)
@@ -82,16 +89,5 @@ namespace LEDSynth
       renderer->setPixel(i, color);
     }
     renderer->show();
-  }
-
-  void LEDSynth::syncTo(float position)
-  {
-    LEDShader *shader;
-    list<LEDShader *>::iterator it;
-    for (it = shaders.begin(); it != shaders.end(); ++it)
-    {
-      shader = *it;
-      shader->position = position;
-    }
   }
 }

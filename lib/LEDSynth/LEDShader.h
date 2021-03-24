@@ -17,9 +17,7 @@ namespace LEDSynth
     BlendingMode blendingMode = NORMAL;
     bool enabled = true;
 
-    float position;
-
-    virtual void update(float gStep);
+    virtual void update(float deltaTime);
     virtual fRGB renderPoint(float pixelPosition, float time);
   };
 }

@@ -30,15 +30,17 @@ namespace LEDSynth
     LEDShaderSynthState *targetState;
     float interpolationSpeed = 1;
 
+    float position;
+
     LEDShaderSynth()
     {
       position = 0;
       targetState = new LEDShaderSynthState();
     }
 
-    void update(float gStep) override
+    void update(float deltaTime) override
     {
-      position += gStep * state.speed;
+      position += deltaTime * state.speed;
       interpolateState();
     }
 
