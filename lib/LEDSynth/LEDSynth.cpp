@@ -80,6 +80,10 @@ namespace LEDSynth
         {
           color.mult(sColor);
         }
+        else if (shader->blendingMode == LEDShader::MULTIPLY_GRAY)
+        {
+          color.mult(sColor.r);
+        }
         else
         {
           color = sColor;

@@ -12,7 +12,8 @@ namespace LEDSynth
     {
       NORMAL,
       ADD,
-      MULTIPLY
+      MULTIPLY,
+      MULTIPLY_GRAY,
     };
     BlendingMode blendingMode = NORMAL;
     bool enabled = true;
