@@ -11,6 +11,7 @@
 
 #include "LEDShader.h"
 #include "LEDShaderSynth.h"
+#include "LEDShaderDiffusion.h"
 
 using namespace std;
 
@@ -37,5 +38,6 @@ namespace LEDSynth
 
     void appendShader(LEDShader *shader, LEDShader::BlendingMode blendingMode = LEDShader::ADD);
     LEDShaderSynth *addLEDShaderSynth(LEDShader::BlendingMode blendingMode = LEDShader::ADD);
+    LEDShaderDiffusion *addLEDShaderDiffusion(LEDShader::BlendingMode blendingMode = LEDShader::ADD);
   };
 }

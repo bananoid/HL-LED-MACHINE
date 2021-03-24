@@ -10,7 +10,7 @@ namespace LEDSynth
     this->renderer = renderer;
     this->numberOfPixel = numberOfPixel;
 
-    calculatePixelScale(0.1);
+    calculatePixelScale(1);
   }
 
   void LEDSynth::calculatePixelScale(float scaleFactor)
@@ -39,7 +39,14 @@ namespace LEDSynth
 
   LEDShaderSynth *LEDSynth::addLEDShaderSynth(LEDShader::BlendingMode blendingMode)
   {
-    LEDShaderSynth *shader = (new LEDShaderSynth());
+    LEDShaderSynth *shader = new LEDShaderSynth();
+    appendShader((LEDShader *)shader, blendingMode);
+    return shader;
+  }
+
+  LEDShaderDiffusion *LEDSynth::addLEDShaderDiffusion(LEDShader::BlendingMode blendingMode)
+  {
+    LEDShaderDiffusion *shader = new LEDShaderDiffusion(numberOfPixel);
     appendShader((LEDShader *)shader, blendingMode);
     return shader;
   }

@@ -31,9 +31,9 @@ namespace LEDSynth
     }
     fRGB(float i)
     {
-      this->r = i;
-      this->g = i;
-      this->b = i;
+      r = i;
+      g = i;
+      b = i;
     }
 
     fRGB(float r, float g, float b)
@@ -45,28 +45,70 @@ namespace LEDSynth
 
     void add(fRGB c)
     {
-      this->r += c.r;
-      this->g += c.g;
-      this->b += c.b;
+      r += c.r;
+      g += c.g;
+      b += c.b;
     }
 
     void mult(float v)
     {
-      this->r *= v;
-      this->g *= v;
-      this->b *= v;
+      r *= v;
+      g *= v;
+      b *= v;
     }
 
     void mult(fRGB c)
     {
-      this->r *= c.r;
-      this->g *= c.g;
-      this->b *= c.b;
+      r *= c.r;
+      g *= c.g;
+      b *= c.b;
+    }
+
+    void copy(fRGB c)
+    {
+      r = c.r;
+      g = c.g;
+      b = c.b;
     }
 
     static fRGB sum(fRGB a, fRGB b)
     {
       return fRGB(a.r + b.r, a.g + b.g, a.b + b.b);
+    }
+
+    fRGB operator+(const fRGB &c)
+    {
+      return fRGB(r + c.r, g + c.g, b + c.b);
+    }
+
+    fRGB operator-(const fRGB &c)
+    {
+      return fRGB(r - c.r, g - c.g, b - c.b);
+    }
+    fRGB operator*(const fRGB &c)
+    {
+      return fRGB(r * c.r, g * c.g, b * c.b);
+    }
+    fRGB operator/(const fRGB &c)
+    {
+      return fRGB(r / c.r, g / c.g, b / c.b);
+    }
+
+    fRGB operator+(const float &v)
+    {
+      return fRGB(r + v, g + v, b + v);
+    }
+    fRGB operator-(const float &v)
+    {
+      return fRGB(r - v, g - v, b - v);
+    }
+    fRGB operator*(const float &v)
+    {
+      return fRGB(r * v, g * v, b * v);
+    }
+    fRGB operator/(const float &v)
+    {
+      return fRGB(r / v, g / v, b / v);
     }
   };
 
@@ -89,6 +131,11 @@ namespace LEDSynth
     static float rnd(float x)
     {
       return fract((sinf(x) * 0.5 + 0.5) * 1e4);
+    }
+
+    static fRGB absC(const fRGB &c)
+    {
+      return fRGB(abs(c.r), abs(c.g), abs(c.b));
     }
 
     static float clamp(float x, float minV, float maxV)

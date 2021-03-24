@@ -21,4 +21,5 @@ void setup()
 void loop()
 {
   runner.execute();
+  mainController->update();
 }
