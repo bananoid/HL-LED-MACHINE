@@ -62,9 +62,9 @@ namespace LEDSynth
       // state.hueSpeed += (state.hueSpeed - targetState.hueSpeed) * interpolationSpeed;
     }
 
-    fRGB renderPoint(float pixelPosition, float time) override
+    fRGB renderPoint(float pointPosition, float time) override
     {
-      float pixPos = position + pixelPosition * state.scale;
+      float pixPos = position + pointPosition * state.scale;
 
       float hue = 0;
       float saturation = 1;

@@ -51,7 +51,7 @@ namespace LEDSynth
     float deltaTime = (curTime - lastFrameTime) / 1000.0f;
     lastFrameTime = curTime;
 
-    float pixelPosition;
+    float pointPosition;
 
     LEDShader *shader;
     list<LEDShader *>::iterator it;
@@ -69,9 +69,9 @@ namespace LEDSynth
       for (it = shaders.begin(); it != shaders.end(); ++it)
       {
         shader = *it;
-        pixelPosition = i * pixelScale;
+        pointPosition = i * pixelScale;
 
-        fRGB sColor = shader->renderPoint(pixelPosition, time);
+        fRGB sColor = shader->renderPoint(pointPosition, time);
         if (shader->blendingMode == LEDShader::ADD)
         {
           color.add(sColor);
