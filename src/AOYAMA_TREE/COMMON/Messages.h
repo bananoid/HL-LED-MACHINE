@@ -12,11 +12,15 @@
 // BRANCH messages:
 #define BRANCH_MESSAGE_TYPES BRANCH_STATE
 
+// TREE messages:
+#define TREE_MESSAGE_TYPES TREE_STATE
+
 enum MessageTypes
 {
   BASE_MESSAGE_TYPES,
   FLOWER_MESSAGE_TYPES,
-  BRANCH_MESSAGE_TYPES
+  BRANCH_MESSAGE_TYPES,
+  TREE_MESSAGE_TYPES
 };
 
 struct BaseMessage
@@ -46,4 +50,9 @@ struct FlowerLedMessage : public BaseMessage
 struct BranchStateMessage : public BaseMessage
 {
   uint8_t messageType = BRANCH_STATE;
+};
+
+struct TreeStateMessage : public BaseMessage
+{
+  uint8_t messageType = TREE_STATE;
 };

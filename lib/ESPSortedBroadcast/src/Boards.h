@@ -1,6 +1,8 @@
 #pragma once
 
+#ifndef BOARD_TYPES
 #define BOARD_TYPES TREE, FLOWER, BRANCH, ROCK
+#endif
 
 typedef enum BoardTypes
 {

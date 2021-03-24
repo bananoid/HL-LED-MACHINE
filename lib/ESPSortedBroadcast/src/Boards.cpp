@@ -13,7 +13,7 @@ board_info getBoardInfo(String macAddress, board *boardList)
 {
   board_info boardInfo;
 
-  for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 5; i++)
   {
     if (macAddress == boardList[i].macAddress)
     {
