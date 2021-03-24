@@ -6,7 +6,7 @@ Gateway *GatewaySingleton = new Gateway();
 void Gateway::begin(int wifiChannel, Scheduler *runner)
 {
   ESPSortedBroadcast::Peer::begin(wifiChannel);
-  screen = new OledScreen();
+  screen = new OledScreen(8, 22);
   screen->begin();
 
   ping.set(TASK_SECOND, TASK_FOREVER, [this]() {
@@ -14,11 +14,17 @@ void Gateway::begin(int wifiChannel, Scheduler *runner)
     msg.sourceId = boardInfo.boardId;
     msg.targetId = 1;
     broadcastData((uint8_t *)&msg, sizeof(BaseMessage));
-    screen->print("S:" + String(msg.sourceId) + "->" + String(msg.targetId) + "[PING] " + random(3, 87), 4);
+    screen->println("S:" + String(msg.sourceId) + "->" + String(msg.targetId) + "[PING] " + random(3, 87), 4);
     Serial.println("S:" + String(msg.sourceId) + "->" + String(msg.targetId) + "[PING]");
   });
   runner->addTask(ping);
   ping.enable();
+
+  displayScreen.set(50 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
+    screen->displayScreen();
+  });
+  runner->addTask(displayScreen);
+  displayScreen.enable();
 }
 
 void Gateway::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int len)
@@ -49,7 +55,7 @@ void Gateway::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int
     break;
   }
   Serial.println("Receiving:" + String(sourceId) + "->" + String(targetId) + "[" + messageTypeName + "]");
-  screen->print("R:" + String(sourceId) + "<-" + String(targetId) + "[" + messageTypeName + "] " + random(0, 99), 3);
+  screen->println("R:" + String(sourceId) + "<-" + String(targetId) + "[" + messageTypeName + "] " + random(0, 99), 3);
 
   // filter
   if (targetId != boardInfo.boardId)

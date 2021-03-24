@@ -27,21 +27,13 @@ void setup()
   GatewaySingleton->boardList = boardList;
 
   GatewaySingleton->begin(WIFI_CHANNEL, &runner);
-  GatewaySingleton->screen->clear();
-  GatewaySingleton->screen->print(GatewaySingleton->boardInfo.boardName, 0);
-  GatewaySingleton->screen->print(GatewaySingleton->boardInfo.macAddress, 1);
+  GatewaySingleton->screen->clearScreen();
+  GatewaySingleton->screen->println(GatewaySingleton->boardInfo.boardName, 0);
+  GatewaySingleton->screen->println(GatewaySingleton->boardInfo.macAddress, 1);
 }
 void loop()
 {
   runner.execute();
 
-  // digitalWrite(2, HIGH);
-  // delay(500);
-  // digitalWrite(2, LOW);
-  // delay(500);
-  // GatewaySingleton->screen->print(GatewaySingleton->boardInfo.boardName, 0);
-  // GatewaySingleton->screen->print(GatewaySingleton->boardInfo.macAddress, 1);
-  // GatewaySingleton->screen->clear();
   GatewaySingleton->screen->sayHello(2);
-  // GatewaySingleton->screen->displayScreen();
 }

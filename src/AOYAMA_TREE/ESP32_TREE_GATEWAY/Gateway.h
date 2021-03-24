@@ -18,6 +18,8 @@ public:
 
   OledScreen *screen;
 
+  Task displayScreen;
+
   Task ping;
 };
 
