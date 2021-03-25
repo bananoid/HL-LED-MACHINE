@@ -3,14 +3,16 @@
 
 #include "AOYAMA_TREE/COMMON/config.h"
 #define _TASK_STD_FUNCTION
+#define _TASK_OO_CALLBACKS
 #include <TaskSchedulerDeclarations.h>
-#include <SerialMessenger.h>
 
 #include <OledScreen.h>
 
-using namespace HLSerialMessanger;
+#include <PinInstrument.h>
 
-class Gateway : public ESPSortedBroadcast::Peer, SerialMessengerDelegate
+using namespace HLMusicMachine;
+
+class BranchSlave : public ESPSortedBroadcast::Peer
 {
 public:
   // wifi
@@ -19,7 +21,7 @@ public:
   void registerReceiveDataCB() override;
 
   void begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, int nPeers, Scheduler *runner);
-  void update();
+  // void update();
 
   OledScreen *screen;
 
@@ -27,10 +29,7 @@ public:
 
   Task ping;
 
-  void serialMessengerReceiveMsg(BaseMessage *message) override;
-
-  void serialMessengerReceiveData(const uint8_t *incomingData, int len) override;
-  // void serialMessengerSendData()
+  PinIntrument *instrument;
 };
 
-extern Gateway *GatewaySingleton;
+extern BranchSlave *BranchSlaveSingleton;

@@ -43,6 +43,9 @@ void Gateway::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, i
 
 void Gateway::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int len)
 {
+  SerialMessengerSingleton->sendData(incomingData, len);
+  screen->println("Sending Serial" + random(0, 99), 6);
+
   uint8_t messageType = getMessageTypeFromData(incomingData);
   uint targetId;
   uint sourceId;
@@ -94,14 +97,10 @@ void Gateway::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int
   {
     // pass
   }
-
-  SerialMessengerSingleton->sendData(incomingData, len);
-  screen->println("Sending serial data" + random(0, 99), 7);
 }
 
 void Gateway::registerReceiveDataCB()
 {
-  // Serial.println("Register Gateway receive callback");
   esp_now_register_recv_cb([](const uint8_t *macaddr, const uint8_t *incomingData, int len) {
     GatewaySingleton->receiveDataCB(macaddr, incomingData, len);
   });
@@ -112,9 +111,11 @@ void Gateway::update()
   SerialMessengerSingleton->update();
 }
 
-void Gateway::serialMessengerReceiveMsg(BaseMessage *message){};
+void Gateway::serialMessengerReceiveMsg(BaseMessage *message){
+
+};
 void Gateway::serialMessengerReceiveData(const uint8_t *incomingData, int len)
 {
   Serial.println("Receive data!");
-  broadcastData(incomingData, len);
+  broadcastData(incomingData, len); // send received data to wifi
 }

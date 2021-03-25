@@ -1,32 +1,29 @@
 #include <Arduino.h>
 
-#include "Flower.h"
-#include "TouchSensor.h"
+#define _TASK_STD_FUNCTION
+#include <TaskScheduler.h>
+
 #include "AOYAMA_TREE/COMMON/Messages.h"
 #include "AOYAMA_TREE/COMMON/config.h"
 
-#include <TaskScheduler.h>
+#include "Flower.h"
+#include "TouchSensor.h"
+
+using namespace ESPSortedBroadcast;
 
 Scheduler runner;
 
-board boardList[] = {
-    {"3C:61:05:2F:A9:7C", "Flower", FLOWER},
-    {"3C:61:05:2E:85:74", "Flower", FLOWER},
-    {"24:0A:C4:ED:92:0C", "Tree", TREE},
-    {"3C:61:05:2B:01:05", "Solenoid", BRANCH},
-};
+PeerRecord peerList[] = PEER_LIST;
 
 void setup()
 {
   Serial.begin(115200);
-
-  FlowerSingleton->boardList = boardList;
-
-  FlowerSingleton->begin(WIFI_CHANNEL, &runner);
+  FlowerSingleton->begin(WIFI_CHANNEL, peerList, N_PEERS, &runner);
 
   runner.startNow();
 }
 void loop()
 {
   runner.execute();
+  FlowerSingleton->screen->sayHello(2);
 }

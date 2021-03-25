@@ -3,7 +3,7 @@
 #define SDA_PIN 21
 #define SCL_PIN 22
 
-IMUSensor::IMUSensor(Scheduler *runner, IMUSensorDelegate *delegate) : Task(10 * TASK_MILLISECOND, TASK_FOREVER, runner, true)
+IMUSensor::IMUSensor(IMUSensorDelegate *delegate)
 {
   this->delegate = delegate;
 }
@@ -16,18 +16,12 @@ void IMUSensor::begin()
   {
     /* There was a problem detecting the BNO055 ... check your connections */
     Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
-    while (1)
-      ;
+    // while (1)
+    //   ;
   }
 }
 
-bool IMUSensor::Callback()
-{
-  update();
-  return true;
-}
-
-void IMUSensor::update()
+void IMUSensor::update() // IMU task
 {
   sensors_event_t orientationData, angVelocityData, linearAccelData, magnetometerData, accelerometerData, gravityData;
   bno.getEvent(&orientationData, Adafruit_BNO055::VECTOR_EULER);

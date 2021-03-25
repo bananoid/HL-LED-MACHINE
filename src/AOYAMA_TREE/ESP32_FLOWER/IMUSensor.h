@@ -6,7 +6,6 @@
 #include <utility/imumaths.h>
 
 #include "AOYAMA_TREE/COMMON/config.h"
-#include <TaskSchedulerDeclarations.h>
 
 class IMUSensorDelegate
 {
@@ -14,15 +13,13 @@ public:
   virtual void onIMUOrientationData(sensors_event_t *orientationData);
 };
 
-class IMUSensor : public Task
+class IMUSensor
 {
 public:
-  IMUSensor(Scheduler *runner, IMUSensorDelegate *delegate);
+  IMUSensor(IMUSensorDelegate *delegate);
 
   void begin();
   void update();
-
-  bool Callback();
 
   IMUSensorDelegate *delegate = nullptr;
 
