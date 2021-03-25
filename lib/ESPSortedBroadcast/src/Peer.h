@@ -1,15 +1,38 @@
-#ifndef HL_LIB_ESPSORTEDBROADCASTER_SRC_PEER
-#define HL_LIB_ESPSORTEDBROADCASTER_SRC_PEER
+#pragma once
 
 #include <Arduino.h>
 #include <esp_now.h>
 #include "Actions.h"
-#include "Boards.h"
+
+#ifndef PEER_TYPES
+#define PEER_TYPES DEFAULT_PEER
+#endif
 
 namespace ESPSortedBroadcast
 {
   const uint8_t broadcastAddr[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
   // const uint8_t broadcastAddr[] = {0x24, 0x0A, 0xC4, 0xED, 0x92, 0x0C};
+
+  enum PeerType
+  {
+    PEER_TYPES
+  };
+
+  struct PeerRecord
+  {
+    String macAddress;
+    String typeName;
+    PeerType type;
+  };
+
+  struct PeerDescription
+  {
+    int id;
+    String macAddress;
+    PeerType type;
+    String typeName;
+    String name;
+  };
 
   class Peer
   {
@@ -22,13 +45,17 @@ namespace ESPSortedBroadcast
 
     int channel;
 
-    virtual void begin(int channel = 0);
+    virtual void begin(int channel, PeerRecord *peerList, int nPeers);
     virtual void registerReceiveDataCB();
     virtual void receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int len);
 
-    board *boardList;
-    board_info boardInfo;
-    // void getOwnBoardInformation();
+    int nPeers;
+    PeerRecord *peerList;
+    PeerDescription peerDescription;
+    PeerDescription getDescription();
+
+    // void addPeerRecord(PeerRecord peerRecord);
+    void setPeerList(PeerRecord *peerList);
 
     static void printMacAddr(const uint8_t *macaddr);
     static uint8_t getMessageTypeFromData(const uint8_t *data);
@@ -38,6 +65,4 @@ namespace ESPSortedBroadcast
     void sendDataToAddress(uint8_t *macaddr, const uint8_t *data, size_t len);
   };
 
-} // namespace ESPSortedBroadcast
-
-#endif /* HL_LIB_ESPSORTEDBROADCASTER_SRC_PEER */
+}

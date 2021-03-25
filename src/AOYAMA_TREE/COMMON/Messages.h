@@ -1,5 +1,7 @@
 #pragma once
 
+#include <BaseMessages.h>
+
 #define BASE_MESSAGE_TYPES PING
 
 // Each message is defined per board.
@@ -15,22 +17,28 @@
 // TREE messages:
 #define TREE_MESSAGE_TYPES TREE_STATE
 
+// ROCK messages:
+#define ROCK_MESSAGE_TYPES ROCK_BPM
+
+using namespace Messages;
+
 enum MessageTypes
 {
   BASE_MESSAGE_TYPES,
   FLOWER_MESSAGE_TYPES,
   BRANCH_MESSAGE_TYPES,
+  ROCK_MESSAGE_TYPES,
   TREE_MESSAGE_TYPES
 };
 
-struct BaseMessage
-{
-  uint8_t messageType = PING;
+// struct BaseMessage
+// {
+//   uint8_t messageType = PING;
 
-  // a targeted message is meant to be received by a single board id. use id=0 to broadcast
-  uint targetId = 0;
-  uint sourceId = 0;
-};
+//   // a targeted message is meant to be received by a single board id. use id=0 to broadcast
+//   uint targetId = 0;
+//   uint sourceId = 0;
+// };
 
 struct FlowerTouchMessage : public BaseMessage
 {

@@ -35,7 +35,7 @@ namespace ESPSortedBroadcast
   {
   }
 
-  void Peer::begin(int channel)
+  void Peer::begin(int channel, PeerRecord *peerList, int nPeers)
   {
     WiFi.mode(WIFI_STA);
     Serial.println(WiFi.macAddress());
@@ -47,7 +47,10 @@ namespace ESPSortedBroadcast
       return;
     }
 
-    boardInfo = getBoardInfo(WiFi.macAddress(), boardList);
+    this->nPeers = nPeers;
+    setPeerList(peerList);
+    // boardInfo = getBoardInfo(WiFi.macAddress(), boardList);
+    peerDescription = getDescription();
 
     registerReceiveDataCB();
 
@@ -105,8 +108,38 @@ namespace ESPSortedBroadcast
     esp_now_send((uint8_t *)&macaddr, data, len);
   }
 
-  // void Peer::getOwnBoardInformation()
-  // {
-  //   boardInfo = getBoardInfo(WiFi.macAddress(), boardList);
-  // }
+  void Peer::setPeerList(PeerRecord *peerList)
+  {
+    this->peerList = peerList;
+  }
+
+  PeerDescription Peer::getDescription()
+  {
+    // boardInfo = getBoardInfo(WiFi.macAddress(), boardList);
+    PeerDescription peerDescription;
+
+    // int nBoards = 5;
+    // int nBoards = sizeof(boardList); // TODO
+    String macAddress = WiFi.macAddress();
+
+    for (int i = 0; i < nPeers; i++)
+    {
+      if (macAddress == peerList[i].macAddress)
+      {
+        peerDescription.id = i + 1;
+        peerDescription.macAddress = macAddress;
+        peerDescription.type = peerList[i].type;
+        peerDescription.typeName = peerList[i].typeName;
+        peerDescription.name = "B" + String(peerDescription.id) + " [" + peerDescription.typeName + "]";
+        return peerDescription;
+      }
+    }
+
+    peerDescription.id = 999;
+    peerDescription.macAddress = macAddress;
+    peerDescription.type = DEFAULT_PEER;
+    peerDescription.typeName = "unknown";
+    peerDescription.name = "B" + String(peerDescription.id) + " [UNKNWON]";
+    return peerDescription;
+  }
 } // namespace ESPSortedBroadcast

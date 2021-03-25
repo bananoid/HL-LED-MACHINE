@@ -11,18 +11,24 @@ namespace HLSerialMessanger
     packetSerial.begin(boudrate);
     packetSerial.setStream(stream);
     packetSerial.setPacketHandler([](const uint8_t *buffer, size_t size) {
-      Message message;
+      BaseMessage message;
       memcpy(&message, buffer, size);
       SerialMessengerSingleton->delegate->serialMessengerReceiveMsg(&message);
+      SerialMessengerSingleton->delegate->serialMessengerReceiveData(buffer, size);
     });
   }
 
-  void SerialMessenger::sendMessage(Message *message)
+  void SerialMessenger::sendMessage(BaseMessage *message)
   {
     int size = sizeof(&message);
     uint8_t packet[size];
     memcpy(packet, message, size);
     packetSerial.send(packet, size);
+  }
+
+  void SerialMessenger::sendData(const uint8_t *incomingData, int len)
+  {
+    packetSerial.send(incomingData, len);
   }
 
   void SerialMessenger::update()

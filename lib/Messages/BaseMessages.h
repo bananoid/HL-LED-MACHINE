@@ -1,19 +1,21 @@
 #pragma once
 #include <Arduino.h>
 
-#define BASE_MESSAGE_TYPES NO_MESSAGE
+// #define BASE_MESSAGE_TYPES NO_MESSAGE, PING
 
 namespace Messages
 {
 
-  enum BaseMessageTypes
-  {
-    BASE_MESSAGE_TYPES
-  };
+  // enum BaseMessageTypes
+  // {
+  //   BASE_MESSAGE_TYPES
+  // };
 
-  struct Message
+  struct BaseMessage
   {
-    uint8_t type = NO_MESSAGE;
+    uint8_t type = 0;
+    uint targetId = 0;
+    uint sourceId = 0;
   };
 
 } // namespace Messages

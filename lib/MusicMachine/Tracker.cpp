@@ -6,7 +6,7 @@ namespace HLMusicMachine
   {
     clock = new Clock(runner);
     clock->delegate = this;
-    clock->play();
+    // clock->play();
 
     pinMode(19, INPUT);
 
