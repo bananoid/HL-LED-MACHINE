@@ -3,7 +3,7 @@
 #include "LEDStripsRenderer.h"
 #include "GFXUtils.h"
 
-#define _TASK_OO_CALLBACKS
+#define _TASK_STD_FUNCTION
 #include <TaskSchedulerDeclarations.h>
 
 #include <list>
@@ -17,7 +17,7 @@ using namespace std;
 
 namespace LEDSynth
 {
-  class LEDSynth : public Task
+  class LEDSynth
   {
   private:
     unsigned long lastFrameTime = 0;
@@ -34,10 +34,10 @@ namespace LEDSynth
     LEDSynth(int numberOfPixel, LEDStripsRenderer *renderer, Scheduler *runner);
     void update();
 
-    bool Callback();
-
     void appendShader(LEDShader *shader, LEDShader::BlendingMode blendingMode = LEDShader::ADD);
     LEDShaderSynth *addLEDShaderSynth(LEDShader::BlendingMode blendingMode = LEDShader::ADD);
     LEDShaderDiffusion *addLEDShaderDiffusion(LEDShader::BlendingMode blendingMode = LEDShader::ADD);
+
+    Task updateTask;
   };
 }

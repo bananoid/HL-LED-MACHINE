@@ -26,9 +26,9 @@ namespace HLSerialMessanger
     packetSerial.send(packet, size);
   }
 
-  void SerialMessenger::sendData(const uint8_t *incomingData, int len)
+  void SerialMessenger::sendData(const uint8_t *data, int len)
   {
-    packetSerial.send(incomingData, len);
+    packetSerial.send(data, len);
   }
 
   void SerialMessenger::update()

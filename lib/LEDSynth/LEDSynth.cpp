@@ -5,12 +5,18 @@
 namespace LEDSynth
 {
 
-  LEDSynth::LEDSynth(int numberOfPixel, LEDStripsRenderer *renderer, Scheduler *runner) : Task(16 * TASK_MILLISECOND, TASK_FOREVER, runner, true)
+  LEDSynth::LEDSynth(int numberOfPixel, LEDStripsRenderer *renderer, Scheduler *runner)
   {
     this->renderer = renderer;
     this->numberOfPixel = numberOfPixel;
 
     calculatePixelScale(1);
+
+    updateTask.set(16 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
+      update();
+    });
+    runner->addTask(updateTask);
+    updateTask.enable();
   }
 
   void LEDSynth::calculatePixelScale(float scaleFactor)
@@ -18,11 +24,11 @@ namespace LEDSynth
     pixelScale = scaleFactor / numberOfPixel;
   }
 
-  bool LEDSynth::Callback()
-  {
-    update();
-    return true;
-  }
+  // bool LEDSynth::Callback()
+  // {
+  //   update();
+  //   return true;
+  // }
 
   void LEDSynth::appendShader(LEDShader *shader, LEDShader::BlendingMode blendingMode)
   {
