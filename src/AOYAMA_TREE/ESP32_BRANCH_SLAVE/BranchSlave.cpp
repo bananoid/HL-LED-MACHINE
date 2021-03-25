@@ -4,12 +4,8 @@
 
 BranchSlave *BranchSlaveSingleton = new BranchSlave();
 
-using namespace HLMusicMachine;
-
 void BranchSlave::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, int nPeers, Scheduler *runner)
 {
-  instrument = new PinIntrument(2, runner);
-
   // Peer
   ESPSortedBroadcast::Peer::begin(wifiChannel, peerList, nPeers);
 

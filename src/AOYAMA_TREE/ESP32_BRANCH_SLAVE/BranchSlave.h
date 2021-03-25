@@ -3,14 +3,9 @@
 
 #include "AOYAMA_TREE/COMMON/config.h"
 #define _TASK_STD_FUNCTION
-#define _TASK_OO_CALLBACKS
 #include <TaskSchedulerDeclarations.h>
 
 #include <OledScreen.h>
-
-#include <PinInstrument.h>
-
-using namespace HLMusicMachine;
 
 class BranchSlave : public ESPSortedBroadcast::Peer
 {
@@ -28,8 +23,6 @@ public:
   Task displayScreen;
 
   Task ping;
-
-  PinIntrument *instrument;
 };
 
 extern BranchSlave *BranchSlaveSingleton;
