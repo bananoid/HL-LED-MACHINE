@@ -1,5 +1,5 @@
 #include <Arduino.h>
-
+#define ARDUINO_ARCH_ESP32
 #include "MainController.h"
 
 MainController *mainController;

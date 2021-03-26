@@ -1,24 +1,14 @@
 #pragma once
 
-#include "MIDIControl.h"
-#include <AudioControl.h>
+#include <MIDIUSBHost.h>
 
-#include <SerialMessenger.h>
+using namespace HLMIDI;
 
-using namespace HLSerialMessanger;
-
-class MainController : MIDIControlDelegate, HLAudioControl::AudioControlDelegate, SerialMessengerDelegate
+class MainController : MIDIUSBHostDelegate
 {
 private:
 public:
-  MIDIControl *midiControl;
-  HLAudioControl::AudioControl *audioControl;
-  MainController();
   void begin();
   void update();
-  void midiControlReceiveMsg(ControlMsg *message) override;
-  void audioControlReceiveMsg(AudioSignalsMsg *message) override;
-  void serialMessengerReceiveMsg(Message *message) override;
-
-  unsigned long lastTime;
+  void MIDIUSBHostOnReceiveData(uint8_t channel, uint8_t type, uint8_t data1, uint8_t data2) override;
 };

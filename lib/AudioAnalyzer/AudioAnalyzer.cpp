@@ -17,7 +17,7 @@ AudioControlSGTL5000 sgtl5000_1; //xy=736,779
 void AudioAnalyzer::begin(AudioAnalyzerDelegate *delegate)
 {
   this->delegate = delegate;
-  AudioMemory(10);
+  AudioMemory(20); //10 working
   sgtl5000_1.enable();
   sgtl5000_1.volume(0.7);
 

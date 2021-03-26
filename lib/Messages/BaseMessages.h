@@ -14,8 +14,8 @@ namespace Messages
   struct BaseMessage
   {
     uint8_t type = 0;
-    uint targetId = 0;
-    uint sourceId = 0;
+    uint8_t targetId = 0;
+    uint8_t sourceId = 0;
   };
 
 } // namespace Messages

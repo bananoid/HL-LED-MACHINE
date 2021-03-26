@@ -1,4 +1,6 @@
 #include "LedSynth.h"
+#include <Arduino.h>
+
 void LedSynth::begin(Scheduler *runner)
 {
   //Start Stop button
@@ -12,17 +14,20 @@ void LedSynth::begin(Scheduler *runner)
   SerialMessengerSingleton->delegate = this;
   SerialMessengerSingleton->begin(&Serial6, BAUD_RATE);
 
-  // Ping
-  ping.set(TASK_SECOND, TASK_FOREVER, [this]() {
-    BaseMessage msg;
-    msg.sourceId = 0;
-    msg.targetId = 2;
-    SerialMessengerSingleton->sendData((uint8_t *)&msg, sizeof(BaseMessage));
-    Serial.println("S:" + String(msg.sourceId) + "->" + String(msg.targetId) + "[PING]");
-    // screen->println("S:" + String(msg.sourceId) + "->" + String(msg.targetId) + "[PING] " + String(random(99)), 3);
-  });
-  runner->addTask(ping);
-  ping.enable();
+  // MIDI
+  MIDIUSBHostSingleton->begin(this);
+
+  // // Ping
+  // ping.set(TASK_SECOND, TASK_FOREVER, [this]() {
+  //   BaseMessage msg;
+  //   msg.sourceId = 0;
+  //   msg.targetId = 2;
+  //   SerialMessengerSingleton->sendData((uint8_t *)&msg, sizeof(BaseMessage));
+  //   Serial.println("S:" + String(msg.sourceId) + "->" + String(msg.targetId) + "[PING]");
+  //   // screen->println("S:" + String(msg.sourceId) + "->" + String(msg.targetId) + "[PING] " + String(random(99)), 3);
+  // });
+  // runner->addTask(ping);
+  // ping.enable();
 
   // Screen
   screen = new OledScreen(8, 22);
@@ -36,6 +41,12 @@ void LedSynth::begin(Scheduler *runner)
 
   //Audio Analyzer
   AudioAnalyzerSingleton->begin(this);
+
+  broadcastBands.set(16 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
+    AudioAnalyzerSingleton->update();
+  });
+  runner->addTask(broadcastBands);
+  broadcastBands.enable();
 }
 
 void LedSynth::update()
@@ -50,8 +61,8 @@ void LedSynth::update()
   // Serial messenger
   SerialMessengerSingleton->update();
 
-  // Audio analyzer
-  AudioAnalyzerSingleton->update();
+  // MIDI
+  MIDIUSBHostSingleton->update();
 }
 
 void LedSynth::serialMessengerReceiveMsg(BaseMessage *message){
@@ -70,4 +81,21 @@ void LedSynth::audioAnalyzerOnBandsUpdate(float bandLowVal, float bandMidVal, fl
   char c[22];
   sprintf(c, "L:%3d M:%3d H:%3d", int(bandLowVal * 999), int(bandMidVal * 999), int(bandHighVal * 999));
   screen->println(c, 2);
+
+  AudioBandsMessage msg;
+  msg.sourceId = 1;
+  msg.targetId = 0; // 0 to bradcast
+  msg.bandLowVal = bandLowVal;
+  msg.bandMidVal = bandMidVal;
+  msg.bandHighVal = bandHighVal;
+
+  SerialMessengerSingleton->sendData((uint8_t *)&msg, sizeof(AudioBandsMessage));
+  Serial.println("S:" + String(msg.sourceId) + "->" + String(msg.targetId) + "[AudioBand]");
+  screen->println("Sending data [" + String(msg.type) + "]", 4);
+}
+
+void LedSynth::MIDIUSBHostOnReceiveData(uint8_t channel, uint8_t type, uint8_t data1, uint8_t data2)
+{
+  screen->println("Midi Read [" + String(data2) + "]", 6);
+  Serial.printf("Receive Message");
 }

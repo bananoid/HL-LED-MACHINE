@@ -22,9 +22,9 @@ namespace ESPSortedBroadcast
 
   uint8_t Peer::getMessageTypeFromData(const uint8_t *data)
   {
-    int action;
-    memcpy(&action, data, sizeof(action));
-    return action;
+    uint8_t type;
+    memcpy(&type, data, sizeof(uint8_t));
+    return type;
   }
 
   Peer::Peer()

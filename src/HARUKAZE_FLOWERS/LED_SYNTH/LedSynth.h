@@ -3,6 +3,7 @@
 #include <Arduino.h>
 
 #include "config.h"
+#include "HARUKAZE_FLOWERS/COMMON/Messages.h"
 #define ARDUINO_ARCH_ESP32
 #define _TASK_STD_FUNCTION
 #include <TaskSchedulerDeclarations.h>
@@ -12,10 +13,12 @@
 #include <SerialMessenger.h>
 #include <AudioAnalyzer.h>
 #include <OledScreen.h>
+#include <MIDIUSBHost.h>
 
 using namespace HLSerialMessanger;
+using namespace HLMIDI;
 
-class LedSynth : SerialMessengerDelegate, AudioAnalyzerDelegate
+class LedSynth : SerialMessengerDelegate, AudioAnalyzerDelegate, MIDIUSBHostDelegate
 {
 private:
   /* data */
@@ -33,5 +36,9 @@ public:
 
   void audioAnalyzerOnBandsUpdate(float bandLowVal, float bandMidVal, float bandHighVal) override;
 
+  void MIDIUSBHostOnReceiveData(uint8_t channel, uint8_t type, uint8_t data1, uint8_t data2) override;
+
   Task ping;
+
+  Task broadcastBands;
 };
