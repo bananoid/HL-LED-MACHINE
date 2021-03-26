@@ -16,6 +16,8 @@
     {"3C:61:05:2F:B7:E0", "Gateway", GATEWAY},   \
         {"24:0A:C4:EC:9A:A0", "Flower", FLOWER}, \
         {"3C:61:05:2A:A0:50", "Flower", FLOWER}, \
-        {"3C:61:05:2B:01:04", "Flower", FLOWER} \
+    {                                            \
+      "3C:61:05:2B:01:04", "Flower", FLOWER      \
+    }                                            \
   }
 // {"3C:61:05:2E:85:74", "Flower", FLOWER},

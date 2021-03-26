@@ -44,15 +44,24 @@ void Gateway::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, i
 // when receive WIFI send Serial
 void Gateway::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int len)
 {
+  uint8_t type = getMessageTypeFromData(incomingData);
   SerialMessengerSingleton->sendData(incomingData, len);
-  screen->println("Sending Serial " + String(random(0, 99)), 6);
+  // Serial.println("WiFi -> Serial [" + String(type) + ":" + sizeof(incomingData) + "]" + String(random(0, 9)));
+  screen->println("WiFi -> Serial [" + String(type) + ":" + sizeof(incomingData) + "]" + String(random(0, 9)), 6);
 }
 
 // When receive Serial send WIFI
 void Gateway::serialMessengerReceiveData(const uint8_t *incomingData, int len)
 {
-  Serial.println("Receive data!");
+  uint8_t type = getMessageTypeFromData(incomingData);
+  screen->println("Serial -> Wifi [" + String(type) + "]" + String(random(0, 99)), 7);
   broadcastData(incomingData, len); // send received data to wifi
+
+  if (type != 1)
+  {
+    // screen->println("WiFi -> Serial [" + String(type) + ":" + sizeof(incomingData) + "]" + String(random(0, 9)), 6);
+    Serial.println("Serial -> Wifi [" + String(type) + "]" + String(random(0, 99)));
+  }
 }
 
 void Gateway::registerReceiveDataCB()

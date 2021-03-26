@@ -40,8 +40,20 @@ public:
 
   Task ping;
 
-  Task broadcastBands;
+  Task broadcastAudioBandsTask;
+  Task broadcastMIDITask;
 
-  LedSynthLayerMessage *ledSynthLayerMessages[N_LAYERS];
+  LedSynthLayerColorMessage *ledSynthLayerColorMessages[N_LAYERS];
+  LedSynthLayerShapeMessage *ledSynthLayerShapeMessages[N_LAYERS];
+  LedSynthLayerAudioMessage *ledSynthLayerAudioMessages[N_LAYERS];
   LedSynthGlobalMessage *ledSynthGlobalMessage;
+
+  // messages
+  bool globalChanged = false;
+  bool layer1ColorChanged = false;
+  bool layer1ShapeChanged = false;
+  bool layer1AudioChanged = false;
+  bool layer2ColorChanged = false;
+  bool layer2ShapeChanged = false;
+  bool layer2AudioChanged = false;
 };

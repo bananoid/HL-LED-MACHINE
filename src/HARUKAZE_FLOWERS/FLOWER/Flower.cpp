@@ -88,6 +88,8 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
   // memcpy(&pingMessage, incomingData, sizeof(pingMessage));
   // Serial.printf(pingMessage.targetId)
 
+  Serial.println(messageType);
+
   switch (messageType)
   {
 
@@ -110,6 +112,29 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     char c[22];
     sprintf(c, "L:%3d M:%3d H:%3d", int(msg.bandLowVal * 999), int(msg.bandMidVal * 999), int(msg.bandHighVal * 999));
     screen->println(c, 7);
+    break;
+  }
+  case MSG_LED_SYNTH_LAYER:
+  {
+    LedSynthLayerMessage msg;
+    memcpy(&msg, incomingData, sizeof(msg));
+    targetId = msg.targetId;
+    sourceId = msg.sourceId;
+    messageTypeName = "Led Layer Msg";
+    screen->println("Receiving layer:" + String(msg.layer) + " " + String(random(9)), 6);
+    break;
+  }
+  case MSG_LED_SYNTH_GLOBAL:
+  {
+    LedSynthGlobalMessage msg;
+    memcpy(&msg, incomingData, sizeof(msg));
+    targetId = msg.targetId;
+    sourceId = msg.sourceId;
+    messageTypeName = "Led Global Msg";
+    if (targetId == peerDescription.id || targetId == 0)
+    {
+      screen->println("R intensity: " + String(msg.globalIntensity), 6);
+    }
     break;
   }
   default:
