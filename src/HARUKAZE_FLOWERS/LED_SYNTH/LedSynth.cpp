@@ -1,5 +1,4 @@
 #include "LedSynth.h"
-
 void LedSynth::begin(Scheduler *runner)
 {
   //Start Stop button
@@ -34,6 +33,9 @@ void LedSynth::begin(Scheduler *runner)
   });
   runner->addTask(displayScreen);
   displayScreen.enable();
+
+  //Audio Analyzer
+  AudioAnalyzerSingleton->begin(this);
 }
 
 void LedSynth::update()
@@ -45,8 +47,11 @@ void LedSynth::update()
     Serial.println("button press");
   }
 
-  // serial messenger
+  // Serial messenger
   SerialMessengerSingleton->update();
+
+  // Audio analyzer
+  AudioAnalyzerSingleton->update();
 }
 
 void LedSynth::serialMessengerReceiveMsg(BaseMessage *message){
@@ -59,3 +64,10 @@ void LedSynth::serialMessengerReceiveData(const uint8_t *incomingData, int len)
   Serial.println("Receive data! ");
   screen->println("Receive data! " + String(random(99)), 5);
 };
+
+void LedSynth::audioAnalyzerOnBandsUpdate(float bandLowVal, float bandMidVal, float bandHighVal)
+{
+  char c[22];
+  sprintf(c, "L:%3d M:%3d H:%3d", int(bandLowVal * 999), int(bandMidVal * 999), int(bandHighVal * 999));
+  screen->println(c, 2);
+}

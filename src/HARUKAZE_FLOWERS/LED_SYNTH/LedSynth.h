@@ -10,12 +10,12 @@
 #include <Bounce2.h>
 
 #include <SerialMessenger.h>
-
+#include <AudioAnalyzer.h>
 #include <OledScreen.h>
 
 using namespace HLSerialMessanger;
 
-class LedSynth : SerialMessengerDelegate
+class LedSynth : SerialMessengerDelegate, AudioAnalyzerDelegate
 {
 private:
   /* data */
@@ -30,6 +30,8 @@ public:
   void serialMessengerReceiveData(const uint8_t *incomingData, int len);
 
   Bounce2::Button startStopButton = Bounce2::Button();
+
+  void audioAnalyzerOnBandsUpdate(float bandLowVal, float bandMidVal, float bandHighVal) override;
 
   Task ping;
 };
