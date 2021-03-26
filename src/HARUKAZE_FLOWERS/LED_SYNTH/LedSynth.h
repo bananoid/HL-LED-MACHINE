@@ -41,4 +41,7 @@ public:
   Task ping;
 
   Task broadcastBands;
+
+  LedSynthLayerMessage *ledSynthLayerMessages[N_LAYERS];
+  LedSynthGlobalMessage *ledSynthGlobalMessage;
 };

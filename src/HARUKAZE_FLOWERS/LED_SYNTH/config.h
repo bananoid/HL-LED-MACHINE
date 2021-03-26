@@ -4,6 +4,20 @@
 // Serial Messenger
 #define BAUD_RATE 115200
 
+// LED LAYERS
+#define N_LAYERS 2
+
+#define MIN_AUDIO_INTERPOLATION_SPEED 0.3f
+#define MAX_AUDIO_INTERPOLATION_SPEED 0.05f
+
+#define MIN_INTERPOLATION_SPEED 0.01f
+#define MAX_INTERPOLATION_SPEED 0.0001f
+const float maxAudioInfluence = 2.0f;
+
+#define LAYER_MAX_SPEED 30.0f
+#define MAX_SCALE 5.0f
+#define MIN_SCALE 0.01f
+
 // #define NUMBER_OF_INSTRUMENTS 3
 
 // #define ENCODER_PIN_A 18
