@@ -17,7 +17,9 @@
 #include <OledScreen.h>
 
 #define PIN_LED_RING_TOP 18
-// #define PIN_LED_RING_BOTTOM 19
+#define PIN_LED_RING_BOTTOM 19
+
+#define N_LAYERS 2
 
 class Flower : public ESPSortedBroadcast::Peer
 {
@@ -37,9 +39,10 @@ public:
 
   CRGB *leds;
 
-  LEDSynth::LEDSynth *ledSynth;
-  LEDSynth::LEDShaderSynth *shader;
   LEDSynth::FastLEDRenderer ledRenderer;
+  LEDSynth::LEDSynth *ledSynth;
+
+  LEDSynth::LEDShaderSynth *shaders[N_LAYERS];
 };
 
 extern Flower *FlowerSingleton;

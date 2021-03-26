@@ -53,13 +53,16 @@ void LedSynth::begin(Scheduler *runner)
   {
     /* code */
     ledSynthLayerColorMessages[i] = new LedSynthLayerColorMessage();
+    ledSynthLayerColorMessages[i]->layer = i;
     ledSynthLayerShapeMessages[i] = new LedSynthLayerShapeMessage();
+    ledSynthLayerShapeMessages[i]->layer = i;
     ledSynthLayerAudioMessages[i] = new LedSynthLayerAudioMessage();
+    ledSynthLayerAudioMessages[i]->layer = i;
   }
 
   ledSynthGlobalMessage = new LedSynthGlobalMessage();
 
-  broadcastMIDITask.set(100 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
+  broadcastMIDITask.set(16 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
     if (globalChanged)
     {
       globalChanged = false;

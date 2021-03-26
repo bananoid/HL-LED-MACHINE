@@ -59,6 +59,8 @@ namespace LEDSynth
       state.hueRad += (targetState->hueRad - state.hueRad) * interpolationSpeed;
       state.saturation += (targetState->saturation - state.saturation) * interpolationSpeed;
 
+      state.intensity += (targetState->intensity - state.intensity) * interpolationSpeed;
+
       // state.hueSpeed += (state.hueSpeed - targetState.hueSpeed) * interpolationSpeed;
     }
 
@@ -90,6 +92,8 @@ namespace LEDSynth
       fRGB tColor = color;
       tColor.mult(intensity * intensity * intensity);
       color.add(tColor);
+
+      color = color * state.intensity;
 
       return color;
     }

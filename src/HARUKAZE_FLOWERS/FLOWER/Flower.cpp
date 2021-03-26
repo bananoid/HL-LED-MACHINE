@@ -41,6 +41,7 @@ void Flower::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, in
 
   leds = new CRGB[numOffLeds];
   FastLED.addLeds<WS2812B, PIN_LED_RING_TOP, GRB>(leds, numOffLeds);
+  FastLED.addLeds<WS2812B, PIN_LED_RING_BOTTOM, GRB>(leds, numOffLeds);
 
   // for (int i = 0; i < numOffLeds; i++)
   // {
@@ -53,12 +54,15 @@ void Flower::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, in
 
   // LEDSynth::LEDShaderSynth *shader;
 
-  shader = ledSynth->addLEDShaderSynth();
-  shader->targetState->speed = 0.13;
-  shader->targetState->hue = 0.5;
-  shader->targetState->hueRad = 0;
-  shader->targetState->scale = 0.1;
-  shader->targetState->que = 2.;
+  for (int i = 0; i < N_LAYERS; i++)
+  {
+    shaders[i] = ledSynth->addLEDShaderSynth();
+    // shader->targetState->speed = 0.13;
+    // shader->targetState->hue = 0.5;
+    // shader->targetState->hueRad = 0;
+    // shader->targetState->scale = 0.1;
+    // shader->targetState->que = 2.;
+  }
 }
 
 void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int len)
@@ -114,16 +118,47 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     screen->println(c, 7);
     break;
   }
-  case MSG_LED_SYNTH_LAYER:
+    // case MSG_LED_SYNTH_LAYER:
+    // {
+    //   LedSynthLayerMessage msg;
+    //   memcpy(&msg, incomingData, sizeof(msg));
+    //   targetId = msg.targetId;
+    //   sourceId = msg.sourceId;
+    //   messageTypeName = "Led Layer Msg";
+    //   screen->println("Receiving layer:" + String(msg.layer) + " " + String(random(9)), 6);
+    //   break;
+    // }
+
+  case MSG_LED_SYNTH_LAYER_COLOR:
   {
-    LedSynthLayerMessage msg;
+    LedSynthLayerColorMessage msg;
     memcpy(&msg, incomingData, sizeof(msg));
-    targetId = msg.targetId;
-    sourceId = msg.sourceId;
-    messageTypeName = "Led Layer Msg";
-    screen->println("Receiving layer:" + String(msg.layer) + " " + String(random(9)), 6);
+    uint8_t layer = msg.layer;
+    LEDSynth::LEDShaderSynth *shader = shaders[layer];
+    shader->targetState->hue = msg.hue;
+    shader->targetState->hueRad = msg.hueRad;
+    shader->targetState->scale = msg.scale;
+    shader->targetState->speed = msg.speed * 0.01;
+    shader->targetState->intensity = msg.intensity;
+    Serial.println("test");
+    screen->println("Receiving layer:" + String(msg.layer) + " " + String(msg.intensity), 6);
+
     break;
   }
+
+  case MSG_LED_SYNTH_LAYER_SHAPE:
+  {
+    LedSynthLayerShapeMessage msg;
+    memcpy(&msg, incomingData, sizeof(msg));
+    uint8_t layer = msg.layer;
+    LEDSynth::LEDShaderSynth *shader = shaders[layer];
+    shader->targetState->que = msg.que;
+    shader->targetState->sym = msg.sym;
+    shader->targetState->fmAmo = msg.fmAmo;
+    shader->targetState->fmFrq = msg.fmFrq;
+    break;
+  }
+
   case MSG_LED_SYNTH_GLOBAL:
   {
     LedSynthGlobalMessage msg;

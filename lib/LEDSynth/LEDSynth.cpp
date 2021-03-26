@@ -10,7 +10,7 @@ namespace LEDSynth
     this->renderer = renderer;
     this->numberOfPixel = numberOfPixel;
 
-    calculatePixelScale(1);
+    calculatePixelScale(0.1);
 
     updateTask.set(16 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
       update();
