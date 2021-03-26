@@ -26,5 +26,6 @@ void loop()
 {
   runner.execute();
   GatewaySingleton->screen->sayHello(2);
+
   GatewaySingleton->update();
 }

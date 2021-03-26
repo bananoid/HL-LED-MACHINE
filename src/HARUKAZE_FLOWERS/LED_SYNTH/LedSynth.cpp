@@ -20,7 +20,7 @@ void LedSynth::begin(Scheduler *runner)
     msg.targetId = 2;
     SerialMessengerSingleton->sendData((uint8_t *)&msg, sizeof(BaseMessage));
     Serial.println("S:" + String(msg.sourceId) + "->" + String(msg.targetId) + "[PING]");
-    screen->println("S:" + String(msg.sourceId) + "->" + String(msg.targetId) + "[PING] " + String(random(99)), 3);
+    // screen->println("S:" + String(msg.sourceId) + "->" + String(msg.targetId) + "[PING] " + String(random(99)), 3);
   });
   runner->addTask(ping);
   ping.enable();
@@ -28,7 +28,7 @@ void LedSynth::begin(Scheduler *runner)
   // Screen
   screen = new OledScreen(8, 22);
   screen->begin();
-  screen->println("LedSynth", 0);
+  screen->println("Hidden Layer", 0);
   displayScreen.set(50 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
     screen->displayScreen();
   });

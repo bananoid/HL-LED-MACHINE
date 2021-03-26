@@ -17,6 +17,7 @@ void setup()
 void loop()
 {
   runner.execute();
+
   ledSynth->screen->sayHello(2);
   ledSynth->update();
 }
