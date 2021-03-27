@@ -9,6 +9,7 @@ void Gateway::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, i
   // Peer
   ESPSortedBroadcast::Peer::begin(wifiChannel, peerList, nPeers);
 
+#ifndef OLEDSCREEN_DISABLED
   // Screen
   screen = new OledScreen(8, 22);
   screen->begin();
@@ -20,6 +21,7 @@ void Gateway::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, i
   });
   runner->addTask(displayScreen);
   displayScreen.enable();
+#endif
 
   // // Peer
   // ping.set(TASK_SECOND, TASK_FOREVER, [this]() {
@@ -47,21 +49,25 @@ void Gateway::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int
   uint8_t type = getMessageTypeFromData(incomingData);
   SerialMessengerSingleton->sendData(incomingData, len);
   // Serial.println("WiFi -> Serial [" + String(type) + ":" + sizeof(incomingData) + "]" + String(random(0, 9)));
+#ifndef OLEDSCREEN_DISABLED
   screen->println("WiFi -> Serial [" + String(type) + ":" + sizeof(incomingData) + "]" + String(random(0, 9)), 6);
+#endif
 }
 
 // When receive Serial send WIFI
 void Gateway::serialMessengerReceiveData(const uint8_t *incomingData, int len)
 {
   uint8_t type = getMessageTypeFromData(incomingData);
+#ifndef OLEDSCREEN_DISABLED
   screen->println("Serial -> Wifi [" + String(type) + "]" + String(random(0, 99)), 7);
+#endif
   broadcastData(incomingData, len); // send received data to wifi
 
-  if (type != 1)
-  {
-    // screen->println("WiFi -> Serial [" + String(type) + ":" + sizeof(incomingData) + "]" + String(random(0, 9)), 6);
-    Serial.println("Serial -> Wifi [" + String(type) + "]" + String(random(0, 99)));
-  }
+  // if (type != 1)
+  // {
+  //   // screen->println("WiFi -> Serial [" + String(type) + ":" + sizeof(incomingData) + "]" + String(random(0, 9)), 6);
+  //   Serial.println("Serial -> Wifi [" + String(type) + "]" + String(random(0, 99)));
+  // }
 }
 
 void Gateway::registerReceiveDataCB()

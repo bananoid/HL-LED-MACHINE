@@ -6,7 +6,9 @@
 #include <TaskSchedulerDeclarations.h>
 #include <SerialMessenger.h>
 
+#ifndef OLEDSCREEN_DISABLED
 #include <OledScreen.h>
+#endif
 
 using namespace HLSerialMessanger;
 
@@ -20,8 +22,9 @@ public:
 
   void begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, int nPeers, Scheduler *runner);
   void update();
-
+#ifndef OLEDSCREEN_DISABLED
   OledScreen *screen;
+#endif
   Task displayScreen;
 
   Task ping;
