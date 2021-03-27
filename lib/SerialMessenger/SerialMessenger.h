@@ -4,7 +4,7 @@
 
 #include <BaseMessages.h>
 
-#define PACKET_SIZE 256
+#define PACKET_SIZE 1024
 
 using namespace Messages;
 

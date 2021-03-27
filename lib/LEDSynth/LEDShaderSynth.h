@@ -25,11 +25,13 @@ namespace LEDSynth
       // float hueSpeed = 2.f;
 
       float saturation = 1.0f;
+      float globalIntensity = 1.0f;
     };
 
     LEDShaderSynthState state;
     LEDShaderSynthState *targetState;
     float interpolationSpeed = 1;
+    float audioFilterSpeed = 1;
 
     float position;
 
@@ -80,8 +82,7 @@ namespace LEDSynth
       state.saturation += (targetState->saturation - state.saturation) * interpolationSpeed;
 
       state.intensity += (targetState->intensity - state.intensity) * interpolationSpeed;
-
-      // state.hueSpeed += (state.hueSpeed - targetState.hueSpeed) * interpolationSpeed;
+      state.globalIntensity += (targetState->globalIntensity - state.globalIntensity) * interpolationSpeed;
     }
 
     fRGB renderPoint(float pointPosition, float time) override
@@ -113,7 +114,7 @@ namespace LEDSynth
       tColor.mult(intensity * intensity * intensity);
       color.add(tColor);
 
-      color = color * state.intensity * intensityForAudio;
+      color = color * state.intensity * intensityForAudio * state.globalIntensity;
 
       return color;
     }

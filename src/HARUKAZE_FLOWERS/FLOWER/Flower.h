@@ -14,7 +14,7 @@
 
 #include <WiFi.h>
 
-// #define OLEDSCREEN_DISABLED
+#define OLEDSCREEN_DISABLED
 
 #ifndef OLEDSCREEN_DISABLED
 #include <OledScreen.h>
@@ -49,6 +49,7 @@ public:
   LEDSynth::LEDSynth *ledSynth;
 
   LEDSynth::LEDShaderSynth *shaders[N_LAYERS];
+  LEDSynth::LEDShaderSynth *getLayerShader(int n);
 };
 
 extern Flower *FlowerSingleton;

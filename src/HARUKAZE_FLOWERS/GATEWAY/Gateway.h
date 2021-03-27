@@ -6,7 +6,7 @@
 #include <TaskSchedulerDeclarations.h>
 #include <SerialMessenger.h>
 
-// #define OLEDSCREEN_DISABLED
+#define OLEDSCREEN_DISABLED
 
 #ifndef OLEDSCREEN_DISABLED
 #include <OledScreen.h>

@@ -13,7 +13,7 @@
 #include <SerialMessenger.h>
 #include <AudioAnalyzer.h>
 
-// #define OLEDSCREEN_DISABLED
+#define OLEDSCREEN_DISABLED
 #ifndef OLEDSCREEN_DISABLED
 #include <OledScreen.h>
 #endif

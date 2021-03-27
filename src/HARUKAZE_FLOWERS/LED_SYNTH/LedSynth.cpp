@@ -338,15 +338,12 @@ void LedSynth::MIDIUSBHostOnReceiveData(uint8_t channel, uint8_t type, uint8_t d
     }
     else if (data1 == 55) // c7 r3
     {
-      ledSynthLayerColorMessages[0]->saturation = map((float)data2, 0.f, 127.f, 0.f, 1.f);
-      ledSynthLayerColorMessages[0]->targetId = 0;
-      layer1ColorChanged = true;
+      ledSynthGlobalMessage->saturation = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthGlobalMessage->targetId = 0;
+      globalChanged = true;
     }
     else if (data1 == 56) // c8 r3
     {
-      ledSynthLayerColorMessages[1]->saturation = map((float)data2, 0.f, 127.f, 0.f, 1.f);
-      ledSynthLayerColorMessages[1]->targetId = 0;
-      layer2ColorChanged = true;
     }
     else if (data1 == 83) // c7 r4
     {
@@ -415,13 +412,13 @@ void LedSynth::MIDIUSBHostOnReceiveData(uint8_t channel, uint8_t type, uint8_t d
     {
       float intensity = map((float)data2, 0.f, 127.f, 0.f, 1.f);
 
-      ledSynthLayerColorMessages[0]->intensity = intensity;
-      ledSynthLayerColorMessages[0]->targetId = peerId;
+      ledSynthGlobalMessage->globalIntensity = intensity;
+      ledSynthGlobalMessage->targetId = peerId;
       layer1ColorChanged = true;
 
-      ledSynthLayerColorMessages[1]->intensity = intensity;
-      ledSynthLayerColorMessages[1]->targetId = peerId;
-      layer2ColorChanged = true;
+      ledSynthGlobalMessage->globalIntensity = intensity;
+      ledSynthGlobalMessage->targetId = peerId;
+      globalChanged = true;
     }
   }
 }

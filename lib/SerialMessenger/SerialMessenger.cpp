@@ -29,7 +29,7 @@ namespace HLSerialMessanger
 
   void SerialMessenger::sendData(const uint8_t *data, int len)
   {
-    // stream->flush();
+    stream->flush();
     packetSerial.send(data, len);
   }
 

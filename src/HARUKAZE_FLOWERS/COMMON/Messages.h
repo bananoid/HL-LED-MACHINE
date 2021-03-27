@@ -74,7 +74,6 @@ struct LedSynthLayerColorMessage : public BaseMessage
   float scale = 1.f;
   float speed = 1.f;
   float intensity = 1; // brightness
-  float saturation = 1.0f;
 
   uint8_t layer = 0;
 };
@@ -118,4 +117,6 @@ struct LedSynthGlobalMessage : public BaseMessage
 
   float interpolationSpeed = 0;
   float audioFilterSpeed = 0;
+  float globalIntensity = 1;
+  float saturation = 1.0f;
 };

@@ -62,6 +62,15 @@ void Flower::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, in
   }
 }
 
+LEDSynth::LEDShaderSynth *Flower::getLayerShader(int n)
+{
+  if (n >= 0 && n < N_LAYERS)
+  {
+    return shaders[n];
+  }
+  return shaders[0];
+}
+
 void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int len)
 {
   // Serial.println("Receiving Message!");
@@ -102,7 +111,7 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     LEDSynth::LEDShaderSynth *shader;
     for (int i = 0; i < N_LAYERS; i++)
     {
-      shader = shaders[i];
+      shader = getLayerShader(i);
 
       msg.bandLowVal = msg.bandLowVal * msg.bandLowVal * msg.bandLowVal * 500;
       msg.bandMidVal = msg.bandMidVal * msg.bandMidVal * msg.bandMidVal * 300;
@@ -123,13 +132,16 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     shader->targetState->hue = msg.hue;
     shader->targetState->hueRad = msg.hueRad;
     shader->targetState->scale = msg.scale;
-    shader->targetState->speed = msg.speed * 0.01;
+    shader->targetState->speed = msg.speed * 0.01; //Todo: parematrize speed by number of leds
+    shader->targetState->intensity = msg.intensity;
+
+    Serial.printf("LedSynthLayerColorMessage %f %f %f %f\n", msg.hue, msg.hueRad, msg.scale, msg.speed);
 
     if (msg.targetId == peerDescription.id)
     {
       for (int i = 0; i < N_LAYERS; i++)
       {
-        shaders[i]->targetState->intensity = msg.intensity;
+        getLayerShader(i)->targetState->intensity = msg.intensity;
       }
     }
 
@@ -145,11 +157,14 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     LedSynthLayerShapeMessage msg;
     memcpy(&msg, incomingData, sizeof(msg));
     uint8_t layer = msg.layer;
-    LEDSynth::LEDShaderSynth *shader = shaders[layer];
+    LEDSynth::LEDShaderSynth *shader = getLayerShader(layer);
+
     shader->targetState->que = msg.que;
     shader->targetState->sym = msg.sym;
     shader->targetState->fmAmo = msg.fmAmo;
     shader->targetState->fmFrq = msg.fmFrq;
+
+    Serial.printf("LedSynthLayerShapeMessage %f %f %f %f\n", msg.que, msg.sym, msg.fmAmo, msg.fmFrq);
     break;
   }
 
@@ -158,7 +173,7 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     LedSynthLayerAudioMessage msg;
     memcpy(&msg, incomingData, sizeof(msg));
     uint8_t layer = msg.layer;
-    LEDSynth::LEDShaderSynth *shader = shaders[layer];
+    LEDSynth::LEDShaderSynth *shader = getLayerShader(layer);
 
     shader->audioAmpLowBand = msg.audioAmpLowBand;
     shader->audioAmpMidBand = msg.audioAmpMidBand;
@@ -166,7 +181,7 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
 
     shader->audioInfluence = msg.audioInfluence;
 
-    Serial.printf("audioInfluence %f\n", shader->audioInfluence);
+    Serial.printf("LedSynthLayerAudioMessage %f %f %f %f\n", msg.audioInfluence, msg.audioAmpLowBand, msg.audioAmpMidBand, msg.audioAmpHighBand);
 
     break;
   }
@@ -177,7 +192,17 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     memcpy(&msg, incomingData, sizeof(msg));
     targetId = msg.targetId;
     sourceId = msg.sourceId;
-    messageTypeName = "Led Global Msg";
+
+    LEDSynth::LEDShaderSynth *shader;
+    for (int i = 0; i < N_LAYERS; i++)
+    {
+      shaders[i]->targetState->globalIntensity = msg.globalIntensity;
+      shaders[i]->targetState->saturation = msg.saturation;
+      shaders[i]->interpolationSpeed = msg.interpolationSpeed;
+      shaders[i]->audioFilterSpeed = msg.audioFilterSpeed;
+
+      Serial.printf("globalIntensity %f saturation %f interpolationSpeed %f audioFilterSpeed %f\n", msg.globalIntensity, msg.saturation, msg.interpolationSpeed, msg.audioFilterSpeed);
+    }
     break;
   }
   default:
