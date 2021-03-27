@@ -164,161 +164,190 @@ void LedSynth::MIDIUSBHostOnReceiveData(uint8_t channel, uint8_t type, uint8_t d
   {
 
     // layer 1
-    if (data1 == 13)
+    if (data1 == 13) // c1 r1
     {
       ledSynthLayerShapeMessages[0]->que = map((float)data2, 0.f, 127.f, 0.f, 3.6f);
+      ledSynthLayerShapeMessages[0]->targetId = 0;
       layer1ShapeChanged = true;
     }
     else if (data1 == 29) // c1 r2
     {
       ledSynthLayerShapeMessages[0]->sym = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerShapeMessages[0]->targetId = 0;
       layer1ShapeChanged = true;
     }
     else if (data1 == 49) // c1 r3
     {
       ledSynthLayerShapeMessages[0]->fmAmo = map((float)data2, 0.f, 127.f, 0.1f, 8.f);
+      ledSynthLayerShapeMessages[0]->targetId = 0;
       layer1ShapeChanged = true;
     }
     else if (data1 == 77) // c1 r4
     {
       ledSynthLayerShapeMessages[0]->fmFrq = map((float)data2, 0.f, 127.f, 0.f, 5.f);
+      ledSynthLayerShapeMessages[0]->targetId = 0;
       layer1ShapeChanged = true;
     }
     else if (data1 == 14) // c2 r1
     {
       ledSynthLayerColorMessages[0]->hue = map((float)data2, 0.f, 127.f, 0.f, 1.0f);
+      ledSynthLayerColorMessages[0]->targetId = 0;
       layer1ColorChanged = true;
     }
     else if (data1 == 30) // c2 r2
     {
       ledSynthLayerColorMessages[0]->hueRad = map((float)data2, 0.f, 127.f, 0.f, 0.5f);
+      ledSynthLayerColorMessages[0]->targetId = 0;
       layer1ColorChanged = true;
     }
     else if (data1 == 50) // c2 r3
     {
       ledSynthLayerColorMessages[0]->speed = map((float)data2, 0.f, 127.f, -LAYER_MAX_SPEED, LAYER_MAX_SPEED);
+      ledSynthLayerColorMessages[0]->targetId = 0;
       layer1ColorChanged = true;
     }
     else if (data1 == 78) // c2 r4
     {
       ledSynthLayerColorMessages[0]->scale = map((float)data2, 0.f, 127.f, MIN_SCALE, MAX_SCALE);
+      ledSynthLayerColorMessages[0]->targetId = 0;
       layer1ColorChanged = true;
     }
     else if (data1 == 15) // c2 r2
     {
-      ledSynthLayerAudioMessages[0]->audioInfluenceHighBand = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerAudioMessages[0]->audioAmpHighBand = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerAudioMessages[0]->targetId = 0;
       layer1AudioChanged = true;
     }
     else if (data1 == 31) // c2 r3
     {
-      ledSynthLayerAudioMessages[0]->audioInfluenceMidBand = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerAudioMessages[0]->audioAmpMidBand = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerAudioMessages[0]->targetId = 0;
       layer1AudioChanged = true;
     }
     else if (data1 == 51) // c2 r4
     {
-      ledSynthLayerAudioMessages[0]->audioInfluenceLowBand = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerAudioMessages[0]->audioAmpLowBand = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerAudioMessages[0]->targetId = 0;
       layer1AudioChanged = true;
     }
     else if (data1 == 79) // c2 r4
     {
-      ledSynthLayerColorMessages[0]->intensity = map((float)data2, 0.f, 127.f, 0.f, 1.f);
-      layer1ColorChanged = true;
+      ledSynthLayerAudioMessages[0]->audioInfluence = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerAudioMessages[0]->targetId = 0;
+      layer1AudioChanged = true;
     }
 
     // Layer 2
     else if (data1 == 16) // c4 r1
     {
       ledSynthLayerShapeMessages[1]->que = map((float)data2, 0.f, 127.f, 0.f, 3.6f);
+      ledSynthLayerShapeMessages[1]->targetId = 0;
       layer2ShapeChanged = true;
     }
     else if (data1 == 32) // c4 r2
     {
       ledSynthLayerShapeMessages[1]->sym = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerShapeMessages[1]->targetId = 0;
       layer2ShapeChanged = true;
     }
     else if (data1 == 52) // c4 r3
     {
       ledSynthLayerShapeMessages[1]->fmAmo = map((float)data2, 0.f, 127.f, 0.1f, 8.f);
+      ledSynthLayerShapeMessages[1]->targetId = 0;
       layer2ShapeChanged = true;
     }
     else if (data1 == 80) // c4 r4
     {
       ledSynthLayerShapeMessages[1]->fmFrq = map((float)data2, 0.f, 127.f, 0.f, 5.f);
+      ledSynthLayerShapeMessages[1]->targetId = 0;
       layer2ShapeChanged = true;
     }
     else if (data1 == 17) // c5 r1
     {
       ledSynthLayerColorMessages[1]->hue = map((float)data2, 0.f, 127.f, 0.f, 1.0f);
+      ledSynthLayerShapeMessages[1]->targetId = 0;
       layer2ColorChanged = true;
     }
     else if (data1 == 33) // c5 r2
     {
       ledSynthLayerColorMessages[1]->hueRad = map((float)data2, 0.f, 127.f, 0.f, 0.5f);
+      ledSynthLayerColorMessages[1]->targetId = 0;
       layer2ColorChanged = true;
     }
     else if (data1 == 53) // c5 r3
     {
       ledSynthLayerColorMessages[1]->speed = map((float)data2, 0.f, 127.f, -LAYER_MAX_SPEED, LAYER_MAX_SPEED);
+      ledSynthLayerColorMessages[1]->targetId = 0;
       layer2ColorChanged = true;
     }
     else if (data1 == 81) // c5 r4
     {
       ledSynthLayerColorMessages[1]->scale = map((float)data2, 0.f, 127.f, MIN_SCALE, MAX_SCALE);
+      ledSynthLayerColorMessages[1]->targetId = 0;
       layer2ColorChanged = true;
     }
     else if (data1 == 18) // c6 r1
     {
-      ledSynthLayerAudioMessages[1]->audioInfluenceHighBand = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerAudioMessages[1]->audioAmpHighBand = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerAudioMessages[1]->targetId = 0;
       layer2AudioChanged = true;
     }
     else if (data1 == 34) // c6 r2
     {
-      ledSynthLayerAudioMessages[1]->audioInfluenceMidBand = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerAudioMessages[1]->audioAmpMidBand = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerAudioMessages[1]->targetId = 0;
       layer2AudioChanged = true;
     }
     else if (data1 == 54) // c6 r3
     {
-      ledSynthLayerAudioMessages[1]->audioInfluenceLowBand = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerAudioMessages[1]->audioAmpLowBand = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerAudioMessages[1]->targetId = 0;
       layer2AudioChanged = true;
     }
     else if (data1 == 82) // c6 r4
     {
-      ledSynthLayerColorMessages[1]->intensity = map((float)data2, 0.f, 127.f, 0.f, 1.f);
-      layer2ColorChanged = true;
+      ledSynthLayerAudioMessages[1]->audioInfluence = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerAudioMessages[1]->targetId = 0;
+      layer2AudioChanged = true;
     }
 
     // GLOBAL
     else if (data1 == 19) // c7 r1
     {
-      ledSynthGlobalMessage->saturation = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthGlobalMessage->audioFilterSpeed = map((float)data2, 0.f, 127.f, 0.f, 1.f);
       ledSynthGlobalMessage->targetId = 0;
       globalChanged = true;
     }
-    else if (data1 == 83) // c7 r4
+    else if (data1 == 20) // c8 r1
     {
       ledSynthGlobalMessage->interpolationSpeed = map((float)data2, 0.f, 127.f, 0.f, 1.f);
       ledSynthGlobalMessage->targetId = 0;
       globalChanged = true;
     }
+    else if (data1 == 55) // c7 r3
+    {
+      ledSynthLayerColorMessages[0]->saturation = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerColorMessages[0]->targetId = 0;
+      layer1ColorChanged = true;
+    }
+    else if (data1 == 56) // c8 r3
+    {
+      ledSynthLayerColorMessages[1]->saturation = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerColorMessages[1]->targetId = 0;
+      layer2ColorChanged = true;
+    }
+    else if (data1 == 83) // c7 r4
+    {
+      ledSynthLayerColorMessages[0]->intensity = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerColorMessages[0]->targetId = 0;
+      layer1ColorChanged = true;
+    }
     else if (data1 == 84) // c8 r4
     {
-      ledSynthGlobalMessage->audioFilterSpeed = map((float)data2, 0.f, 127.f, 0.f, 1.f);
-      ledSynthGlobalMessage->targetId = 0;
-      globalChanged = true;
+      ledSynthLayerColorMessages[1]->intensity = map((float)data2, 0.f, 127.f, 0.f, 1.f);
+      ledSynthLayerColorMessages[1]->targetId = 0;
+      layer2ColorChanged = true;
     }
-
-    // if (globalChanged)
-    // {
-    //   SerialMessengerSingleton->sendData((uint8_t *)ledSynthGlobalMessage, sizeof(LedSynthGlobalMessage));
-    // }
-    // else if (layer1Changed)
-    // {
-    //   SerialMessengerSingleton->sendData((uint8_t *)ledSynthLayerMessages[0], sizeof(LedSynthLayerMessage));
-    // }
-    // else if (layer2Changed)
-    // {
-    //   SerialMessengerSingleton->sendData((uint8_t *)ledSynthLayerMessages[1], sizeof(LedSynthLayerMessage));
-    // }
   }
 
   // independent address
@@ -372,12 +401,15 @@ void LedSynth::MIDIUSBHostOnReceiveData(uint8_t channel, uint8_t type, uint8_t d
 
     if (intensityChanged)
     {
-      /* code */
-      ledSynthGlobalMessage->globalIntensity = map((float)data2, 0.f, 127.f, 0.f, 3.6f);
-      ledSynthGlobalMessage->targetId = peerId;
+      float intensity = map((float)data2, 0.f, 127.f, 0.f, 1.f);
 
-      globalChanged = true;
-      // SerialMessengerSingleton->sendData((uint8_t *)ledSynthGlobalMessage, sizeof(LedSynthGlobalMessage));
+      ledSynthLayerColorMessages[0]->intensity = intensity;
+      ledSynthLayerColorMessages[0]->targetId = peerId;
+      layer1ColorChanged = true;
+
+      ledSynthLayerColorMessages[1]->intensity = intensity;
+      ledSynthLayerColorMessages[1]->targetId = peerId;
+      layer2ColorChanged = true;
     }
   }
 }

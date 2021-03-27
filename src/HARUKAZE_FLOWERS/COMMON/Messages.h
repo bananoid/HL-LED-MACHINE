@@ -73,8 +73,9 @@ struct LedSynthLayerColorMessage : public BaseMessage
   float hueRad = 0.1f;
   float scale = 1.f;
   float speed = 1.f;
-
   float intensity = 1; // brightness
+  float saturation = 1.0f;
+
   uint8_t layer = 0;
 };
 
@@ -100,9 +101,10 @@ struct LedSynthLayerAudioMessage : public BaseMessage
     type = MSG_LED_SYNTH_LAYER_AUDIO;
   };
 
-  float audioInfluenceLowBand = 1;
-  float audioInfluenceMidBand = 1;
-  float audioInfluenceHighBand = 1;
+  float audioAmpLowBand = 0;
+  float audioAmpMidBand = 0;
+  float audioAmpHighBand = 0;
+  float audioInfluence = 0;
 
   uint8_t layer = 0;
 };
@@ -113,9 +115,7 @@ struct LedSynthGlobalMessage : public BaseMessage
   {
     type = MSG_LED_SYNTH_GLOBAL;
   };
-  float saturation = 1.0f;
+
   float interpolationSpeed = 0;
   float audioFilterSpeed = 0;
-
-  float globalIntensity = 1;
 };

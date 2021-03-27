@@ -22,4 +22,4 @@
   }
 // {"3C:61:05:2E:85:74", "Flower", FLOWER},
 
-#define OLEDSCREEN_DISABLED
+// #define OLEDSCREEN_DISABLED

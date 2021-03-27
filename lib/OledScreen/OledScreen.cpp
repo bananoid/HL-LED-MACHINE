@@ -8,7 +8,7 @@
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 
-#define OLEDSCREEN_DISABLED
+// #define OLEDSCREEN_DISABLED
 
 #ifndef OLEDSCREEN_DISABLED
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);

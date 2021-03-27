@@ -1,6 +1,7 @@
 #pragma once
 
 #include "LEDShader.h"
+#include <Arduino.h>
 
 namespace LEDSynth
 {
@@ -24,10 +25,6 @@ namespace LEDSynth
       // float hueSpeed = 2.f;
 
       float saturation = 1.0f;
-
-      float audioIntensity = 1;
-
-      float audioInfluence = 1;
     };
 
     LEDShaderSynthState state;
@@ -35,6 +32,25 @@ namespace LEDSynth
     float interpolationSpeed = 1;
 
     float position;
+
+    //AUDIO
+    float audioAmpLowBand = 0;
+    float audioAmpMidBand = 0;
+    float audioAmpHighBand = 0;
+    float audioInfluence = 0;
+
+    float intensityForAudio = 1;
+
+    void setAudioBands(float low, float mid, float hight)
+    {
+      low *= audioAmpLowBand;
+      mid *= audioAmpMidBand;
+      hight *= audioAmpHighBand;
+
+      float auSign = max(low, max(mid, hight));
+
+      intensityForAudio = (1.0 - audioInfluence) + auSign * audioInfluence;
+    }
 
     LEDShaderSynth()
     {
@@ -97,9 +113,7 @@ namespace LEDSynth
       tColor.mult(intensity * intensity * intensity);
       color.add(tColor);
 
-      color = color * state.intensity;
-
-      // color = color * audioIntensity;
+      color = color * state.intensity * intensityForAudio;
 
       return color;
     }

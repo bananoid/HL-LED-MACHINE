@@ -69,25 +69,7 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
   uint targetId;
   uint sourceId;
 
-  // uint8_t action;
-  // memcpy(&action, incomingData, sizeof(uint8_t));
-  // Serial.println(String(action));
-
-  // AudioBandsMessage msg;
-  // memcpy(&msg, incomingData, sizeof(msg));
-  // screen->println(String(sizeof(msg)), 6);
-  // targetId = msg.targetId;
-  // sourceId = msg.sourceId;
-  // messageTypeName = "Audio Bands";
-  // char c[22];
-  // // sprintf(c, "L:%3d M:%3d H:%3d", int(msg.bandLowVal * 999), int(msg.bandMidVal * 999), int(msg.bandHighVal * 999));
-  // screen->println(c, 7);
-
-  // BaseMessage pingMessage;
-  // memcpy(&pingMessage, incomingData, sizeof(pingMessage));
-  // Serial.printf(pingMessage.targetId)
-
-  Serial.println(messageType);
+  // Serial.println(messageType);
 
   switch (messageType)
   {
@@ -111,18 +93,16 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     char c[22];
     sprintf(c, "L:%3d M:%3d H:%3d", int(msg.bandLowVal * 999), int(msg.bandMidVal * 999), int(msg.bandHighVal * 999));
     screen->println(c, 7);
+
+    LEDSynth::LEDShaderSynth *shader;
+    for (int i = 0; i < N_LAYERS; i++)
+    {
+      shader = shaders[i];
+      shader->setAudioBands(msg.bandLowVal, msg.bandMidVal, msg.bandHighVal);
+    }
+
     break;
   }
-    // case MSG_LED_SYNTH_LAYER:
-    // {
-    //   LedSynthLayerMessage msg;
-    //   memcpy(&msg, incomingData, sizeof(msg));
-    //   targetId = msg.targetId;
-    //   sourceId = msg.sourceId;
-    //   messageTypeName = "Led Layer Msg";
-    //   screen->println("Receiving layer:" + String(msg.layer) + " " + String(random(9)), 6);
-    //   break;
-    // }
 
   case MSG_LED_SYNTH_LAYER_COLOR:
   {
@@ -135,7 +115,7 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     shader->targetState->scale = msg.scale;
     shader->targetState->speed = msg.speed * 0.01;
     shader->targetState->intensity = msg.intensity;
-    Serial.println("test");
+
     screen->println("Receiving layer:" + String(msg.layer) + " " + String(msg.intensity), 6);
 
     break;
@@ -154,6 +134,24 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     break;
   }
 
+  case MSG_LED_SYNTH_LAYER_AUDIO:
+  {
+    LedSynthLayerAudioMessage msg;
+    memcpy(&msg, incomingData, sizeof(msg));
+    uint8_t layer = msg.layer;
+    LEDSynth::LEDShaderSynth *shader = shaders[layer];
+
+    shader->audioAmpLowBand = msg.audioAmpLowBand;
+    shader->audioAmpMidBand = msg.audioAmpMidBand;
+    shader->audioAmpHighBand = msg.audioAmpHighBand;
+
+    shader->audioInfluence = msg.audioInfluence;
+
+    Serial.printf("audioInfluence %f\n", shader->audioInfluence);
+
+    break;
+  }
+
   case MSG_LED_SYNTH_GLOBAL:
   {
     LedSynthGlobalMessage msg;
@@ -161,10 +159,10 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     targetId = msg.targetId;
     sourceId = msg.sourceId;
     messageTypeName = "Led Global Msg";
-    if (targetId == peerDescription.id || targetId == 0)
-    {
-      screen->println("R intensity: " + String(msg.globalIntensity), 6);
-    }
+    // if (targetId == peerDescription.id || targetId == 0)
+    // {
+    //   screen->println("R intensity: " + String(msg.globalIntensity), 6);
+    // }
     break;
   }
   default:
