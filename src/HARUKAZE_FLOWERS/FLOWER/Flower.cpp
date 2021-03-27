@@ -124,7 +124,14 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     shader->targetState->hueRad = msg.hueRad;
     shader->targetState->scale = msg.scale;
     shader->targetState->speed = msg.speed * 0.01;
-    shader->targetState->intensity = msg.intensity;
+
+    if (msg.targetId == peerDescription.id)
+    {
+      for (int i = 0; i < N_LAYERS; i++)
+      {
+        shaders[i]->targetState->intensity = msg.intensity;
+      }
+    }
 
 #ifndef OLEDSCREEN_DISABLED
     screen->println("Receiving layer:" + String(msg.layer) + " " + String(msg.intensity), 6);
