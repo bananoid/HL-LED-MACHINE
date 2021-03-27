@@ -98,6 +98,11 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     for (int i = 0; i < N_LAYERS; i++)
     {
       shader = shaders[i];
+
+      msg.bandLowVal = msg.bandLowVal * msg.bandLowVal * msg.bandLowVal * 500;
+      msg.bandMidVal = msg.bandMidVal * msg.bandMidVal * msg.bandMidVal * 300;
+      msg.bandHighVal = msg.bandHighVal * msg.bandHighVal * msg.bandHighVal * 50;
+
       shader->setAudioBands(msg.bandLowVal, msg.bandMidVal, msg.bandHighVal);
     }
 
