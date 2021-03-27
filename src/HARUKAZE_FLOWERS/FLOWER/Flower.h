@@ -14,7 +14,11 @@
 
 #include <WiFi.h>
 
+// #define OLEDSCREEN_DISABLED
+
+#ifndef OLEDSCREEN_DISABLED
 #include <OledScreen.h>
+#endif
 
 #define PIN_LED_RING_TOP 18
 #define PIN_LED_RING_BOTTOM 19
@@ -32,9 +36,11 @@ public:
 
   void begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, int nPeers, Scheduler *runner);
 
+#ifndef OLEDSCREEN_DISABLED
   OledScreen *screen;
-
   Task displayScreen;
+#endif
+
   Task ping;
 
   CRGB *leds;

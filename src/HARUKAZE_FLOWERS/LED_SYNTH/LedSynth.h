@@ -12,7 +12,12 @@
 
 #include <SerialMessenger.h>
 #include <AudioAnalyzer.h>
+
+// #define OLEDSCREEN_DISABLED
+#ifndef OLEDSCREEN_DISABLED
 #include <OledScreen.h>
+#endif
+
 #include <MIDIUSBHost.h>
 
 using namespace HLSerialMessanger;
@@ -25,9 +30,10 @@ private:
 public:
   void begin(Scheduler *runner);
   void update();
-
+#ifndef OLEDSCREEN_DISABLED
   OledScreen *screen;
   Task displayScreen;
+#endif
 
   void serialMessengerReceiveMsg(BaseMessage *message) override;
   void serialMessengerReceiveData(const uint8_t *incomingData, int len);

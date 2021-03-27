@@ -6,6 +6,8 @@
 #include <TaskSchedulerDeclarations.h>
 #include <SerialMessenger.h>
 
+// #define OLEDSCREEN_DISABLED
+
 #ifndef OLEDSCREEN_DISABLED
 #include <OledScreen.h>
 #endif
@@ -28,6 +30,8 @@ public:
   Task displayScreen;
 
   Task ping;
+
+  Task serialUpdateTask;
 
   void serialMessengerReceiveMsg(BaseMessage *message) override;
 

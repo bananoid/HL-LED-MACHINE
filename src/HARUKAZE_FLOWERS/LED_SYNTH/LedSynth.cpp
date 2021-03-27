@@ -29,6 +29,7 @@ void LedSynth::begin(Scheduler *runner)
   // runner->addTask(ping);
   // ping.enable();
 
+#ifndef OLEDSCREEN_DISABLED
   // Screen
   screen = new OledScreen(8, 22);
   screen->begin();
@@ -38,6 +39,7 @@ void LedSynth::begin(Scheduler *runner)
   });
   runner->addTask(displayScreen);
   displayScreen.enable();
+#endif
 
   //Audio Analyzer
   AudioAnalyzerSingleton->begin(this);
@@ -131,15 +133,19 @@ void LedSynth::serialMessengerReceiveMsg(BaseMessage *message){
 
 void LedSynth::serialMessengerReceiveData(const uint8_t *incomingData, int len)
 {
-  // Serial.println("Receive data! ");
+// Serial.println("Receive data! ");
+#ifndef OLEDSCREEN_DISABLED
   screen->println("Receive data! " + String(random(99)), 5);
+#endif
 };
 
 void LedSynth::audioAnalyzerOnBandsUpdate(float bandLowVal, float bandMidVal, float bandHighVal)
 {
+#ifndef OLEDSCREEN_DISABLED
   char c[22];
   sprintf(c, "L:%3d M:%3d H:%3d", int(bandLowVal * 999), int(bandMidVal * 999), int(bandHighVal * 999));
   screen->println(c, 2);
+#endif
 
   AudioBandsMessage msg;
   msg.sourceId = 1;
@@ -150,14 +156,20 @@ void LedSynth::audioAnalyzerOnBandsUpdate(float bandLowVal, float bandMidVal, fl
 
   SerialMessengerSingleton->sendData((uint8_t *)&msg, sizeof(AudioBandsMessage));
   // Serial.println("S:" + String(msg.sourceId) + "->" + String(msg.targetId) + "[AudioBand]");
+
+#ifndef OLEDSCREEN_DISABLED
   screen->println("Sending data [" + String(msg.type) + "]", 4);
+#endif
 }
 
 void LedSynth::MIDIUSBHostOnReceiveData(uint8_t channel, uint8_t type, uint8_t data1, uint8_t data2)
 {
+
+#ifndef OLEDSCREEN_DISABLED
   char c[22];
   sprintf(c, "T%3i D%3i D%3i C%3i", type, data1, data2, channel);
   screen->println(c, 3);
+#endif
 
   // changing layer parameters
   if (channel == 2)

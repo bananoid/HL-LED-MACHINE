@@ -27,5 +27,4 @@ void setup()
 void loop()
 {
   runner.execute();
-  FlowerSingleton->screen->sayHello(2);
 }

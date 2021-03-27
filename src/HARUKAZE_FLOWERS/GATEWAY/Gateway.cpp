@@ -41,6 +41,12 @@ void Gateway::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, i
 
   SerialMessengerSingleton->delegate = this;
   SerialMessengerSingleton->begin(&Serial2, BAUD_RATE);
+
+  // serialUpdateTask.set(10 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
+  //   SerialMessengerSingleton->update();
+  // });
+  // runner->addTask(ping);
+  // serialUpdateTask.enable();
 }
 
 // when receive WIFI send Serial

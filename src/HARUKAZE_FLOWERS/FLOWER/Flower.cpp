@@ -11,6 +11,7 @@ void Flower::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, in
   // Peer
   ESPSortedBroadcast::Peer::begin(wifiChannel, peerList, nPeers);
 
+#ifndef OLEDSCREEN_DISABLED
   // Screen
   screen = new OledScreen(8, 22);
   screen->begin();
@@ -22,6 +23,7 @@ void Flower::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, in
   });
   runner->addTask(displayScreen);
   displayScreen.enable();
+#endif
 
   // Ping
   // ping.set(TASK_SECOND, TASK_FOREVER, [this]() {
@@ -89,10 +91,13 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     memcpy(&msg, incomingData, sizeof(msg));
     targetId = msg.targetId;
     sourceId = msg.sourceId;
+
+#ifndef OLEDSCREEN_DISABLED
     messageTypeName = "Audio Bands";
     char c[22];
     sprintf(c, "L:%3d M:%3d H:%3d", int(msg.bandLowVal * 999), int(msg.bandMidVal * 999), int(msg.bandHighVal * 999));
     screen->println(c, 7);
+#endif
 
     LEDSynth::LEDShaderSynth *shader;
     for (int i = 0; i < N_LAYERS; i++)
@@ -121,7 +126,9 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     shader->targetState->speed = msg.speed * 0.01;
     shader->targetState->intensity = msg.intensity;
 
+#ifndef OLEDSCREEN_DISABLED
     screen->println("Receiving layer:" + String(msg.layer) + " " + String(msg.intensity), 6);
+#endif
 
     break;
   }
@@ -164,10 +171,6 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     targetId = msg.targetId;
     sourceId = msg.sourceId;
     messageTypeName = "Led Global Msg";
-    // if (targetId == peerDescription.id || targetId == 0)
-    // {
-    //   screen->println("R intensity: " + String(msg.globalIntensity), 6);
-    // }
     break;
   }
   default:
@@ -176,25 +179,6 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     messageTypeName = "UNKNOWN";
     break;
   }
-
-  // // filter
-  // if (targetId == peerDescription.id)
-  // {
-  //   Serial.println("Receiving:" + String(targetId) + "<-" + String(sourceId) + "[" + messageTypeName + "]");
-  //   screen->println("R{O}:" + String(targetId) + "<-" + String(sourceId) + "[" + messageTypeName + "] " + random(0, 99), 3);
-  // }
-  // else if (targetId == 0)
-  // {
-  //   // broadcasted message
-  //   Serial.println("Receiving:" + String(targetId) + "<-" + String(sourceId) + "[" + messageTypeName + "]");
-  //   screen->println("R{B}:" + String(targetId) + "<-" + String(sourceId) + "[" + messageTypeName + "] " + random(0, 99), 3);
-  // }
-  // else
-  // {
-  //   // // broadcasted message
-  //   // Serial.println("Receiving:" + String(targetId) + "<-" + String(sourceId) + "[" + messageTypeName + "]");
-  //   // screen->println("R{X}:" + String(targetId) + "<-" + String(sourceId) + "[" + messageTypeName + "] " + random(0, 99), 3);
-  // }
 }
 
 void Flower::registerReceiveDataCB()
