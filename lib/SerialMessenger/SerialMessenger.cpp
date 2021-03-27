@@ -8,6 +8,7 @@ namespace HLSerialMessanger
 
   void SerialMessenger::begin(Stream *stream, int boudrate)
   {
+    this->stream = stream;
     packetSerial.begin(boudrate);
     packetSerial.setStream(stream);
     packetSerial.setPacketHandler([](const uint8_t *buffer, size_t size) {
@@ -28,6 +29,7 @@ namespace HLSerialMessanger
 
   void SerialMessenger::sendData(const uint8_t *data, int len)
   {
+    stream->flush();
     packetSerial.send(data, len);
   }
 

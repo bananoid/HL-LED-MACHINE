@@ -42,11 +42,11 @@ void LedSynth::begin(Scheduler *runner)
   //Audio Analyzer
   AudioAnalyzerSingleton->begin(this);
 
-  // broadcastAudioBandsTask.set(16 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
-  //   AudioAnalyzerSingleton->update();
-  // });
-  // runner->addTask(broadcastAudioBandsTask);
-  // broadcastAudioBandsTask.enable();
+  broadcastAudioBandsTask.set(16 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
+    AudioAnalyzerSingleton->update();
+  });
+  runner->addTask(broadcastAudioBandsTask);
+  broadcastAudioBandsTask.enable();
 
   // LED LAYERS
   for (int i = 0; i < N_LAYERS; i++)

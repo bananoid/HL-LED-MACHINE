@@ -57,11 +57,6 @@ void Flower::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, in
   for (int i = 0; i < N_LAYERS; i++)
   {
     shaders[i] = ledSynth->addLEDShaderSynth();
-    // shader->targetState->speed = 0.13;
-    // shader->targetState->hue = 0.5;
-    // shader->targetState->hueRad = 0;
-    // shader->targetState->scale = 0.1;
-    // shader->targetState->que = 2.;
   }
 }
 

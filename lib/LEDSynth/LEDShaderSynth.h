@@ -24,6 +24,10 @@ namespace LEDSynth
       // float hueSpeed = 2.f;
 
       float saturation = 1.0f;
+
+      float audioIntensity = 1;
+
+      float audioInfluence = 1;
     };
 
     LEDShaderSynthState state;
@@ -94,6 +98,8 @@ namespace LEDSynth
       color.add(tColor);
 
       color = color * state.intensity;
+
+      // color = color * audioIntensity;
 
       return color;
     }

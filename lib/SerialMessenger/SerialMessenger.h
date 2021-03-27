@@ -31,6 +31,8 @@ namespace HLSerialMessanger
     void onReceive(const uint8_t *buffer, size_t size);
 
     void sendData(const uint8_t *data, int len);
+
+    Stream *stream;
   };
 
   extern SerialMessenger *SerialMessengerSingleton;
