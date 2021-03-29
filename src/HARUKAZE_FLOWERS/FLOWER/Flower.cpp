@@ -4,12 +4,16 @@
 // #include <LEDShaderSynth.h>
 // #include <LEDShaderDiffusion.h>
 
+#include <GFXUtils.h>
+
 Flower *FlowerSingleton = new Flower();
 
 void Flower::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, int nPeers, Scheduler *runner)
 {
   // Peer
   ESPSortedBroadcast::Peer::begin(wifiChannel, peerList, nPeers);
+
+  positionStartOffset = LEDSynth::GFXUtils::rnd(peerDescription.id) * 600;
 
 #ifndef OLEDSCREEN_DISABLED
   // Screen
@@ -39,10 +43,20 @@ void Flower::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, in
 
   // LEDs
   // CRGB *leds;
-  int numOffLeds = 24;
+  // int numOffLeds = 24;
+  int numOffLeds = 56;
+
+  if (peerDescription.name == "Tunnel")
+  {
+    numOffLeds = 300;
+  }
+  else if (peerDescription.name == "Costume")
+  {
+    numOffLeds = 56;
+  }
 
   leds = new CRGB[numOffLeds];
-  FastLED.addLeds<WS2812B, PIN_LED_RING_TOP, GRB>(leds, numOffLeds);
+  // FastLED.addLeds<WS2812B, PIN_LED_RING_TOP, GRB>(leds, numOffLeds);
   FastLED.addLeds<WS2812B, PIN_LED_RING_BOTTOM, GRB>(leds, numOffLeds);
 
   // for (int i = 0; i < numOffLeds; i++)
@@ -59,6 +73,7 @@ void Flower::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, in
   for (int i = 0; i < N_LAYERS; i++)
   {
     shaders[i] = ledSynth->addLEDShaderSynth();
+    shaders[i]->position = positionStartOffset;
   }
 }
 

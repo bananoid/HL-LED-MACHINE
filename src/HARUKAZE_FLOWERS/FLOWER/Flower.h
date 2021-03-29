@@ -50,6 +50,8 @@ public:
 
   LEDSynth::LEDShaderSynth *shaders[N_LAYERS];
   LEDSynth::LEDShaderSynth *getLayerShader(int n);
+
+  float positionStartOffset = 0;
 };
 
 extern Flower *FlowerSingleton;
