@@ -3,31 +3,30 @@
 
 namespace HLMusicMachine
 {
-  Clock::Clock(Scheduler *runner) : Task(1 * TASK_SECOND, TASK_FOREVER, runner, false)
+  Clock::Clock(Scheduler *runner)
   {
     pinMode(13, OUTPUT);
-  }
 
-  bool Clock::Callback()
-  {
-    if (tickCounter % (24) == 0)
-    {
-      digitalWrite(13, true);
-    }
-    else if ((tickCounter + 12) % (24) == 0)
-    {
-      digitalWrite(13, false);
-    }
+    clockTask.set(TASK_SECOND, TASK_FOREVER, [this]() {
+      if (tickCounter % (24) == 0)
+      {
+        digitalWrite(13, true);
+      }
+      else if ((tickCounter + 12) % (24) == 0)
+      {
+        digitalWrite(13, false);
+      }
 
 #ifdef MIDI_INTERFACE
-    usbMIDI.sendRealTime(usbMIDI.Clock);
+      usbMIDI.sendRealTime(usbMIDI.Clock);
 #endif
 
-    setInterval(clockInterval);
-    delegate->clockTick();
-    tickCounter++;
-
-    return true;
+      clockTask.setInterval(clockInterval);
+      delegate->clockTick();
+      tickCounter++;
+    });
+    runner->addTask(clockTask);
+    clockTask.disable();
   }
 
   void Clock::setBpm(float bpm)
@@ -52,8 +51,8 @@ namespace HLMusicMachine
 
     tickCounter = 0;
     setBpm(bpm);
-    setInterval(clockInterval);
-    enable();
+    clockTask.setInterval(clockInterval);
+    clockTask.enable();
 
 #ifdef MIDI_INTERFACE
     usbMIDI.sendRealTime(usbMIDI.Start);
@@ -65,7 +64,7 @@ namespace HLMusicMachine
     isPlaying = false;
     Serial.println("Stop");
 
-    disable();
+    clockTask.disable();
 
 #ifdef MIDI_INTERFACE
     usbMIDI.sendRealTime(usbMIDI.Stop);

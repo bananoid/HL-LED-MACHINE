@@ -1,7 +1,6 @@
 #pragma once
 
 #include "config.h"
-// #define _TASK_TIMEOUT
 #include <TaskSchedulerDeclarations.h>
 
 namespace HLMusicMachine
@@ -14,13 +13,13 @@ namespace HLMusicMachine
     virtual void noteOff(int note);
   };
 
-  class Voice : public Task
+  class Voice
   {
   public:
     Voice(Scheduler *runner);
     VoiceDelegate *delegate;
 
-    bool Callback();
+    Task voiceTask;
 
     long trigTime = 0;
 

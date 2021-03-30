@@ -12,7 +12,7 @@ namespace HLMusicMachine
   public:
     virtual void clockTick(); // virtual because it is not implemented in the class
   };
-  class Clock : public Task
+  class Clock
   {
   private:
     /* data */
@@ -20,7 +20,7 @@ namespace HLMusicMachine
   public:
     Clock(Scheduler *runner);
 
-    bool Callback();
+    Task clockTask;
 
     ClockDelegate *delegate;
 

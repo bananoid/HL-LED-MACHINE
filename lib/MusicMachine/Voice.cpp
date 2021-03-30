@@ -3,16 +3,14 @@
 
 namespace HLMusicMachine
 {
-  Voice::Voice(Scheduler *runner) : Task(TASK_MILLISECOND * 100, TASK_FOREVER, runner, false)
+  Voice::Voice(Scheduler *runner) // : Task(TASK_MILLISECOND * 100, TASK_FOREVER, runner, false)
   {
-    disable();
-  }
-
-  bool Voice::Callback()
-  {
-    noteOff(lastNote);
-    disable();
-    return false;
+    voiceTask.set(TASK_MILLISECOND * 100, TASK_FOREVER, [this]() {
+      noteOff(lastNote);
+      voiceTask.disable();
+    });
+    runner->addTask(voiceTask);
+    voiceTask.disable();
   }
 
   void Voice::noteOn(int note, int vel, int noteLenght)
@@ -39,7 +37,7 @@ namespace HLMusicMachine
         noteTime = delegate->getClockTime() * noteLenght;
       }
 
-      restartDelayed(noteTime);
+      voiceTask.restartDelayed(noteTime);
 
       // Serial.printf("noteLenght %i %i \n", noteLenght, noteTime);
     }

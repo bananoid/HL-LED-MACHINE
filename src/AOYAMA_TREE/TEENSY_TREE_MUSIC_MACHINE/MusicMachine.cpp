@@ -99,5 +99,10 @@ void MusicMachine::update()
 
 void MusicMachine::serialMessengerReceiveMsg(BaseMessage *message)
 {
-  Serial.println("Receive a message!");
+  Serial.println("Receive Serial message!");
 };
+
+void MusicMachine::serialMessengerReceiveData(const uint8_t *incomingData, int len)
+{
+  Serial.println("Receive Serial data");
+}
