@@ -3,8 +3,6 @@
 #include <BaseMessages.h>
 #include <Sequencer.h>
 
-#define BASE_MESSAGE_TYPES PING
-
 // Each message is defined per board.
 // Each board can listen and send different type of messages
 // A message is defined by the board that generates (e.g. sensor) or display (e.g. leds) the data

@@ -20,6 +20,11 @@ OledScreen::OledScreen(int nLines, int lineLen)
   this->nLines = nLines;
   this->lineLen = lineLen;
   lines.reserve(nLines);
+
+  for (int line = 0; line < nLines; line++)
+  {
+    lines[line] = "[-------------------]"; // 21
+  }
 #endif
 }
 

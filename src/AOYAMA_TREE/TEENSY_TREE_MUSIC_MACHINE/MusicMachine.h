@@ -28,6 +28,5 @@ public:
 
   HLMusicMachine::Tracker *tracker;
 
-  Task testTask;
-  unsigned long maxPingTime = 0;
+  Task benchmarkTask;
 };

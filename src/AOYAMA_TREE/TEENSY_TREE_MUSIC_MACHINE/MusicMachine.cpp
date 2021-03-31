@@ -85,18 +85,14 @@ MusicMachine::MusicMachine(Scheduler *runner)
   SerialMessengerSingleton->begin(&Serial6, BAUD_RATE);
 
   //Test Message
-  testTask.set(16 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
-    // Serial.printf("size of TreeStateMessage %i \n", sizeof(TreeStateMessage));
-    TreeStateMessage msg;
-    msg.parameters.velocityLFO = micros();
-    msg.parameters.retrigLFO = cos(millis() / 10233.1234);
-
-    Serial.printf("s %f %f\n", msg.parameters.velocityLFO, msg.parameters.retrigLFO);
-    SerialMessengerSingleton->sendMessage(&msg, sizeof(TreeStateMessage));
-    // testTask.disable();
+  benchmarkTask.set(200 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
+    BenchmarkMessage msg;
+    msg.time = micros();
+    Serial.printf("T Benchmark time %i\n", msg.time);
+    SerialMessengerSingleton->sendMessage(&msg, sizeof(BenchmarkMessage));
   });
-  runner->addTask(testTask);
-  testTask.enable();
+  runner->addTask(benchmarkTask);
+  benchmarkTask.enable();
 
   // tracker->clock->play();
 }
@@ -124,19 +120,15 @@ void MusicMachine::serialMessengerReceiveData(const uint8_t *incomingData, int l
 
   case PING:
   {
-    BaseMessage pingMessage;
-    memcpy(&pingMessage, incomingData, sizeof(pingMessage));
+    Serial.println("PING");
     break;
   }
-  case TREE_STATE:
+  case BENCHMARK_MESSAGE:
   {
-    TreeStateMessage msg;
-    memcpy(&msg, incomingData, sizeof(TreeStateMessage));
-    unsigned long deltaTime = micros() - msg.parameters.velocityLFO;
-    maxPingTime = max(maxPingTime, deltaTime);
-    Serial.printf("r %f %f %i %i\n", msg.parameters.velocityLFO, msg.parameters.retrigLFO, deltaTime, maxPingTime);
-
-    // testTask.restart();
+    BenchmarkMessage msg;
+    memcpy(&msg, incomingData, sizeof(BenchmarkMessage));
+    unsigned long deltaTime = micros() - msg.time;
+    Serial.printf("R Benchmark time %i %i\n", msg.time, deltaTime);
     break;
   }
   default:
