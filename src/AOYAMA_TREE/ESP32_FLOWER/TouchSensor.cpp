@@ -17,8 +17,9 @@ int touchPins[] = {
     TOUCH_PIN_5,
 };
 
-TouchSensor::TouchSensor()
+TouchSensor::TouchSensor(TouchSensorDelegate *delegate)
 {
+  this->delegate = delegate;
 }
 
 void TouchSensor::update()
@@ -27,5 +28,7 @@ void TouchSensor::update()
   {
     touchReads[i] = touchRead(touchPins[i]);
     Serial.printf("TouchSensor %i [%i]: %i\n", i, touchPins[i], touchReads[i]);
+
+    delegate->touchSensorOnTouch(i);
   }
 }

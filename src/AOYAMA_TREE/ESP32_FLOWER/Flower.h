@@ -11,10 +11,15 @@
 #include <GFXUtils.h>
 
 #include "IMUSensor.h"
+#include "TouchSensor.h"
 
+#define OLEDSCREEN_DISABLED
+
+#ifndef OLEDSCREEN_DISABLED
 #include <OledScreen.h>
+#endif
 
-class Flower : public ESPSortedBroadcast::Peer, public IMUSensorDelegate
+class Flower : public ESPSortedBroadcast::Peer, public IMUSensorDelegate, public TouchSensorDelegate
 {
 private:
 public:
@@ -25,25 +30,30 @@ public:
 
   void begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, int nPeers, Scheduler *runner);
 
+#ifndef OLEDSCREEN_DISABLED
   OledScreen *screen;
-
   Task displayScreen;
+#endif
 
   Task ping;
   Task readIMU;
 
-  // LEDStrips::FastLEDRenderer topRingLEDRenderer;
-  // LEDStrips::FastLEDRenderer bottomRingLEDRenderer;
-  // LEDStrips::FastLEDRenderer ballDotLEDRenderer;
+  LEDSynth::FastLEDRenderer topRingLEDRenderer;
+  LEDSynth::FastLEDRenderer bottomRingLEDRenderer;
+  LEDSynth::FastLEDRenderer ballDotLEDRenderer;
 
-  // LEDSynth::LEDSynth *topRingLEDSynth;
-  // LEDSynth::LEDSynth *bottomRingLEDSynth;
-  // LEDSynth::LEDSynth *ballDotLEDSynth;
+  LEDSynth::LEDSynth *topRingLEDSynth;
+  LEDSynth::LEDSynth *bottomRingLEDSynth;
+  LEDSynth::LEDSynth *ballDotLEDSynth;
 
   // void frameRender();
 
   IMUSensor *imu;
   void onIMUOrientationData(sensors_event_t *orientationData) override;
+
+  TouchSensor *touchSensor;
+  Task touchSensorUpdateTask;
+  void touchSensorOnTouch(int touchId) override;
 };
 
 extern Flower *FlowerSingleton;
