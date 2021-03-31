@@ -8,7 +8,7 @@
 // A message is defined by the board that generates (e.g. sensor) or display (e.g. leds) the data
 
 // FLOWER messages:
-#define FLOWER_MESSAGE_TYPES FLOWER_TOUCH, FLOWER_GYRO, FLOWER_LED
+#define FLOWER_MESSAGE_TYPES FLOWER_CALL, FLOWER_TOUCH, FLOWER_GYRO, FLOWER_LED
 
 // BRANCH messages:
 #define BRANCH_MESSAGE_TYPES BRANCH_STATE
@@ -63,12 +63,11 @@ struct BranchStateMessage : public BaseMessage
   }
 };
 
-struct TreeStateMessage : public BaseMessage
+struct FlowerCallMessage : public BaseMessage
 {
-  TreeStateMessage()
+  FlowerCallMessage()
   {
-    type = TREE_STATE;
+    type = FLOWER_CALL;
   }
-  Sequencer::Parameters sequencerParametersA;
-  Sequencer::Parameters sequencerParametersB;
+  uint32_t seed;
 };

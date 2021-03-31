@@ -28,6 +28,11 @@ namespace HLMusicMachine
       pickNextHarmony();
     }
 
+    if ((clock->tickCounter) % (clock->clockDivider * 1) == 0)
+    {
+      delegate->trackerBarTick();
+    }
+
     Track *track;
     list<Track *>::iterator it;
     for (it = tracks.begin(); it != tracks.end(); ++it)
@@ -37,7 +42,6 @@ namespace HLMusicMachine
       if (clock->tickCounter == 0)
       {
         track->radomize();
-        Serial.println("randomize");
       }
 
       track->clockTick(clock->tickCounter);
@@ -61,18 +65,18 @@ namespace HLMusicMachine
     else
     {
       std::vector<Note> notes = currentScale->getNotes(currentKey, 0);
-      for (Note note : notes)
-      {
-        Serial.print("[ ");
-        Note::printNoteType(note.type);
-        Serial.print(" ]");
-      }
-      Serial.print("\n");
+      // for (Note note : notes)
+      // {
+      //   Serial.print("[ ");
+      //   Note::printNoteType(note.type);
+      //   Serial.print(" ]");
+      // }
+      // Serial.print("\n");
 
       if (harmonyCounter % 16 == 0)
       {
         progressionInterval = random(0, 6);
-        Serial.printf("change progressionInterval %i \n", progressionInterval);
+        // Serial.printf("change progressionInterval %i \n", progressionInterval);
 
         // if (progressionIntervalCounter % 2 == 0)
         // {
@@ -93,8 +97,8 @@ namespace HLMusicMachine
 
     // currentScale = random(4) == 0 ? &Scale::minor : &Scale::major;
 
-    Note::printNoteType(currentKey);
-    Serial.printf(" key %i\n", currentKey);
+    // Note::printNoteType(currentKey);
+    // Serial.printf(" key %i\n", currentKey);
 
     harmonyCounter++;
   }

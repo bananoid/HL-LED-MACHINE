@@ -58,6 +58,8 @@ namespace HLMusicMachine
       float velocityLFO = 16;
       int velocityLFOMin = 30;
       int velocityLFOMax = 127;
+
+      float fillFactor = 1; // 0 - 1 percentange of notes that are pick from sequence
     };
 
     Type type = MELODY;

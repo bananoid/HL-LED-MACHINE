@@ -12,6 +12,8 @@
 #define PEER_TYPES GATEWAY, FLOWER
 #define N_PEERS 10
 
+#define NUMBER_OF_FLOWERS 5
+
 #define PEER_LIST                                 \
   {                                               \
     {"3C:61:05:2F:B7:E0", "Gateway", GATEWAY},    \
@@ -27,3 +29,5 @@
       "3C:61:05:2F:A9:7C", "Costume", FLOWER      \
     }                                             \
   }
+
+#define FLOWER_PEER_IDS {1, 2, 3, 4, 5};

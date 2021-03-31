@@ -24,11 +24,11 @@ public:
     PAD
   };
 
-  static void buildSong(Tracker *tracker)
+  static void buildSong(Tracker *tracker, int nTracks)
   {
     Track *track;
 
-    for (unsigned int i = 0; i < 5; i++)
+    for (unsigned int i = 0; i < nTracks; i++)
     {
       TrackType type = (TrackType)i;
       int midiChannel = i + 1;

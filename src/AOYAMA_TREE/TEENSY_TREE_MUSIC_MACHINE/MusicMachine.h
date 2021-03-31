@@ -8,11 +8,14 @@
 #include <Tracker.h>
 #include <Bounce2.h>
 
+#include "AOYAMA_TREE/COMMON/config.h"
+#include "AOYAMA_TREE/COMMON/FlowerState.h"
+
 #include <SerialMessenger.h>
 
 using namespace HLSerialMessanger;
 
-class MusicMachine : SerialMessengerDelegate
+class MusicMachine : SerialMessengerDelegate, public HLMusicMachine::TrackerDelegate, public FlowerStateDelegate
 {
 private:
   /* data */
@@ -30,4 +33,11 @@ public:
   HLMusicMachine::Tracker *tracker;
 
   Task benchmarkTask;
+
+  FlowerState *flowerStates[NUMBER_OF_FLOWERS];
+  void initFlowerStates();
+
+  void trackerBarTick() override;
+
+  void flowerStateChanged(FlowerState *flowerState, FlowerStates state) override;
 };

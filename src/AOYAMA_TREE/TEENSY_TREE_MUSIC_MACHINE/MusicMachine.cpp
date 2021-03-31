@@ -9,7 +9,9 @@ MusicMachine::MusicMachine(Scheduler *runner)
 {
   this->runner = runner;
   tracker = new Tracker(runner);
-  TrackerFactory::buildSong(tracker);
+  tracker->delegate = this;
+  TrackerFactory::buildSong(tracker, NUMBER_OF_FLOWERS);
+  initFlowerStates();
   tracker->clock->play();
 
   //Start Stop button
@@ -32,6 +34,27 @@ MusicMachine::MusicMachine(Scheduler *runner)
   });
   runner->addTask(benchmarkTask);
   benchmarkTask.disable(); // Enable for benchmarck
+}
+
+void MusicMachine::initFlowerStates()
+{
+  FlowerState *flowerState;
+
+  int pIds[NUMBER_OF_FLOWERS] = FLOWER_PEER_IDS;
+
+  Track *track;
+  list<Track *>::iterator it;
+
+  uint8_t i = 0;
+
+  for (it = tracker->tracks.begin(); it != tracker->tracks.end(); ++it)
+  {
+    flowerStates[i] = new FlowerState();
+    flowerStates[i]->delegate = this;
+    flowerStates[i]->track = *it;
+    flowerStates[i]->peerId = pIds[i];
+    i++;
+  }
 }
 
 void MusicMachine::update()
@@ -70,5 +93,61 @@ void MusicMachine::serialMessengerReceiveData(const uint8_t *incomingData, int l
   }
   default:
     break;
+  }
+}
+
+void MusicMachine::trackerBarTick()
+{
+  int rndInx = random(0, NUMBER_OF_FLOWERS);
+  FlowerState *flowerState = flowerStates[rndInx];
+
+  list<Track *>::iterator it = tracker->tracks.begin();
+  for (uint8_t i = 0; i < rndInx; i++)
+  {
+    it++;
+  }
+
+  Track *track = *it;
+
+  if (flowerState->state == SILENT)
+  {
+    flowerState->decreaseCallingCountDown();
+
+    if (flowerState->state == CALLING)
+    {
+      flowerState->seed = millis();
+      flowerState->silentCountDown = random(4, 32); // change to random
+      flowerState->callingCountDown = random(1, 4); // change to random
+
+      randomSeed(flowerState->seed);
+
+      FlowerCallMessage msg;
+      msg.seed = flowerState->seed;
+      msg.sourceId = 0;
+      msg.targetId = flowerState->peerId;
+    }
+  }
+
+  for (uint8_t i = 0; i < NUMBER_OF_FLOWERS; i++)
+  {
+    flowerState = flowerStates[i];
+    flowerState->decreaseSilentCountDown();
+
+    Serial.print(flowerState->state == SILENT ? " - " : " o ");
+  }
+  Serial.println("");
+}
+
+void MusicMachine::flowerStateChanged(FlowerState *flowerState, FlowerStates state)
+{
+  Serial.printf("peerId: %i state:%i\n", flowerState->peerId, flowerState->state);
+  if (state == CALLING)
+  {
+    flowerState->track->radomize();
+    flowerState->track->play();
+  }
+  else if (state == SILENT)
+  {
+    flowerState->track->stop();
   }
 }

@@ -11,21 +11,29 @@
 
 #include <list>
 #include <iterator>
-
 using namespace std;
+
 using namespace MusicTheory;
 
 namespace HLMusicMachine
 {
   class Track;
+
+  class TrackerDelegate
+  {
+  public:
+    virtual void trackerBarTick();
+  };
+
   class Tracker : public ClockDelegate, public InstrumentDelegate
   {
   private:
-    list<Track *> tracks;
-
   public:
+    list<Track *> tracks;
     Tracker(Scheduler *runner);
     Scheduler *runner;
+
+    TrackerDelegate *delegate = nullptr;
 
     Clock *clock;
     void clockTick() override;
