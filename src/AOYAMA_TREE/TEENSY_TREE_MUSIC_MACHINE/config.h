@@ -7,7 +7,7 @@
 #define _TASK_MICRO_RES
 
 // Serial Messenger
-#define BAUD_RATE 115200
+#define BAUD_RATE 921600
 
 // #define NUMBER_OF_INSTRUMENTS 3
 

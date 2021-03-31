@@ -5,6 +5,8 @@
 #include <Sequencer.h>
 #include <Track.h>
 
+#include "AOYAMA_TREE/COMMON/Messages.h"
+
 using namespace HLMusicMachine;
 
 MusicMachine::MusicMachine(Scheduler *runner)
@@ -81,6 +83,22 @@ MusicMachine::MusicMachine(Scheduler *runner)
   Serial6.begin(BAUD_RATE);
   SerialMessengerSingleton->delegate = this;
   SerialMessengerSingleton->begin(&Serial6, BAUD_RATE);
+
+  //Test Message
+  testTask.set(16 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
+    // Serial.printf("size of TreeStateMessage %i \n", sizeof(TreeStateMessage));
+    TreeStateMessage msg;
+    msg.parameters.velocityLFO = micros();
+    msg.parameters.retrigLFO = cos(millis() / 10233.1234);
+
+    Serial.printf("s %f %f\n", msg.parameters.velocityLFO, msg.parameters.retrigLFO);
+    SerialMessengerSingleton->sendMessage(&msg, sizeof(TreeStateMessage));
+    // testTask.disable();
+  });
+  runner->addTask(testTask);
+  testTask.enable();
+
+  // tracker->clock->play();
 }
 
 void MusicMachine::update()
@@ -97,12 +115,31 @@ void MusicMachine::update()
   SerialMessengerSingleton->update();
 }
 
-void MusicMachine::serialMessengerReceiveMsg(BaseMessage *message)
-{
-  Serial.println("Receive Serial message!");
-};
-
 void MusicMachine::serialMessengerReceiveData(const uint8_t *incomingData, int len)
 {
-  Serial.println("Receive Serial data");
+  uint8_t messageType = SerialMessengerSingleton->getMessageTypeFromData(incomingData);
+
+  switch (messageType)
+  {
+
+  case PING:
+  {
+    BaseMessage pingMessage;
+    memcpy(&pingMessage, incomingData, sizeof(pingMessage));
+    break;
+  }
+  case TREE_STATE:
+  {
+    TreeStateMessage msg;
+    memcpy(&msg, incomingData, sizeof(TreeStateMessage));
+    unsigned long deltaTime = micros() - msg.parameters.velocityLFO;
+    maxPingTime = max(maxPingTime, deltaTime);
+    Serial.printf("r %f %f %i %i\n", msg.parameters.velocityLFO, msg.parameters.retrigLFO, deltaTime, maxPingTime);
+
+    // testTask.restart();
+    break;
+  }
+  default:
+    break;
+  }
 }

@@ -8,20 +8,16 @@ namespace HLSerialMessanger
 
   void SerialMessenger::begin(Stream *stream, int boudrate)
   {
-    this->stream = stream;
     packetSerial.begin(boudrate);
     packetSerial.setStream(stream);
     packetSerial.setPacketHandler([](const uint8_t *buffer, size_t size) {
-      BaseMessage message;
-      memcpy(&message, buffer, size);
-      SerialMessengerSingleton->delegate->serialMessengerReceiveMsg(&message);
       SerialMessengerSingleton->delegate->serialMessengerReceiveData(buffer, size);
     });
+    stream->flush();
   }
 
-  void SerialMessenger::sendMessage(BaseMessage *message)
+  void SerialMessenger::sendMessage(BaseMessage *message, int size)
   {
-    int size = sizeof(&message);
     uint8_t packet[size];
     memcpy(packet, message, size);
     packetSerial.send(packet, size);
@@ -29,7 +25,6 @@ namespace HLSerialMessanger
 
   void SerialMessenger::sendData(const uint8_t *data, int len)
   {
-    stream->flush();
     packetSerial.send(data, len);
   }
 
@@ -40,4 +35,10 @@ namespace HLSerialMessanger
 
   SerialMessenger *SerialMessengerSingleton = new SerialMessenger();
 
+  uint8_t SerialMessenger::getMessageTypeFromData(const uint8_t *data)
+  {
+    uint8_t type;
+    memcpy(&type, data, sizeof(uint8_t));
+    return type;
+  }
 } // namespace HLSerialMessanger

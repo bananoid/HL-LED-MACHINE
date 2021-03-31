@@ -15,8 +15,9 @@ void Flower::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, in
   screen->begin();
   screen->println(FlowerSingleton->peerDescription.name, 0);
   screen->println(WiFi.macAddress(), 1);
-  Serial.println(WiFi.macAddress());
+  screen->displayScreen();
   displayScreen.set(50 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
+    screen->sayHello(2);
     screen->displayScreen();
   });
   runner->addTask(displayScreen);
@@ -41,27 +42,27 @@ void Flower::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, in
   // ballDotLEDSynth = new LEDSynth::LEDSynth(1, &ballDotLEDRenderer, runner);
 
   // IMU
-  imu = new IMUSensor(this);
-  imu->begin();
+  // imu = new IMUSensor(this);
+  // imu->begin();
 
-  readIMU.set(10 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
-    Serial.println("reading IMU");
-    // imu->update();
-  });
-  runner->addTask(readIMU);
-  readIMU.enable();
+  // readIMU.set(10 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
+  //   // Serial.println("reading IMU");
+  //   // imu->update();
+  // });
+  // runner->addTask(readIMU);
+  // readIMU.enable();
 
   // // Peer
-  ping.set(TASK_SECOND, TASK_FOREVER, [this]() {
-    BaseMessage msg;
-    msg.sourceId = peerDescription.id;
-    msg.targetId = random(0, this->nPeers);
-    broadcastData((uint8_t *)&msg, sizeof(BaseMessage));
-    screen->println("S:" + String(msg.sourceId) + "->" + String(msg.targetId) + "[PING] " + random(3, 87), 4);
-    Serial.println("S:" + String(msg.sourceId) + "->" + String(msg.targetId) + "[PING]");
-  });
-  runner->addTask(ping);
-  ping.enable();
+  // ping.set(TASK_SECOND, TASK_FOREVER, [this]() {
+  //   BaseMessage msg;
+  //   msg.sourceId = peerDescription.id;
+  //   msg.targetId = random(0, this->nPeers);
+  //   broadcastData((uint8_t *)&msg, sizeof(BaseMessage));
+  //   screen->println("S:" + String(msg.sourceId) + "->" + String(msg.targetId) + "[PING] " + random(3, 87), 4);
+  //   Serial.println("S:" + String(msg.sourceId) + "->" + String(msg.targetId) + "[PING]");
+  // });
+  // runner->addTask(ping);
+  // ping.enable();
 }
 
 void Flower::onIMUOrientationData(sensors_event_t *orientationData)
@@ -75,11 +76,6 @@ void Flower::onIMUOrientationData(sensors_event_t *orientationData)
 void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int len)
 {
   uint8_t messageType = getMessageTypeFromData(incomingData);
-  uint targetId;
-  uint sourceId;
-
-  // Serial.println("Receiving Message!");
-  String messageTypeName;
 
   switch (messageType)
   {
@@ -88,35 +84,20 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
   {
     BaseMessage pingMessage;
     memcpy(&pingMessage, incomingData, sizeof(pingMessage));
-    targetId = pingMessage.targetId;
-    sourceId = pingMessage.sourceId;
-    messageTypeName = "ping";
+    break;
+  }
+  case TREE_STATE:
+  {
+    TreeStateMessage msg;
+    memcpy(&msg, incomingData, sizeof(TreeStateMessage));
+    Serial.printf("events %f %f", msg.parameters.velocityLFO, msg.parameters.retrigLFO);
+    screen->println("e " + String(msg.parameters.velocityLFO) + " v" + String(msg.parameters.retrigLFO), 4);
+
+    broadcastData(incomingData, len);
     break;
   }
   default:
-    targetId = -1;
-    sourceId = -1;
-    messageTypeName = "UNKNOWN";
     break;
-  }
-
-  // filter
-  if (targetId == peerDescription.id)
-  {
-    Serial.println("Receiving:" + String(targetId) + "<-" + String(sourceId) + "[" + messageTypeName + "]");
-    screen->println("R{O}:" + String(targetId) + "<-" + String(sourceId) + "[" + messageTypeName + "] " + random(0, 99), 3);
-  }
-  else if (targetId == 0)
-  {
-    // broadcasted message
-    Serial.println("Receiving:" + String(targetId) + "<-" + String(sourceId) + "[" + messageTypeName + "]");
-    screen->println("R{B}:" + String(targetId) + "<-" + String(sourceId) + "[" + messageTypeName + "] " + random(0, 99), 3);
-  }
-  else
-  {
-    // // broadcasted message
-    // Serial.println("Receiving:" + String(targetId) + "<-" + String(sourceId) + "[" + messageTypeName + "]");
-    // screen->println("R{X}:" + String(targetId) + "<-" + String(sourceId) + "[" + messageTypeName + "] " + random(0, 99), 3);
   }
 }
 

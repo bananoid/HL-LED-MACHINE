@@ -1,6 +1,7 @@
 #pragma once
 
 #include <BaseMessages.h>
+#include <Sequencer.h>
 
 #define BASE_MESSAGE_TYPES PING
 
@@ -21,6 +22,7 @@
 #define ROCK_MESSAGE_TYPES ROCK_BPM
 
 using namespace Messages;
+using namespace HLMusicMachine;
 
 enum MessageTypes
 {
@@ -69,4 +71,5 @@ struct TreeStateMessage : public BaseMessage
   {
     type = TREE_STATE;
   }
+  Sequencer::Parameters parameters;
 };

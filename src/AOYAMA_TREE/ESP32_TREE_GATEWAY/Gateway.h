@@ -6,7 +6,11 @@
 #include <TaskSchedulerDeclarations.h>
 #include <SerialMessenger.h>
 
+#define OLEDSCREEN_DISABLED
+
+#ifndef OLEDSCREEN_DISABLED
 #include <OledScreen.h>
+#endif
 
 using namespace HLSerialMessanger;
 
@@ -20,17 +24,18 @@ public:
 
   void begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, int nPeers, Scheduler *runner);
   void update();
-
+#ifndef OLEDSCREEN_DISABLED
   OledScreen *screen;
-
+#endif
   Task displayScreen;
 
   Task ping;
 
-  void serialMessengerReceiveMsg(BaseMessage *message) override;
+  Task serialUpdateTask;
+
+  // void serialMessengerReceiveMsg(BaseMessage *message) override;
 
   void serialMessengerReceiveData(const uint8_t *incomingData, int len) override;
-  // void serialMessengerSendData()
 };
 
 extern Gateway *GatewaySingleton;
