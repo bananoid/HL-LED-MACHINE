@@ -86,12 +86,11 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     memcpy(&pingMessage, incomingData, sizeof(pingMessage));
     break;
   }
-  case TREE_STATE:
+  case BENCHMARK_MESSAGE:
   {
-    TreeStateMessage msg;
-    memcpy(&msg, incomingData, sizeof(TreeStateMessage));
-    Serial.printf("events %f %f", msg.parameters.velocityLFO, msg.parameters.retrigLFO);
-    screen->println("e " + String(msg.parameters.velocityLFO) + " v" + String(msg.parameters.retrigLFO), 4);
+    BenchmarkMessage msg;
+    memcpy(&msg, incomingData, sizeof(BenchmarkMessage));
+    screen->println("bmt:" + String(msg.time), 4);
 
     broadcastData(incomingData, len);
     break;

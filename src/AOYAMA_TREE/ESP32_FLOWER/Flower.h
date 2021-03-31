@@ -2,6 +2,7 @@
 #include <Peer.h>
 
 #include "AOYAMA_TREE/COMMON/config.h"
+#include <BaseMessages.h>
 #define _TASK_STD_FUNCTION
 #include <TaskSchedulerDeclarations.h>
 
