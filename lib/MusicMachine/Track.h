@@ -25,5 +25,9 @@ namespace HLMusicMachine
 
     void clockTick(int counter);
     void radomize();
+
+    bool isPlaying = false;
+    void play();
+    void stop();
   };
 }

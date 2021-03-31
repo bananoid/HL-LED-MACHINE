@@ -10,6 +10,10 @@ namespace HLMusicMachine
 
   void MIDIInstrument::noteOn(int note, int vel)
   {
+    if (!isEnabled)
+    {
+      return;
+    }
     // Serial.printf("noteOn %i\n", note);
 
 #ifdef MIDI_INTERFACE
@@ -19,6 +23,11 @@ namespace HLMusicMachine
 
   void MIDIInstrument::noteOff(int note = 0)
   {
+    if (!isEnabled)
+    {
+      return;
+    }
+
     // Serial.printf("noteOff %i\n", note);
 
 #ifdef MIDI_INTERFACE
@@ -28,7 +37,6 @@ namespace HLMusicMachine
 
   void MIDIInstrument::randomize()
   {
-
 #ifdef MIDI_INTERFACE
     int program = random(0, 6);
     Serial.printf("Program change %i\n", program);

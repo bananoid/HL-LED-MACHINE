@@ -11,6 +11,10 @@ namespace HLMusicMachine
 
   void PinIntrument::noteOn(int note, int vel)
   {
+    if (!isEnabled)
+    {
+      return;
+    }
     // analogWrite(pin, trigPWM);
 
     // ledcWrite(pin, trigPWM);
@@ -21,6 +25,10 @@ namespace HLMusicMachine
 
   void PinIntrument::noteOff(int note)
   {
+    if (!isEnabled)
+    {
+      return;
+    }
     // analogWrite(pin, 0);
 
     Serial.printf("Trig off %i\n", pin);

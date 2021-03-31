@@ -8,6 +8,17 @@ namespace HLMusicMachine
     this->instrument = instrument;
   }
 
+  void Track::play()
+  {
+    isPlaying = true;
+    instrument->isEnabled = true;
+  }
+  void Track::stop()
+  {
+    isPlaying = false;
+    instrument->isEnabled = false;
+  }
+
   Sequencer *Track::addSequencer()
   {
     Sequencer *sequencer = new Sequencer(tracker, instrument);
