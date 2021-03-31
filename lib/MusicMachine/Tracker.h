@@ -25,6 +25,8 @@ namespace HLMusicMachine
 
   public:
     Tracker(Scheduler *runner);
+    Scheduler *runner;
+
     Clock *clock;
     void clockTick() override;
 

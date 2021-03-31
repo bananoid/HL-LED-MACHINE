@@ -1,77 +1,16 @@
 #include "MusicMachine.h"
 
-#include <MIDIInstrument.h>
-#include <PinInstrument.h>
-#include <Sequencer.h>
-#include <Track.h>
-
 #include "AOYAMA_TREE/COMMON/Messages.h"
+#include "AOYAMA_TREE/COMMON/TrackerFactory.h"
 
 using namespace HLMusicMachine;
 
 MusicMachine::MusicMachine(Scheduler *runner)
 {
+  this->runner = runner;
   tracker = new Tracker(runner);
-
-  Track *track;
-  Sequencer *sequencer;
-
-  track = new Track(tracker, new MIDIInstrument(1, runner));
-  Sequencer::Parameters params;
-  //////////////////////////
-  params.stepLenght = 3;
-  params.retrig = -1;
-  params.retrigLFO = 64;
-  params.octave = 3;
-  params.noteCount = 4;
-  params.noteSpread = 2;
-  params.steps = 32;
-  params.events = 12;
-  params.offset = 0;
-  params.chord = 2;
-  params.velocity = -1;
-  params.velocityLFO = 2;
-
-  sequencer = track->addSequencer();
-  sequencer->parameters = params;
-  params.events = 1;
-  params.stepLenght = 1;
-  params.noteCount = 1;
-  sequencer->minParameters = params;
-  params.events = 16;
-  params.stepLenght = 8;
-  params.noteCount = 7;
-  sequencer->maxParameters = params;
-  sequencer->randomize();
-
-  //////////////////////////
-  sequencer = track->addSequencer();
-  params.stepLenght = 3;
-  params.retrig = -1;
-  params.retrigLFO = 23;
-  params.octave = 4;
-  params.noteCount = 6;
-  params.noteSpread = 2;
-  params.steps = 32;
-  params.events = 7;
-  params.offset = 0;
-  params.chord = 0;
-  params.velocity = -1;
-  params.velocityLFO = 4.2;
-
-  sequencer = track->addSequencer();
-  sequencer->parameters = params;
-  params.events = 1;
-  params.stepLenght = 3;
-  params.noteCount = 1;
-  sequencer->minParameters = params;
-  params.events = 16;
-  params.stepLenght = 6;
-  params.noteCount = 8;
-  sequencer->maxParameters = params;
-  sequencer->randomize();
-
-  tracker->appendTrack(track);
+  TrackerFactory::buildSong(tracker);
+  tracker->clock->play();
 
   //Start Stop button
   startStopButton.attach(9, INPUT_PULLUP); // USE EXTERNAL PULL-UP
@@ -92,9 +31,7 @@ MusicMachine::MusicMachine(Scheduler *runner)
     SerialMessengerSingleton->sendMessage(&msg, sizeof(BenchmarkMessage));
   });
   runner->addTask(benchmarkTask);
-  benchmarkTask.enable();
-
-  // tracker->clock->play();
+  benchmarkTask.disable(); // Enable for benchmarck
 }
 
 void MusicMachine::update()

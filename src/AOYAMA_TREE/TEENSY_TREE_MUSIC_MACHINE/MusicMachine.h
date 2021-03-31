@@ -18,6 +18,7 @@ private:
   /* data */
 public:
   MusicMachine(Scheduler *runner);
+  Scheduler *runner;
 
   void begin();
   void update();

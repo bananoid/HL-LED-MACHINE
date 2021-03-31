@@ -69,5 +69,6 @@ struct TreeStateMessage : public BaseMessage
   {
     type = TREE_STATE;
   }
-  Sequencer::Parameters parameters;
+  Sequencer::Parameters sequencerParametersA;
+  Sequencer::Parameters sequencerParametersB;
 };

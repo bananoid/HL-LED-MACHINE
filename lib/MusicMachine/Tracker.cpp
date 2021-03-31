@@ -4,6 +4,7 @@ namespace HLMusicMachine
 {
   Tracker::Tracker(Scheduler *runner)
   {
+    this->runner = runner;
     clock = new Clock(runner);
     clock->delegate = this;
     // clock->play();
@@ -102,4 +103,5 @@ namespace HLMusicMachine
   {
     return currentScale->getNote(currentKey, inx, octave);
   }
+
 }
