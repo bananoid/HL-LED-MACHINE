@@ -1,36 +1,8 @@
 #include "TouchSensor.h"
-#include <Arduino.h>
-
-#define N_SENSORS 6
-
-#define TOUCH_PIN_1 12
-#define TOUCH_PIN_2 14
-#define TOUCH_PIN_3 27
-#define TOUCH_PIN_4 33
-#define TOUCH_PIN_5 32
-#define TOUCH_PIN_6 15
-
-int touchPins[] = {
-    TOUCH_PIN_1,
-    TOUCH_PIN_2,
-    TOUCH_PIN_3,
-    TOUCH_PIN_4,
-    TOUCH_PIN_5,
-    TOUCH_PIN_6,
-};
-
-struct TouchThreshold
-{
-  float sigfiltered = 0;
-  float thsFilter = 0;
-  bool on = false;
-};
-
-TouchThreshold touchThresholds[N_SENSORS];
 
 TouchSensor::TouchSensor(TouchSensorDelegate *delegate)
 {
-  for (int i = 0; i < N_SENSORS; i++)
+  for (int i = 0; i < N_TOUCH_SENSORS; i++)
   {
     pinMode(touchPins[i], INPUT);
   }
@@ -39,7 +11,7 @@ TouchSensor::TouchSensor(TouchSensorDelegate *delegate)
 
 void TouchSensor::update()
 {
-  for (int i = 0; i < N_SENSORS; i++)
+  for (int i = 0; i < N_TOUCH_SENSORS; i++)
   // for (int i = 0; i < 1; i++)
   {
 
@@ -50,21 +22,34 @@ void TouchSensor::update()
       continue;
     }
 
-    touchThresholds[i].sigfiltered += (touch - touchThresholds[i].sigfiltered) * 0.08;
-    touchThresholds[i].thsFilter += (touch - touchThresholds[i].thsFilter) * 0.0006;
+    states[i].sigfiltered += (touch - states[i].sigfiltered) * 0.08;
+    states[i].thsFilter += (touch - states[i].thsFilter) * 0.0006;
 
-    // Serial.printf("%f %f \n", touchThresholds[i].sigfiltered, touchThresholds[i].thsFilter);
+    // Serial.printf("%f %f \n", states[i].sigfiltered, states[i].thsFilter);
 
-    if (touchThresholds[i].sigfiltered * 1.04 < touchThresholds[i].thsFilter)
+    if (states[i].sigfiltered * 1.04 < states[i].thsFilter)
     {
       // Serial.printf("TouchSensor %i [%i]: (%i) %i\n", i, touchPins[i], touch, random(99));
       delegate->touchSensorOnTouch(i);
 
-      touchThresholds[i].on = true;
+      states[i].on = true;
     }
     else
     {
-      touchThresholds[i].on = false;
+      states[i].on = false;
     }
   }
+}
+
+int TouchSensor::getCrownOnTouches()
+{
+  int count = 0;
+  for (uint8_t i = 0; i < N_CROWN_TOUCH_SENSORS; i++)
+  {
+    if (states[i].on)
+    {
+      count++;
+    }
+  }
+  return count;
 }

@@ -19,3 +19,20 @@ void FlowerState::decreaseCallingCountDown()
     delegate->flowerStateChanged(this, state);
   }
 }
+
+void FlowerState::increaseActivation()
+{
+  activation += activationIncrease;
+  activation = min(activation, 1.0f);
+}
+
+void FlowerState::updateActivation()
+{
+  activation -= activationDecay;
+  activation = max(activation, 0.0f);
+
+  // if (activation > activationThreshold)
+  // {
+  //   Serial.println("Flower Active");
+  // }
+}

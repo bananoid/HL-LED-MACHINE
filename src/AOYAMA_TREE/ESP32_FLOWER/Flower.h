@@ -16,6 +16,8 @@
 #include <Tracker.h>
 using namespace HLMusicMachine;
 
+#include "AOYAMA_TREE/COMMON/FlowerState.h"
+
 #define OLEDSCREEN_DISABLED
 
 #ifndef OLEDSCREEN_DISABLED
@@ -68,6 +70,11 @@ public:
   void touchSensorOnTouch(int touchId) override;
 
   Tracker *tracker;
+
+  FlowerState *flowerState;
+  Task flowerStateFrameUpdateTask;
+  void flowerStateFrameUpdate();
+  void flowerStateChanged();
 
   void update();
 };
