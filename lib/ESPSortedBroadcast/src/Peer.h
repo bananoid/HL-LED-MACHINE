@@ -47,7 +47,13 @@ namespace ESPSortedBroadcast
 
     virtual void begin(int channel, PeerRecord *peerList, int nPeers);
     virtual void registerReceiveDataCB();
-    virtual void receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int len);
+    void receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int len);
+    virtual void receiveFilteredDataCB(uint8_t type,
+                                       uint8_t sourceId,
+                                       uint8_t targetId,
+                                       const uint8_t *mac,
+                                       const uint8_t *incomingData,
+                                       int len);
 
     int nPeers;
     PeerRecord *peerList;

@@ -1,5 +1,8 @@
 #include "Peer.h"
 #include <WiFi.h>
+#include <BaseMessages.h>
+
+using namespace Messages;
 
 namespace ESPSortedBroadcast
 {
@@ -95,6 +98,22 @@ namespace ESPSortedBroadcast
   }
 
   void Peer::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int len)
+  {
+    BaseMessage msg;
+    memcpy(&msg, incomingData, sizeof(BaseMessage));
+
+    if (msg.targetId == 0 || msg.targetId == peerDescription.id)
+    {
+      receiveFilteredDataCB(msg.type, msg.sourceId, msg.targetId, mac, incomingData, len);
+    }
+  }
+
+  void Peer::receiveFilteredDataCB(uint8_t type,
+                                   uint8_t sourceId,
+                                   uint8_t targetId,
+                                   const uint8_t *mac,
+                                   const uint8_t *incomingData,
+                                   int len)
   {
   }
 

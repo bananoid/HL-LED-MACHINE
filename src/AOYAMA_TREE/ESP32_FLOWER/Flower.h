@@ -27,9 +27,14 @@ class Flower : public ESPSortedBroadcast::Peer, public IMUSensorDelegate, public
 private:
 public:
   // wifi
-  void receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int len) override;
 
   void registerReceiveDataCB() override;
+  virtual void receiveFilteredDataCB(uint8_t type,
+                                     uint8_t sourceId,
+                                     uint8_t targetId,
+                                     const uint8_t *mac,
+                                     const uint8_t *incomingData,
+                                     int len) override;
 
   void begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, int nPeers, Scheduler *runner);
 

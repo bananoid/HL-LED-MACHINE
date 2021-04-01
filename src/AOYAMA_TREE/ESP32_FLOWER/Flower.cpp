@@ -87,9 +87,9 @@ void Flower::onIMUOrientationData(sensors_event_t *orientationData)
   // Serial.printf("IMY", )
 }
 
-void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int len)
+void Flower::receiveFilteredDataCB(uint8_t messageType, uint8_t sourceId, uint8_t targetId, const uint8_t *mac, const uint8_t *incomingData, int len)
 {
-  uint8_t messageType = getMessageTypeFromData(incomingData);
+  // Serial.printf("messageType %i sourceId %i targetId %i \n", messageType, sourceId, targetId);
 
   switch (messageType)
   {
@@ -115,11 +115,8 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     FlowerCallMessage msg;
     memcpy(&msg, incomingData, sizeof(FlowerCallMessage));
 
-    if (msg.targetId == peerDescription.id)
-    {
-      Serial.printf("FLOWER_CALL %i\n", msg.seed);
-      bottomRingLEDShaderSynth->targetState->hue = 0.5;
-    }
+    Serial.printf("FLOWER_CALL %i\n", msg.seed);
+    bottomRingLEDShaderSynth->targetState->hue = 0.5;
 
     break;
   }
@@ -128,11 +125,9 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     FlowerSilentMessage msg;
     memcpy(&msg, incomingData, sizeof(FlowerSilentMessage));
 
-    if (msg.targetId == peerDescription.id)
-    {
-      Serial.printf("FLOWER_SILENT %i\n", msg.seed);
-      bottomRingLEDShaderSynth->targetState->hue = 0;
-    }
+    Serial.printf("FLOWER_SILENT %i\n", msg.seed);
+    bottomRingLEDShaderSynth->targetState->hue = 0;
+
     break;
   }
 
