@@ -24,7 +24,7 @@ namespace HLMusicMachine
 
     if (noteLenght != 0)
     {
-      delegate->noteOn(note, vel);
+      delegate->noteOn(note, vel, index);
 
       long noteTime;
 
@@ -44,7 +44,7 @@ namespace HLMusicMachine
   }
   void Voice::noteOff(int note)
   {
-    delegate->noteOff(note);
+    delegate->noteOff(note, index);
     // lastNote = -1;
   }
 }

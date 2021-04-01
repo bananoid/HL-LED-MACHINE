@@ -8,7 +8,7 @@ namespace HLMusicMachine
     this->channel = channel;
   }
 
-  void MIDIInstrument::noteOn(int note, int vel)
+  void MIDIInstrument::noteOn(int note, int vel, uint8_t voiceIndex)
   {
     if (!isEnabled)
     {
@@ -21,7 +21,7 @@ namespace HLMusicMachine
 #endif
   }
 
-  void MIDIInstrument::noteOff(int note = 0)
+  void MIDIInstrument::noteOff(int note = 0, uint8_t voiceIndex)
   {
     // if (!isEnabled)
     // {

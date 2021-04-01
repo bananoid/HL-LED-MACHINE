@@ -4,14 +4,13 @@
 
 namespace HLMusicMachine
 {
-  class MIDIInstrument : public Instrument
+  class PolyPinInstrumet : public Instrument
   {
   public:
-    int channel;
-    MIDIInstrument(int channel, Scheduler *runner, int voiceCount = 4);
+    uint8_t pins[3];
+    PolyPinInstrumet(Scheduler *runner, const uint8_t *pins, int voiceCount = 3);
 
     void noteOn(int note = 0, int vel = 127, uint8_t voiceIndex = 0) override;
     void noteOff(int note, uint8_t voiceIndex = 0) override;
-    void randomize() override;
   };
 }

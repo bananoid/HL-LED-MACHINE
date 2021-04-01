@@ -10,7 +10,7 @@
 
 #include <Tracker.h>
 #include <Sequencer.h>
-#include <PinInstrument.h>
+#include <PolyPinInstrumet.h>
 
 using namespace HLMusicMachine;
 

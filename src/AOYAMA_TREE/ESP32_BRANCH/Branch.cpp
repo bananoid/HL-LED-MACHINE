@@ -8,7 +8,10 @@ void Branch::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, in
   ESPSortedBroadcast::Peer::begin(wifiChannel, peerList, nPeers);
 
   tracker = new Tracker(runner);
-  track = TrackerFactory::buildTrackWithInstrument(tracker, new PinIntrument(25, runner)); // TODO: Make PolyPin instriment 32 33 25
+
+  const uint8_t pins[3] = {32, 33, 25};
+  PolyPinInstrumet *instrument = new PolyPinInstrumet(runner, pins, 3);
+  track = TrackerFactory::buildTrackWithInstrument(tracker, instrument); // TODO: Make PolyPin instriment 32 33 25
   tracker->clock->play();
   track->play();
 }

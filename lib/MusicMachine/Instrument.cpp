@@ -10,6 +10,7 @@ namespace HLMusicMachine
     {
       Voice *voice = new Voice(runner);
       voice->delegate = this;
+      voice->index = i;
       voices.push_back(voice);
     }
   }
@@ -37,11 +38,11 @@ namespace HLMusicMachine
     lastNote = note;
   }
 
-  void Instrument::noteOn(int note, int vel)
+  void Instrument::noteOn(int note, int vel, uint8_t voiceIndex)
   {
   }
 
-  void Instrument::noteOff(int note)
+  void Instrument::noteOff(int note, uint8_t voiceIndex)
   {
   }
 

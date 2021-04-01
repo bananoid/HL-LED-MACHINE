@@ -9,7 +9,7 @@ namespace HLMusicMachine
     voices[0]->trigTime = TASK_MILLISECOND * 30;
   }
 
-  void PinIntrument::noteOn(int note, int vel)
+  void PinIntrument::noteOn(int note, int vel, uint8_t voiceIndex)
   {
     if (!isEnabled)
     {
@@ -23,7 +23,7 @@ namespace HLMusicMachine
     digitalWrite(pin, HIGH);
   }
 
-  void PinIntrument::noteOff(int note)
+  void PinIntrument::noteOff(int note, uint8_t voiceIndex)
   {
     // if (!isEnabled)
     // {

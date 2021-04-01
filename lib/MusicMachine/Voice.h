@@ -9,8 +9,8 @@ namespace HLMusicMachine
   {
   public:
     virtual long getClockTime();
-    virtual void noteOn(int note, int vel);
-    virtual void noteOff(int note);
+    virtual void noteOn(int note, int vel, uint8_t voiceIndex);
+    virtual void noteOff(int note, uint8_t voiceIndex);
   };
 
   class Voice
@@ -20,6 +20,8 @@ namespace HLMusicMachine
     VoiceDelegate *delegate;
 
     Task voiceTask;
+
+    uint8_t index = 0;
 
     long trigTime = 0;
 
