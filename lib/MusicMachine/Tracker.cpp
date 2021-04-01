@@ -30,7 +30,10 @@ namespace HLMusicMachine
 
     if ((clock->tickCounter) % (clock->clockDivider * 1) == 0)
     {
-      delegate->trackerBarTick();
+      if (delegate != nullptr)
+      {
+        delegate->trackerBarTick();
+      }
     }
 
     Track *track;

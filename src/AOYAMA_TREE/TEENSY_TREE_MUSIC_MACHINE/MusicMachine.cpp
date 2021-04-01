@@ -128,6 +128,12 @@ void MusicMachine::trackerBarTick()
     Serial.print(flowerState->state == SILENT ? " - " : " o ");
   }
   Serial.println("");
+
+  //ClockSync message
+  unsigned int tickDelay = 0;
+  ClockSyncMessage clockMsg;
+  clockMsg.tickCounter = tracker->clock->tickCounter + tickDelay;
+  SerialMessengerSingleton->sendMessage(&clockMsg, sizeof(ClockSyncMessage));
 }
 
 void MusicMachine::flowerStateChanged(FlowerState *flowerState, FlowerStates state)

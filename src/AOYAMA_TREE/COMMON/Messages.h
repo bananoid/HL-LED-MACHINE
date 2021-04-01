@@ -19,6 +19,8 @@
 // ROCK messages:
 #define ROCK_MESSAGE_TYPES ROCK_BPM
 
+#define CLOCK_TYPES CLOCK_SYNC
+
 using namespace Messages;
 using namespace HLMusicMachine;
 
@@ -28,7 +30,8 @@ enum MessageTypes
   FLOWER_MESSAGE_TYPES,
   BRANCH_MESSAGE_TYPES,
   ROCK_MESSAGE_TYPES,
-  TREE_MESSAGE_TYPES
+  TREE_MESSAGE_TYPES,
+  CLOCK_TYPES
 };
 
 struct FlowerTouchMessage : public BaseMessage
@@ -88,4 +91,13 @@ struct FlowerSilentMessage : public BaseMessage
     type = FLOWER_SILENT;
   }
   uint32_t seed;
+};
+
+struct ClockSyncMessage : public BaseMessage
+{
+  ClockSyncMessage()
+  {
+    type = CLOCK_SYNC;
+  }
+  uint32_t tickCounter;
 };

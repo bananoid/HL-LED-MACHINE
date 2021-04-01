@@ -187,5 +187,5 @@ void Flower::flowerStateFrameUpdate()
   bottomRingLEDShaderSynth->targetState->hue = flowerState->activation * 0.5;
   // bottomRingLEDShaderSynth->targetState->speed = map(flowerState->activation, 0.0, 1.0, 0.1, 2.0);
 
-  Serial.println(flowerState->activation);
+  // Serial.println(flowerState->activation);
 }

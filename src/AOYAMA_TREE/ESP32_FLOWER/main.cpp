@@ -1,5 +1,6 @@
 #include <Arduino.h>
 
+#define _TASK_MICRO_RES
 #define _TASK_STD_FUNCTION
 #include <TaskScheduler.h>
 

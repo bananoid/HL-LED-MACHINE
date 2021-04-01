@@ -42,6 +42,14 @@ public:
     }
   }
 
+  static Track *buildTrackWithInstrument(Tracker *tracker, Instrument *instrument)
+  {
+    Track *track = new Track(tracker, instrument);
+    buildFactoryTrackWithSequencers(track);
+    tracker->appendTrack(track);
+    return track;
+  }
+
   static void buildFactoryTrackWithSequencers(Track *track)
   {
     track->addSequencer();

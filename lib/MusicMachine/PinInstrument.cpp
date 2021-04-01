@@ -19,7 +19,7 @@ namespace HLMusicMachine
 
     // ledcWrite(pin, trigPWM);
 
-    Serial.printf("Trig on %i\n", pin);
+    // Serial.printf("Trig on %i\n", pin);
     digitalWrite(pin, HIGH);
   }
 
@@ -31,7 +31,7 @@ namespace HLMusicMachine
     }
     // analogWrite(pin, 0);
 
-    Serial.printf("Trig off %i\n", pin);
+    // Serial.printf("Trig off %i\n", pin);
     // ledcWrite(pin, 0);
     digitalWrite(pin, LOW);
   }
