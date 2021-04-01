@@ -133,7 +133,7 @@ void MusicMachine::trackerBarTick()
   Serial.println("");
 
   //ClockSync message
-  unsigned int tickDelay = 0;
+  unsigned int tickDelay = -1;
   ClockSyncMessage clockMsg;
   clockMsg.tickCounter = tracker->clock->tickCounter + tickDelay;
   clockMsg.bpm = tracker->clock->getBpm();

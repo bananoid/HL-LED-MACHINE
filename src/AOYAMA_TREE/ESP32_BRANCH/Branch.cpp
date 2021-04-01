@@ -42,7 +42,6 @@ void Branch::receiveFilteredDataCB(uint8_t messageType, uint8_t sourceId, uint8_
     track->radomize();
     track->play();
 
-    
     Serial.printf("FLOWER_CALL seed:%i type:%i nseq:%i\n", msg.seed, msg.trackType, track->sequencers.size());
 
     break;

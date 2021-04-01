@@ -9,9 +9,9 @@ namespace HLMusicMachine
     clock->delegate = this;
     // clock->play();
 
-    pinMode(19, INPUT);
+    // pinMode(19, INPUT);
 
-    randomSeed(analogRead(19));
+    // randomSeed(analogRead(19));
 
     pickNextHarmony();
   }

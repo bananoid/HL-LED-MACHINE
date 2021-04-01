@@ -58,6 +58,7 @@ public:
 
   static void setSequncerParametersForTrackOfType(Track *track, TrackType type)
   {
+
     Sequencer *sequencer;
     Sequencer::Parameters params;
 
@@ -70,7 +71,7 @@ public:
     params.retrig = 0;
     params.retrigLFO = 64;
     params.octave = 3;
-    params.noteCount = 4;
+    params.noteCount = 1;
     params.noteSpread = 2;
     params.steps = 32;
     params.events = 8;
@@ -101,10 +102,10 @@ public:
     params.retrig = 0;
     params.retrigLFO = 23;
     params.octave = 4;
-    params.noteCount = 6;
+    params.noteCount = 1;
     params.noteSpread = 2;
-    params.steps = 1;
-    params.events = 0;
+    params.steps = 32;
+    params.events = 7;
     params.offset = 0;
     params.chord = 0;
     params.velocity = -1;
@@ -112,14 +113,16 @@ public:
 
     sequencer->parameters = params;
 
-    // params.events = 1;
-    // params.stepLenght = 3;
+    params.events = 1;
+    params.stepLenght = 3;
+    params.steps = 1;
     // params.noteCount = 1;
 
     sequencer->minParameters = params;
 
-    // params.events = 16;
-    // params.stepLenght = 6;
+    params.events = 16;
+    params.stepLenght = 6;
+    params.steps = 32;
     // params.noteCount = 8;
 
     sequencer->maxParameters = params;

@@ -31,7 +31,7 @@ namespace HLMusicMachine
     float getBpm();
     void setBpm(float bpm);
 
-    float bpm = 60;
+    float bpm = 100;
     const int clockDivider = 24;           // number of time intervals within a beat
     unsigned long clockInterval = 1000000; // default value to 1 sec
     const float minBpm = 10;
