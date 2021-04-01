@@ -153,6 +153,7 @@ void MusicMachine::flowerStateChanged(FlowerState *flowerState, FlowerStates sta
     FlowerSilentMessage msg;
     msg.sourceId = 1;
     msg.targetId = flowerState->peerId;
+    msg.seed = flowerState->seed;
     SerialMessengerSingleton->sendMessage(&msg, sizeof(FlowerSilentMessage));
   }
 }

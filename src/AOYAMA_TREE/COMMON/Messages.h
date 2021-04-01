@@ -87,4 +87,5 @@ struct FlowerSilentMessage : public BaseMessage
   {
     type = FLOWER_SILENT;
   }
+  uint32_t seed;
 };

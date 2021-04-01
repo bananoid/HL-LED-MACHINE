@@ -130,7 +130,7 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
 
     if (msg.targetId == peerDescription.id)
     {
-      Serial.printf("FLOWER_SILENT \n");
+      Serial.printf("FLOWER_SILENT %i\n", msg.seed);
       bottomRingLEDShaderSynth->targetState->hue = 0;
     }
     break;
