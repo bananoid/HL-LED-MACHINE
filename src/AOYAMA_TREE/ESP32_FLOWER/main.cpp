@@ -25,4 +25,5 @@ void setup()
 void loop()
 {
   runner.execute();
+  FlowerSingleton->update();
 }

@@ -32,40 +32,49 @@ void Flower::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, in
   FastLED.addLeds<WS2812B, 18, GRB>(leds, 24); // top
   topRingLEDRenderer.begin(leds, 24);
   topRingLEDSynth = new LEDSynth::LEDSynth(24, &topRingLEDRenderer, runner);
+  topRingLEDShaderSynth = topRingLEDSynth->addLEDShaderSynth();
 
   leds = new CRGB[24];
-  FastLED.addLeds<WS2812B, 5, GRB>(leds, 24); // bottom
+  FastLED.addLeds<WS2812B, 19, GRB>(leds, 24); // bottom
   bottomRingLEDRenderer.begin(leds, 24);
   bottomRingLEDSynth = new LEDSynth::LEDSynth(24, &bottomRingLEDRenderer, runner);
+  bottomRingLEDShaderSynth = bottomRingLEDSynth->addLEDShaderSynth();
+  bottomRingLEDShaderSynth->targetState->hueRad = 0;
+  bottomRingLEDShaderSynth->targetState->que = 0;
+  bottomRingLEDShaderSynth->targetState->speed = 0.1;
 
   leds = new CRGB[1];
-  FastLED.addLeds<WS2812B, 19, GRB>(leds, 1); // dot
+  FastLED.addLeds<WS2812B, 5, GRB>(leds, 1); // dot
   ballDotLEDRenderer.begin(leds, 1);
   ballDotLEDSynth = new LEDSynth::LEDSynth(1, &ballDotLEDRenderer, runner);
+  ballDotLEDShaderSynth = ballDotLEDSynth->addLEDShaderSynth();
 
   // IMU
   // imu = new IMUSensor(this);
   // imu->begin();
-
   // readIMU.set(10 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
-  //   // Serial.println("reading IMU");
-  //   // imu->update();
+  //   imu->update();
   // });
   // runner->addTask(readIMU);
   // readIMU.enable();
 
   // touchSensor
   touchSensor = new TouchSensor(this);
-  touchSensorUpdateTask.set(16 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
+  touchSensorUpdateTask.set(1 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
     touchSensor->update();
   });
   runner->addTask(touchSensorUpdateTask);
   touchSensorUpdateTask.enable();
 }
 
+void Flower::update()
+{
+  // touchSensor->update();
+}
+
 void Flower::touchSensorOnTouch(int touchId)
 {
-  Serial.println("touchSensorOnTouch" + String(touchId));
+  // Serial.println("touchSensorOnTouch" + String(touchId));
 }
 
 void Flower::onIMUOrientationData(sensors_event_t *orientationData)
@@ -74,6 +83,8 @@ void Flower::onIMUOrientationData(sensors_event_t *orientationData)
   x = orientationData->orientation.x;
   y = orientationData->orientation.y;
   z = orientationData->orientation.z;
+
+  // Serial.printf("IMY", )
 }
 
 void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int len)
@@ -99,6 +110,32 @@ void Flower::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int 
     broadcastData(incomingData, len);
     break;
   }
+  case FLOWER_CALL:
+  {
+    FlowerCallMessage msg;
+    memcpy(&msg, incomingData, sizeof(FlowerCallMessage));
+
+    if (msg.targetId == peerDescription.id)
+    {
+      Serial.printf("FLOWER_CALL %i\n", msg.seed);
+      bottomRingLEDShaderSynth->targetState->hue = 0.5;
+    }
+
+    break;
+  }
+  case FLOWER_SILENT:
+  {
+    FlowerSilentMessage msg;
+    memcpy(&msg, incomingData, sizeof(FlowerSilentMessage));
+
+    if (msg.targetId == peerDescription.id)
+    {
+      Serial.printf("FLOWER_SILENT \n");
+      bottomRingLEDShaderSynth->targetState->hue = 0;
+    }
+    break;
+  }
+
   default:
     break;
   }

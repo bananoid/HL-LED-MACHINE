@@ -13,6 +13,9 @@
 #include "IMUSensor.h"
 #include "TouchSensor.h"
 
+#include <Tracker.h>
+using namespace HLMusicMachine;
+
 #define OLEDSCREEN_DISABLED
 
 #ifndef OLEDSCREEN_DISABLED
@@ -46,6 +49,10 @@ public:
   LEDSynth::LEDSynth *bottomRingLEDSynth;
   LEDSynth::LEDSynth *ballDotLEDSynth;
 
+  LEDSynth::LEDShaderSynth *topRingLEDShaderSynth;
+  LEDSynth::LEDShaderSynth *bottomRingLEDShaderSynth;
+  LEDSynth::LEDShaderSynth *ballDotLEDShaderSynth;
+
   // void frameRender();
 
   IMUSensor *imu;
@@ -54,6 +61,10 @@ public:
   TouchSensor *touchSensor;
   Task touchSensorUpdateTask;
   void touchSensorOnTouch(int touchId) override;
+
+  Tracker *tracker;
+
+  void update();
 };
 
 extern Flower *FlowerSingleton;

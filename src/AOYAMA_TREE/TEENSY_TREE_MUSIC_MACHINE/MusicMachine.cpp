@@ -115,16 +115,8 @@ void MusicMachine::trackerBarTick()
 
     if (flowerState->state == CALLING)
     {
-      flowerState->seed = millis();
       flowerState->silentCountDown = random(4, 32); // change to random
       flowerState->callingCountDown = random(1, 4); // change to random
-
-      randomSeed(flowerState->seed);
-
-      FlowerCallMessage msg;
-      msg.seed = flowerState->seed;
-      msg.sourceId = 0;
-      msg.targetId = flowerState->peerId;
     }
   }
 
@@ -143,11 +135,24 @@ void MusicMachine::flowerStateChanged(FlowerState *flowerState, FlowerStates sta
   Serial.printf("peerId: %i state:%i\n", flowerState->peerId, flowerState->state);
   if (state == CALLING)
   {
+    flowerState->seed = millis();
+    randomSeed(flowerState->seed);
     flowerState->track->radomize();
     flowerState->track->play();
+
+    FlowerCallMessage msg;
+    msg.seed = flowerState->seed;
+    msg.sourceId = 1;
+    msg.targetId = flowerState->peerId;
+    SerialMessengerSingleton->sendMessage(&msg, sizeof(FlowerCallMessage));
   }
   else if (state == SILENT)
   {
     flowerState->track->stop();
+
+    FlowerSilentMessage msg;
+    msg.sourceId = 1;
+    msg.targetId = flowerState->peerId;
+    SerialMessengerSingleton->sendMessage(&msg, sizeof(FlowerSilentMessage));
   }
 }
