@@ -53,7 +53,6 @@ void MusicMachine::initFlowerStates()
     flowerStates[i] = new FlowerState();
     flowerStates[i]->delegate = this;
     flowerStates[i]->track = *it;
-    flowerStates[i]->trackType = (TrackerFactory::TrackType)i;
     flowerStates[i]->peerId = pIds[i];
     flowerStates[i]->branchPeerId = bpIds[i];
     i++;
@@ -145,15 +144,13 @@ void MusicMachine::flowerStateChanged(FlowerState *flowerState, FlowerStates sta
   Serial.printf("peerId: %i state:%i\n", flowerState->peerId, flowerState->state);
   if (state == CALLING)
   {
-    flowerState->seed = millis();
-    randomSeed(flowerState->seed);
     flowerState->track->radomize();
     flowerState->track->play();
 
     FlowerCallMessage msg;
-    msg.seed = flowerState->seed;
+    msg.sequecerA = flowerState->track->getSequencerAt(0)->parameters;
+    msg.sequecerB = flowerState->track->getSequencerAt(1)->parameters;
     msg.sourceId = 1;
-    msg.trackType = flowerState->trackType;
     msg.targetId = flowerState->peerId;
     SerialMessengerSingleton->sendMessage(&msg, sizeof(FlowerCallMessage));
     msg.targetId = flowerState->branchPeerId;
@@ -164,7 +161,6 @@ void MusicMachine::flowerStateChanged(FlowerState *flowerState, FlowerStates sta
     flowerState->track->stop();
 
     FlowerSilentMessage msg;
-    msg.seed = flowerState->seed;
     msg.sourceId = 1;
     msg.targetId = flowerState->peerId;
     SerialMessengerSingleton->sendMessage(&msg, sizeof(FlowerSilentMessage));

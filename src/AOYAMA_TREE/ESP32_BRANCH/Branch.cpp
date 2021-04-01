@@ -37,12 +37,10 @@ void Branch::receiveFilteredDataCB(uint8_t messageType, uint8_t sourceId, uint8_
   {
     FlowerCallMessage msg;
     memcpy(&msg, incomingData, sizeof(FlowerCallMessage));
-    randomSeed(msg.seed);
-    TrackerFactory::setSequncerParametersForTrackOfType(track, (TrackerFactory::TrackType)msg.trackType);
-    track->radomize();
+    TrackerFactory::setSequncerParametersForTrack(track, msg.sequecerA, msg.sequecerB);
     track->play();
 
-    Serial.printf("FLOWER_CALL seed:%i type:%i nseq:%i\n", msg.seed, msg.trackType, track->sequencers.size());
+    // Serial.printf("FLOWER_CALL seed:%i type:%i nseq:%i\n", msg.seed, msg.trackType, track->sequencers.size());
 
     break;
   }

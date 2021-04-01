@@ -22,6 +22,7 @@ namespace HLMusicMachine
 
     Track(Tracker *tracker, Instrument *instrument);
     Sequencer *addSequencer();
+    Sequencer *getSequencerAt(int inx);
 
     void clockTick(int counter);
     void radomize();

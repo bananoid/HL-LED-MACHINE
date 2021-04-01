@@ -56,6 +56,12 @@ public:
     track->addSequencer();
   }
 
+  static void setSequncerParametersForTrack(Track *track, Sequencer::Parameters paramsA, Sequencer::Parameters paramsB)
+  {
+    track->getSequencerAt(0)->parameters = paramsA;
+    track->getSequencerAt(1)->parameters = paramsB;
+  }
+
   static void setSequncerParametersForTrackOfType(Track *track, TrackType type)
   {
 
@@ -99,7 +105,7 @@ public:
     sequencer = *it;
 
     params.stepLenght = 3;
-    params.retrig = 0;
+    params.retrig = -1;
     params.retrigLFO = 23;
     params.octave = 4;
     params.noteCount = 1;

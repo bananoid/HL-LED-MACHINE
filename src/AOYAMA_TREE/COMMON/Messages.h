@@ -72,8 +72,8 @@ struct FlowerCallMessage : public BaseMessage
   {
     type = FLOWER_CALL;
   }
-  uint32_t seed;
-  uint8_t trackType;
+  Sequencer::Parameters sequecerA;
+  Sequencer::Parameters sequecerB;
 };
 
 struct FlowerActiveMessage : public BaseMessage
@@ -91,7 +91,6 @@ struct FlowerSilentMessage : public BaseMessage
   {
     type = FLOWER_SILENT;
   }
-  uint32_t seed;
 };
 
 struct ClockSyncMessage : public BaseMessage

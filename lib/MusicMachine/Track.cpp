@@ -25,6 +25,16 @@ namespace HLMusicMachine
     sequencers.push_back(sequencer);
     return sequencer;
   }
+  Sequencer *Track::getSequencerAt(int inx)
+  {
+    list<Sequencer *>::iterator it;
+    it = sequencers.begin();
+    for (uint8_t i = 0; i < inx; i++)
+    {
+      it++;
+    }
+    return *it;
+  }
 
   void Track::clockTick(int counter)
   {

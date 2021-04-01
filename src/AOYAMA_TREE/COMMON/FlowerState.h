@@ -22,10 +22,7 @@ public:
   FlowerStateDelegate *delegate = nullptr;
   uint8_t peerId;
   uint8_t branchPeerId;
-  TrackerFactory::TrackType trackType;
   FlowerStates state = SILENT;
-
-  uint32_t seed;
 
   HLMusicMachine::Track *track;
 
