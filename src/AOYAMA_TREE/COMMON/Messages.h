@@ -73,6 +73,7 @@ struct FlowerCallMessage : public BaseMessage
     type = FLOWER_CALL;
   }
   uint32_t seed;
+  uint8_t trackType;
 };
 
 struct FlowerActiveMessage : public BaseMessage

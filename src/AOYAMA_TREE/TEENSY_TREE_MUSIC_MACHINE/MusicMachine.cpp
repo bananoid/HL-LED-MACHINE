@@ -41,6 +41,7 @@ void MusicMachine::initFlowerStates()
   FlowerState *flowerState;
 
   int pIds[NUMBER_OF_FLOWERS] = FLOWER_PEER_IDS;
+  int bpIds[NUMBER_OF_FLOWERS] = BRANCH_PEER_IDS;
 
   Track *track;
   list<Track *>::iterator it;
@@ -52,7 +53,9 @@ void MusicMachine::initFlowerStates()
     flowerStates[i] = new FlowerState();
     flowerStates[i]->delegate = this;
     flowerStates[i]->track = *it;
+    flowerStates[i]->trackType = (TrackerFactory::TrackType)i;
     flowerStates[i]->peerId = pIds[i];
+    flowerStates[i]->branchPeerId = bpIds[i];
     i++;
   }
 }
@@ -150,7 +153,10 @@ void MusicMachine::flowerStateChanged(FlowerState *flowerState, FlowerStates sta
     FlowerCallMessage msg;
     msg.seed = flowerState->seed;
     msg.sourceId = 1;
+    msg.trackType = flowerState->trackType;
     msg.targetId = flowerState->peerId;
+    SerialMessengerSingleton->sendMessage(&msg, sizeof(FlowerCallMessage));
+    msg.targetId = flowerState->branchPeerId;
     SerialMessengerSingleton->sendMessage(&msg, sizeof(FlowerCallMessage));
   }
   else if (state == SILENT)
@@ -158,9 +164,11 @@ void MusicMachine::flowerStateChanged(FlowerState *flowerState, FlowerStates sta
     flowerState->track->stop();
 
     FlowerSilentMessage msg;
+    msg.seed = flowerState->seed;
     msg.sourceId = 1;
     msg.targetId = flowerState->peerId;
-    msg.seed = flowerState->seed;
+    SerialMessengerSingleton->sendMessage(&msg, sizeof(FlowerSilentMessage));
+    msg.targetId = flowerState->branchPeerId;
     SerialMessengerSingleton->sendMessage(&msg, sizeof(FlowerSilentMessage));
   }
 }

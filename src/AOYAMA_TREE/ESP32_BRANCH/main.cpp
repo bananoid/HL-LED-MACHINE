@@ -8,6 +8,7 @@
 #include "AOYAMA_TREE/COMMON/config.h"
 
 #include "Branch.h"
+#include <WiFi.h>
 
 using namespace ESPSortedBroadcast;
 
@@ -26,4 +27,5 @@ void setup()
 void loop()
 {
   runner.execute();
+  // Serial.println(WiFi.macAddress());
 }

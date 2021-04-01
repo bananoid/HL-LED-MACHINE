@@ -31,7 +31,7 @@ public:
     for (unsigned int i = 0; i < nTracks; i++)
     {
       TrackType type = (TrackType)i;
-      int midiChannel = i + 1;
+      int midiChannel = i;
 
       Serial.printf("Track Type %i - midiChannel %i", type, midiChannel);
 
@@ -67,28 +67,28 @@ public:
     sequencer = *it;
 
     params.stepLenght = 3;
-    params.retrig = -1;
+    params.retrig = 0;
     params.retrigLFO = 64;
     params.octave = 3;
     params.noteCount = 4;
     params.noteSpread = 2;
     params.steps = 32;
-    params.events = 12;
+    params.events = 8;
     params.offset = 0;
-    params.chord = 2;
+    params.chord = 0;
     params.velocity = -1;
     params.velocityLFO = 2;
     sequencer->parameters = params;
 
-    params.events = 1;
-    params.stepLenght = 1;
-    params.noteCount = 1;
+    // params.events = 1;
+    // params.stepLenght = 1;
+    // params.noteCount = 1;
 
     sequencer->minParameters = params;
 
-    params.events = 16;
-    params.stepLenght = 8;
-    params.noteCount = 7;
+    // params.events = 16;
+    // params.stepLenght = 8;
+    // params.noteCount = 7;
     sequencer->maxParameters = params;
 
     sequencer->randomize();
@@ -98,13 +98,13 @@ public:
     sequencer = *it;
 
     params.stepLenght = 3;
-    params.retrig = -1;
+    params.retrig = 0;
     params.retrigLFO = 23;
     params.octave = 4;
     params.noteCount = 6;
     params.noteSpread = 2;
-    params.steps = 32;
-    params.events = 7;
+    params.steps = 1;
+    params.events = 0;
     params.offset = 0;
     params.chord = 0;
     params.velocity = -1;
@@ -112,15 +112,15 @@ public:
 
     sequencer->parameters = params;
 
-    params.events = 1;
-    params.stepLenght = 3;
-    params.noteCount = 1;
+    // params.events = 1;
+    // params.stepLenght = 3;
+    // params.noteCount = 1;
 
     sequencer->minParameters = params;
 
-    params.events = 16;
-    params.stepLenght = 6;
-    params.noteCount = 8;
+    // params.events = 16;
+    // params.stepLenght = 6;
+    // params.noteCount = 8;
 
     sequencer->maxParameters = params;
 

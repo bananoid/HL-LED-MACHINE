@@ -9,7 +9,7 @@
 #define TOUCH_PIN_3 27
 #define TOUCH_PIN_4 33
 #define TOUCH_PIN_5 32
-#define TOUCH_PIN_6 15
+#define TOUCH_PIN_6 15 // Ball
 
 struct TouchSensorState
 {

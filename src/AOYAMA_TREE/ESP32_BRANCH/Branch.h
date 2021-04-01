@@ -4,6 +4,8 @@
 #include "AOYAMA_TREE/COMMON/config.h"
 #include "AOYAMA_TREE/COMMON/TrackerFactory.h"
 
+#define _TASK_MICRO_RES
+#define _TASK_STD_FUNCTION
 #include <TaskSchedulerDeclarations.h>
 
 #include <Tracker.h>
