@@ -27,11 +27,11 @@ void IMUSensor::update() // IMU task
   bno.getEvent(&orientationData, Adafruit_BNO055::VECTOR_EULER);
   // bno.getEvent(&angVelocityData, Adafruit_BNO055::VECTOR_GYROSCOPE);
   bno.getEvent(&linearAccelData, Adafruit_BNO055::VECTOR_LINEARACCEL);
-  bno.getEvent(&magnetometerData, Adafruit_BNO055::VECTOR_MAGNETOMETER);
+  // bno.getEvent(&magnetometerData, Adafruit_BNO055::VECTOR_MAGNETOMETER);
   // bno.getEvent(&accelerometerData, Adafruit_BNO055::VECTOR_ACCELEROMETER);
   // bno.getEvent(&gravityData, Adafruit_BNO055::VECTOR_GRAVITY);
 
-  // printEvent(&orientationData);
+  printEvent(&orientationData);
   // printEvent(&angVelocityData);
   // printEvent(&linearAccelData);
   // printEvent(&magnetometerData);
