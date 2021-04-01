@@ -29,8 +29,8 @@ void Branch::receiveFilteredDataCB(uint8_t messageType, uint8_t sourceId, uint8_
   {
     ClockSyncMessage msg;
     memcpy(&msg, incomingData, sizeof(ClockSyncMessage));
-    Serial.printf("CLOCK_SYNC %i\n", msg.tickCounter);
-
+    // Serial.printf("CLOCK_SYNC %i %f\n ", msg.tickCounter, msg.bpm);
+    tracker->clock->syncTo(msg.tickCounter, msg.bpm);
     break;
   }
   }

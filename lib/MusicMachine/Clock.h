@@ -50,5 +50,7 @@ namespace HLMusicMachine
       int triplet = timeInx % 2 == 0 ? 1 : 3;
       return triplet * powf(2, timeInx / 2);
     }
+
+    void syncTo(unsigned long syncTickCounter, float bpm);
   };
 }

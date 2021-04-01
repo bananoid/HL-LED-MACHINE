@@ -36,7 +36,7 @@ namespace HLMusicMachine
     this->bpm = bpm;
     this->clockInterval = 60 * TASK_SECOND / bpm / this->clockDivider; // microseconds
 
-    Serial.printf("Bpm is  %f\n", bpm);
+    // Serial.printf("Bpm is  %f\n", bpm);
   }
 
   float Clock::getBpm()
@@ -92,5 +92,14 @@ namespace HLMusicMachine
   {
     float bpm = getBpm() + increase;
     setBpm(bpm);
+  }
+
+  void Clock::syncTo(unsigned long syncTickCounter, float bpm)
+  {
+    tickCounter = syncTickCounter;
+    setBpm(bpm);
+
+    // long deltaTicks = tickCounter - syncTickCounter;
+    // Serial.printf("deltaTicks:%i tickCounter:%i syncTickCounter:%i\n", deltaTicks, tickCounter, syncTickCounter);
   }
 }

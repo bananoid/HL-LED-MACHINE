@@ -133,6 +133,7 @@ void MusicMachine::trackerBarTick()
   unsigned int tickDelay = 0;
   ClockSyncMessage clockMsg;
   clockMsg.tickCounter = tracker->clock->tickCounter + tickDelay;
+  clockMsg.bpm = tracker->clock->getBpm();
   SerialMessengerSingleton->sendMessage(&clockMsg, sizeof(ClockSyncMessage));
 }
 

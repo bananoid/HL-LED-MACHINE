@@ -99,5 +99,6 @@ struct ClockSyncMessage : public BaseMessage
   {
     type = CLOCK_SYNC;
   }
-  uint32_t tickCounter;
+  uint32_t tickCounter = 0;
+  float bpm = 120;
 };
