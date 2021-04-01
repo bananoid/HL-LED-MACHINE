@@ -23,10 +23,10 @@ namespace HLMusicMachine
 
   void MIDIInstrument::noteOff(int note = 0)
   {
-    if (!isEnabled)
-    {
-      return;
-    }
+    // if (!isEnabled)
+    // {
+    //   return;
+    // }
 
     // Serial.printf("noteOff %i\n", note);
 

@@ -25,10 +25,10 @@ namespace HLMusicMachine
 
   void PinIntrument::noteOff(int note)
   {
-    if (!isEnabled)
-    {
-      return;
-    }
+    // if (!isEnabled)
+    // {
+    //   return;
+    // }
     // analogWrite(pin, 0);
 
     // Serial.printf("Trig off %i\n", pin);
