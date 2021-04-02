@@ -94,6 +94,7 @@ void Branch::flowerStateChanged(FlowerStates state)
     Serial.println("Change State to SILENT");
     activation = 0;
     track->stop();
+    // track->play();
     break;
   }
   case FlowerStates::CALLING:
@@ -112,9 +113,12 @@ void Branch::flowerStateChanged(FlowerStates state)
 
 void Branch::onActivationChanged()
 {
-  // float fillFactor = activation; //Todo map from minThreshold and maxThreshold
+  float fillFactor = activation; //Todo map from minThreshold and maxThreshold
+  Serial.printf("activation %f\n", fillFactor);
   // // track->setFillFactor(fillFactor);
-  // track->setFillFactor(1);
+
+  // track->setFillFactor(fillFactor);
+  track->setFillFactor(1);
 }
 
 void Branch::update()

@@ -21,7 +21,7 @@ namespace HLMusicMachine
       return;
     }
     int pin = pins[voiceIndex];
-    Serial.printf("noteOn vx:%i pin:%i\n", voiceIndex, (int)pin);
+    // Serial.printf("noteOn vx:%i pin:%i\n", voiceIndex, (int)pin);
 
     digitalWrite(pin, HIGH);
   }
