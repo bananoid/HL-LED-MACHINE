@@ -10,15 +10,15 @@ namespace HLMusicMachine
     instrument->delegate = tracker;
   }
 
-  bool Sequencer::isEuclidean(int stepInx)
+  bool Sequencer::isEuclidean(int inx, int steps, int events, int offset)
   {
-    if (parameters.events == 0)
+    if (events == 0)
     {
       return false;
     }
 
-    int x = (stepInx + parameters.steps * 2 - parameters.offset) % parameters.steps;
-    float step = (float)parameters.steps / (float)parameters.events;
+    int x = (inx + steps * 2 - offset) % steps;
+    float step = (float)steps / (float)events;
     float fMod = fmodf(x, step);
 
     if (floor(fMod) == 0)
@@ -26,6 +26,11 @@ namespace HLMusicMachine
       return true;
     }
     return false;
+  }
+
+  bool Sequencer::isEuclidean(int stepInx)
+  {
+    return isEuclidean(stepInx, parameters.steps, parameters.events, parameters.offset);
   }
 
   void Sequencer::randomize()
@@ -70,6 +75,13 @@ namespace HLMusicMachine
     }
 
     bool isOn = isEuclidean(stepInx);
+
+    if (parameters.fillFactor < 1)
+    {
+      float fillEvents = map(parameters.fillFactor, 0.0f, 1.0f, 0.0f, (float)parameters.steps);
+      bool fillMask = isEuclidean(stepInx, parameters.steps, fillEvents, parameters.offset);
+      isOn = isOn && fillMask;
+    }
 
     if (newStep)
     {

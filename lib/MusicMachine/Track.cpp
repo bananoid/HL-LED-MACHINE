@@ -58,4 +58,15 @@ namespace HLMusicMachine
       seq->randomize();
     }
   }
+
+  void Track::setFillFactor(float fillFactor)
+  {
+    list<Sequencer *>::iterator it;
+    Sequencer *seq;
+    for (it = sequencers.begin(); it != sequencers.end(); ++it)
+    {
+      seq = *it;
+      seq->parameters.fillFactor = fillFactor;
+    }
+  }
 }

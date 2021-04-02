@@ -74,6 +74,7 @@ void Branch::receiveFilteredDataCB(uint8_t messageType, uint8_t sourceId, uint8_
     if (msg.sourceId == flowerPeerId)
     {
       activation = msg.activation;
+      onActivationChanged();
     }
     break;
   }
@@ -109,11 +110,18 @@ void Branch::flowerStateChanged(FlowerStates state)
   }
 }
 
+void Branch::onActivationChanged()
+{
+  // float fillFactor = activation; //Todo map from minThreshold and maxThreshold
+  // // track->setFillFactor(fillFactor);
+  // track->setFillFactor(1);
+}
+
 void Branch::update()
 {
   // Serial.printf("peer id %i, flower id %i\n", peerDescription.id, flowerPeerId);
-  if (state == FlowerStates::ACTIVE)
-  {
-    Serial.printf("activation: [%f]\n", activation);
-  }
+  // if (state == FlowerStates::ACTIVE)
+  // {
+  //   Serial.printf("activation: [%f]\n", activation);
+  // }
 }

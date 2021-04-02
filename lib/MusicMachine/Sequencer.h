@@ -77,6 +77,7 @@ namespace HLMusicMachine
     Sequencer(Tracker *tracker, Instrument *instrument);
 
     bool isEuclidean(int stepInx);
+    static bool isEuclidean(int inx, int steps, int events, int offset);
 
     void clockTick(int counter);
 
