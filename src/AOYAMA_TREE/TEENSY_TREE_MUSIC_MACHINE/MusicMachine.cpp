@@ -7,6 +7,8 @@ using namespace HLMusicMachine;
 
 MusicMachine::MusicMachine(Scheduler *runner)
 {
+  randomSeed(analogRead(0));
+
   this->runner = runner;
   tracker = new Tracker(runner);
   tracker->delegate = this;
@@ -25,25 +27,23 @@ MusicMachine::MusicMachine(Scheduler *runner)
   SerialMessengerSingleton->delegate = this;
   SerialMessengerSingleton->begin(&Serial6, BAUD_RATE);
 
-  //Test Message
-  benchmarkTask.set(200 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
-    BenchmarkMessage msg;
-    msg.time = micros();
-    Serial.printf("T Benchmark time %i\n", msg.time);
-    SerialMessengerSingleton->sendMessage(&msg, sizeof(BenchmarkMessage));
+  // update frame
+  updateFrameTask.set(16 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
+    // update
+    for (int i = 0; i < NUMBER_OF_FLOWERS; i++)
+    {
+      flowerStates[i]->updateWithFrame();
+    }
   });
-  runner->addTask(benchmarkTask);
-  benchmarkTask.disable(); // Enable for benchmarck
+  runner->addTask(updateFrameTask);
+  updateFrameTask.enable();
 }
 
 void MusicMachine::initFlowerStates()
 {
-  FlowerState *flowerState;
-
   int pIds[NUMBER_OF_FLOWERS] = FLOWER_PEER_IDS;
   int bpIds[NUMBER_OF_FLOWERS] = BRANCH_PEER_IDS;
 
-  Track *track;
   list<Track *>::iterator it;
 
   uint8_t i = 0;
@@ -79,19 +79,21 @@ void MusicMachine::serialMessengerReceiveData(const uint8_t *incomingData, int l
 
   switch (messageType)
   {
+  case FLOWER_ACTIVATION:
+  {
+    FlowerActivationMessage msg;
+    memcpy(&msg, incomingData, sizeof(FlowerActivationMessage));
+    FlowerState *flowerState = FlowerState::getFlowerStateByPeerId(msg.sourceId, flowerStates, NUMBER_OF_FLOWERS);
 
-  case PING:
-  {
-    Serial.println("PING");
-    break;
-  }
-  case BENCHMARK_MESSAGE:
-  {
-    BenchmarkMessage msg;
-    memcpy(&msg, incomingData, sizeof(BenchmarkMessage));
-    unsigned long deltaTime = micros() - msg.time;
-    Serial.printf("R Benchmark time %i %i\n", msg.time, deltaTime);
-    break;
+    if (flowerState != nullptr)
+    {
+      // Serial.printf("Flower peerId %i Activation %f\n", flowerState->peerId, msg.activation);
+
+      flowerState->activation = msg.activation;
+      if (flowerState->state != SILENT)
+      {
+      }
+    }
   }
   default:
     break;
@@ -100,34 +102,11 @@ void MusicMachine::serialMessengerReceiveData(const uint8_t *incomingData, int l
 
 void MusicMachine::trackerBarTick()
 {
-  int rndInx = random(0, NUMBER_OF_FLOWERS);
-  FlowerState *flowerState = flowerStates[rndInx];
-
-  list<Track *>::iterator it = tracker->tracks.begin();
-  for (uint8_t i = 0; i < rndInx; i++)
+  for (int i = 0; i < NUMBER_OF_FLOWERS; i++)
   {
-    it++;
-  }
-
-  Track *track = *it;
-
-  if (flowerState->state == SILENT)
-  {
-    flowerState->decreaseCallingCountDown();
-
-    if (flowerState->state == CALLING)
-    {
-      flowerState->silentCountDown = random(4, 32); // change to random
-      flowerState->callingCountDown = random(1, 4); // change to random
-    }
-  }
-
-  for (uint8_t i = 0; i < NUMBER_OF_FLOWERS; i++)
-  {
-    flowerState = flowerStates[i];
-    flowerState->decreaseSilentCountDown();
-
-    Serial.print(flowerState->state == SILENT ? " - " : " o ");
+    FlowerState *flowerState = flowerStates[i];
+    flowerState->updateWithBar();
+    Serial.print(flowerState->state == SILENT ? " ------------- " : " [" + String(flowerState->peerId) + "][" + String(flowerState->state) + "][A" + String(flowerState->activation) + "] ");
   }
   Serial.println("");
 
@@ -141,30 +120,10 @@ void MusicMachine::trackerBarTick()
 
 void MusicMachine::flowerStateChanged(FlowerState *flowerState, FlowerStates state)
 {
-  Serial.printf("peerId: %i state:%i\n", flowerState->peerId, flowerState->state);
-  if (state == CALLING)
-  {
-    flowerState->track->radomize();
-    flowerState->track->play();
-
-    FlowerCallMessage msg;
-    msg.sequecerA = flowerState->track->getSequencerAt(0)->parameters;
-    msg.sequecerB = flowerState->track->getSequencerAt(1)->parameters;
-    msg.sourceId = 1;
-    msg.targetId = flowerState->peerId;
-    SerialMessengerSingleton->sendMessage(&msg, sizeof(FlowerCallMessage));
-    msg.targetId = flowerState->branchPeerId;
-    SerialMessengerSingleton->sendMessage(&msg, sizeof(FlowerCallMessage));
-  }
-  else if (state == SILENT)
-  {
-    flowerState->track->stop();
-
-    FlowerSilentMessage msg;
-    msg.sourceId = 1;
-    msg.targetId = flowerState->peerId;
-    SerialMessengerSingleton->sendMessage(&msg, sizeof(FlowerSilentMessage));
-    msg.targetId = flowerState->branchPeerId;
-    SerialMessengerSingleton->sendMessage(&msg, sizeof(FlowerSilentMessage));
-  }
+  FlowerStateMessage msg;
+  msg.targetId = flowerState->peerId;
+  msg.state = state;
+  SerialMessengerSingleton->sendMessage(&msg, sizeof(FlowerStateMessage));
 }
+
+void MusicMachine::flowerExplode(){};

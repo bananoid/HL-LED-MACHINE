@@ -26,12 +26,11 @@ void Flower::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, in
 #endif
 
   // Flower State
-  flowerState = new FlowerState();
-  flowerStateFrameUpdateTask.set(16 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
-    flowerStateFrameUpdate();
+  activationUpdateTask.set(16 * TASK_MILLISECOND, TASK_FOREVER, [this]() {
+    updateActivation();
   });
-  runner->addTask(flowerStateFrameUpdateTask);
-  flowerStateFrameUpdateTask.enable();
+  runner->addTask(activationUpdateTask);
+  activationUpdateTask.enable();
 
   // LED
   CRGB *leds;
@@ -48,10 +47,14 @@ void Flower::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, in
   bottomRingLEDSynth = new LEDSynth::LEDSynth(24, &bottomRingLEDRenderer, runner);
   bottomRingLEDShaderSynth = bottomRingLEDSynth->addLEDShaderSynth();
   bottomRingLEDShaderSynth->interpolationSpeed = 1;
-  bottomRingLEDShaderSynth->targetState->hueRad = 0.01;
-  bottomRingLEDShaderSynth->targetState->que = 0.5;
+  bottomRingLEDShaderSynth->targetState->hueRad = 0.0;
+  bottomRingLEDShaderSynth->targetState->hue = 0.0;
+  bottomRingLEDShaderSynth->targetState->que = 0.0;
   bottomRingLEDShaderSynth->targetState->sym = 0;
-  bottomRingLEDShaderSynth->targetState->speed = 0.1;
+  bottomRingLEDShaderSynth->targetState->speed = 10.0;
+  bottomRingLEDShaderSynth->targetState->scale = 1.0;
+  bottomRingLEDShaderSynth->targetState->globalIntensity = 0.0;
+  bottomRingLEDShaderSynth->targetState->saturation = 0.0;
 
   leds = new CRGB[1];
   FastLED.addLeds<WS2812B, 5, GRB>(leds, 1); // dot
@@ -79,7 +82,6 @@ void Flower::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, in
 
 void Flower::update()
 {
-  // touchSensor->update();
 }
 
 void Flower::registerReceiveDataCB()
@@ -91,43 +93,13 @@ void Flower::registerReceiveDataCB()
 
 void Flower::receiveFilteredDataCB(uint8_t messageType, uint8_t sourceId, uint8_t targetId, const uint8_t *mac, const uint8_t *incomingData, int len)
 {
-  // Serial.printf("messageType %i sourceId %i targetId %i \n", messageType, sourceId, targetId);
-
   switch (messageType)
   {
-
-  case PING:
+  case FLOWER_STATE:
   {
-    BaseMessage pingMessage;
-    memcpy(&pingMessage, incomingData, sizeof(pingMessage));
-    break;
-  }
-  case BENCHMARK_MESSAGE:
-  {
-    BenchmarkMessage msg;
-    memcpy(&msg, incomingData, sizeof(BenchmarkMessage));
-#ifndef OLEDSCREEN_DISABLED
-    screen->println("bmt:" + String(msg.time), 4);
-#endif
-    broadcastData(incomingData, len);
-    break;
-  }
-  case FLOWER_CALL:
-  {
-    FlowerCallMessage msg;
-    memcpy(&msg, incomingData, sizeof(FlowerCallMessage));
-    flowerState->seed = msg.seed;
-    flowerStateChanged();
-
-    break;
-  }
-  case FLOWER_SILENT:
-  {
-    FlowerSilentMessage msg;
-    memcpy(&msg, incomingData, sizeof(FlowerSilentMessage));
-
-    flowerStateChanged();
-
+    FlowerStateMessage msg;
+    memcpy(&msg, incomingData, sizeof(FlowerStateMessage));
+    flowerStateChanged((FlowerStates)msg.state);
     break;
   }
 
@@ -136,11 +108,38 @@ void Flower::receiveFilteredDataCB(uint8_t messageType, uint8_t sourceId, uint8_
   }
 }
 
-void Flower::touchSensorOnTouch(int touchId)
+void Flower::flowerStateChanged(FlowerStates state)
 {
-  if (touchId < 5)
+  Serial.printf("Flower State Changed %i\n", state);
+
+  switch (state)
   {
-    flowerState->increaseActivation();
+  case FlowerStates::SILENT:
+  {
+    Serial.println("Change State to SILENT");
+    bottomRingLEDShaderSynth->targetState->hue = 0;
+    bottomRingLEDShaderSynth->targetState->globalIntensity = 0.0;
+    bottomRingLEDShaderSynth->targetState->saturation = 0;
+
+    activation = 0;
+    break;
+  }
+  case FlowerStates::CALLING:
+  {
+    Serial.println("Change State to CALLING");
+    bottomRingLEDShaderSynth->targetState->globalIntensity = 0.3;
+    bottomRingLEDShaderSynth->targetState->saturation = 0;
+    break;
+  }
+  case FlowerStates::ACTIVE:
+  {
+    Serial.println("Change State to ACTIVE");
+    bottomRingLEDShaderSynth->targetState->hue = 0.5;
+    bottomRingLEDShaderSynth->targetState->globalIntensity = 1.;
+    bottomRingLEDShaderSynth->targetState->saturation = 1;
+
+    break;
+  }
   }
 }
 
@@ -150,42 +149,23 @@ void Flower::onIMUOrientationData(sensors_event_t *orientationData)
   x = orientationData->orientation.x;
   y = orientationData->orientation.y;
   z = orientationData->orientation.z;
-
-  // Serial.printf("IMY", )
 }
 
-void Flower::flowerStateChanged()
-{
-  Serial.printf("Flower State Changed %i %i\n", flowerState->state, flowerState->seed);
+void Flower::touchSensorOnTouch(int touchId) {}
 
-  switch (flowerState->state)
-  {
-  case FlowerStates::SILENT:
-  {
-    // bottomRingLEDShaderSynth->targetState->hue = 0;
-    break;
-  }
-  case FlowerStates::CALLING:
-  {
-    // bottomRingLEDShaderSynth->targetState->hue = 0.5;
-    break;
-  }
-  }
-}
-
-void Flower::flowerStateFrameUpdate()
+void Flower::updateActivation()
 {
-  flowerState->updateActivation();
+  activation -= activationDecay;
+  activation = max(activation, 0.0f);
 
   int nTouches = touchSensor->getCrownOnTouches();
   if (nTouches > 0)
   {
-    flowerState->increaseActivation();
-    Serial.printf("increaseActivation %i\n", nTouches);
+    activation += activationIncrease;
+    activation = min(activation, 1.0f);
   }
 
-  bottomRingLEDShaderSynth->targetState->hue = flowerState->activation * 0.5;
-  // bottomRingLEDShaderSynth->targetState->speed = map(flowerState->activation, 0.0, 1.0, 0.1, 2.0);
-
-  // Serial.println(flowerState->activation);
+  FlowerActivationMessage msg;
+  msg.activation = activation;
+  broadcastMessage(&msg, sizeof(FlowerActivationMessage));
 }

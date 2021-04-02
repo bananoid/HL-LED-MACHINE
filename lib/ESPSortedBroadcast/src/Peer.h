@@ -8,6 +8,9 @@
 #define PEER_TYPES DEFAULT_PEER
 #endif
 
+#include <BaseMessages.h>
+using namespace Messages;
+
 namespace ESPSortedBroadcast
 {
   const uint8_t broadcastAddr[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
@@ -67,6 +70,7 @@ namespace ESPSortedBroadcast
     static uint8_t getMessageTypeFromData(const uint8_t *data);
 
     void broadcastData(const uint8_t *data, size_t len);
+    void broadcastMessage(BaseMessage *msg, size_t len);
 
     void sendDataToAddress(uint8_t *macaddr, const uint8_t *data, size_t len);
   };

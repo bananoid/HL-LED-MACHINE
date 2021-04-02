@@ -2,6 +2,7 @@
 #include <Arduino.h>
 #include <Track.h>
 #include "TrackerFactory.h"
+#include "AOYAMA_TREE/COMMON/Messages.h"
 
 enum FlowerStates
 {
@@ -14,6 +15,7 @@ class FlowerStateDelegate
 {
 public:
   virtual void flowerStateChanged(FlowerState *flowerState, FlowerStates state);
+  virtual void flowerExplode();
 };
 
 class FlowerState
@@ -26,20 +28,36 @@ public:
 
   HLMusicMachine::Track *track;
 
-  int callingCountDown = 4;
-  int silentCountDown = 4;
+  int countdownSilentToCalling = 4;
+  int countdownCallingToSilent = 4;
+  int countdownActiveToSilent = 4;
 
-  void decreaseSilentCountDown();
-  void decreaseCallingCountDown();
+  int callingCountDown = 4; // this decreases to go to call
+  int silentCountDown = 4;  // this deacreases to go to silent from calling
+
+  void changeState(FlowerStates state);
+
+  // void decreaseSilentCountDown();
+  // void decreaseCallingCountDown();
 
   unsigned long timer;
 
-  float activationThreshold = 0.5; // activation threshold from Active to silent
-  float activation = 0;            // 0 - 1
-  float activationIncrease = 0.007;
-  float activationDecay = 0.005;
+  float activationThreshold = 0.2; // activation threshold from Active to silent
+  float explosionThreshold = 0.6;  // activation threshold from Active to silent
 
-  void increaseActivation();
+  float activation = 0; // 0 - 1
+  // float activationIncrease = 0.0007;
+  // float activationDecay = 0.0005;
 
-  void updateActivation();
+  // void increaseActivation();
+
+  // void updateActivation();
+
+  static FlowerState *getFlowerStateByPeerId(uint8_t peerId, FlowerState **list, int size);
+
+  void updateWithBar();
+  void updateWithFrame();
+  // void updateSilentState();
+  // void updateCallingState();
+  // void updateActiveState();
 };

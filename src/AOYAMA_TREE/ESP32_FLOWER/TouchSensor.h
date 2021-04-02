@@ -13,8 +13,8 @@
 
 struct TouchSensorState
 {
-  float sigfiltered = 0;
-  float thsFilter = 0;
+  float sigfiltered = 50;
+  float thsFilter = 50;
   bool on = false;
 };
 

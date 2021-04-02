@@ -12,11 +12,12 @@
 
 #include "IMUSensor.h"
 #include "TouchSensor.h"
+#include "AOYAMA_TREE/COMMON/FlowerState.h"
 
 #include <Tracker.h>
 using namespace HLMusicMachine;
 
-#include "AOYAMA_TREE/COMMON/FlowerState.h"
+// #include "AOYAMA_TREE/COMMON/FlowerState.h"
 
 #define OLEDSCREEN_DISABLED
 
@@ -70,11 +71,15 @@ public:
   void touchSensorOnTouch(int touchId) override;
 
   Tracker *tracker;
+  void flowerStateChanged(FlowerStates state);
 
-  FlowerState *flowerState;
-  Task flowerStateFrameUpdateTask;
-  void flowerStateFrameUpdate();
-  void flowerStateChanged();
+  float activation = 0; // 0 - 1
+  float activationIncrease = 0.0007;
+  float activationDecay = 0.0005;
+
+  void updateActivation();
+
+  Task activationUpdateTask;
 
   void update();
 };

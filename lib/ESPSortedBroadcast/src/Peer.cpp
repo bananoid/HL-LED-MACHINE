@@ -1,8 +1,5 @@
 #include "Peer.h"
 #include <WiFi.h>
-#include <BaseMessages.h>
-
-using namespace Messages;
 
 namespace ESPSortedBroadcast
 {
@@ -115,6 +112,14 @@ namespace ESPSortedBroadcast
                                    const uint8_t *incomingData,
                                    int len)
   {
+  }
+
+  void Peer::broadcastMessage(BaseMessage *msg, size_t len)
+  {
+    msg->sourceId = peerDescription.id;
+    uint8_t data[len];
+    memcpy(data, msg, len);
+    broadcastData(data, len);
   }
 
   void Peer::broadcastData(const uint8_t *data, size_t len)

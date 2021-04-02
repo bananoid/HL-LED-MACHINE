@@ -8,7 +8,7 @@
 // A message is defined by the board that generates (e.g. sensor) or display (e.g. leds) the data
 
 // FLOWER messages:
-#define FLOWER_MESSAGE_TYPES FLOWER_CALL, FLOWER_ACTIVE, FLOWER_SILENT, FLOWER_EXPLOSION, FLOWER_TOUCH, FLOWER_GYRO, FLOWER_LED
+#define FLOWER_MESSAGE_TYPES FLOWER_ACTIVATION, FLOWER_STATE, FLOWER_EXPLOSION, FLOWER_GYRO
 
 // BRANCH messages:
 #define BRANCH_MESSAGE_TYPES BRANCH_STATE
@@ -34,14 +34,6 @@ enum MessageTypes
   CLOCK_TYPES
 };
 
-struct FlowerTouchMessage : public BaseMessage
-{
-  FlowerTouchMessage()
-  {
-    type = FLOWER_TOUCH;
-  }
-};
-
 struct FlowerGyroMessage : public BaseMessage
 {
   FlowerGyroMessage()
@@ -50,47 +42,23 @@ struct FlowerGyroMessage : public BaseMessage
   }
 };
 
-struct FlowerLedMessage : public BaseMessage
+struct FlowerActivationMessage : public BaseMessage
 {
-  FlowerLedMessage()
+  FlowerActivationMessage()
   {
-    type = FLOWER_LED;
-  }
-};
-
-struct BranchStateMessage : public BaseMessage
-{
-  BranchStateMessage()
-  {
-    type = BRANCH_STATE;
-  }
-};
-
-struct FlowerCallMessage : public BaseMessage
-{
-  FlowerCallMessage()
-  {
-    type = FLOWER_CALL;
-  }
-  Sequencer::Parameters sequecerA;
-  Sequencer::Parameters sequecerB;
-};
-
-struct FlowerActiveMessage : public BaseMessage
-{
-  FlowerActiveMessage()
-  {
-    type = FLOWER_ACTIVE;
+    type = FLOWER_ACTIVATION;
   }
   float activation = 0;
 };
 
-struct FlowerSilentMessage : public BaseMessage
+struct FlowerStateMessage : public BaseMessage
 {
-  FlowerSilentMessage()
+  FlowerStateMessage()
   {
-    type = FLOWER_SILENT;
+    type = FLOWER_STATE;
   }
+
+  uint8_t state = 0;
 };
 
 struct ClockSyncMessage : public BaseMessage
