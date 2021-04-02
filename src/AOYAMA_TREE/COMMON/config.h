@@ -18,10 +18,10 @@
   {                                              \
     {"3C:61:05:2F:B7:E0", "Gateway", GATEWAY},   \
         {"24:0A:C4:EC:9A:A0", "Flower", FLOWER}, \
+        {"9C:9C:1F:CA:8D:50", "Flower", FLOWER}, \
+        {"24:0A:C4:EF:54:34", "Flower", FLOWER}, \
         {"3C:61:05:2B:01:04", "Flower", FLOWER}, \
-        {"3C:61:05:16:AE:E8", "Flower", FLOWER}, \
         {"3C:61:05:2A:A0:50", "Flower", FLOWER}, \
-        {"3C:61:05:2E:85:74", "Flower", FLOWER}, \
         {"AC:67:B2:2C:76:E0", "Branch", BRANCH}, \
         {"9C:9C:1F:CB:2B:D8", "Branch", BRANCH}, \
         {"9C:9C:1F:CB:05:B0", "Branch", BRANCH}, \
