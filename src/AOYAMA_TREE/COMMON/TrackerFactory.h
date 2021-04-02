@@ -31,7 +31,7 @@ public:
     for (unsigned int i = 0; i < nTracks; i++)
     {
       TrackType type = (TrackType)i;
-      int midiChannel = i;
+      int midiChannel = i + 1;
 
       Serial.printf("Track Type %i - midiChannel %i", type, midiChannel);
 
@@ -105,7 +105,7 @@ public:
     sequencer = *it;
 
     params.stepLenght = 3;
-    params.retrig = -1;
+    params.retrig = 0;
     params.retrigLFO = 23;
     params.octave = 4;
     params.noteCount = 1;
@@ -122,14 +122,16 @@ public:
     params.events = 1;
     params.stepLenght = 3;
     params.steps = 1;
-    // params.noteCount = 1;
+    params.noteCount = 1;
+    params.chord = 0;
 
     sequencer->minParameters = params;
 
     params.events = 16;
-    params.stepLenght = 6;
+    params.stepLenght = 8;
     params.steps = 32;
-    // params.noteCount = 8;
+    params.noteCount = 8;
+    params.chord = 4;
 
     sequencer->maxParameters = params;
 
