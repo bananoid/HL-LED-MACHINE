@@ -49,6 +49,8 @@ public:
   Task ping;
   Task readIMU;
 
+  FlowerStates state;
+
   LEDSynth::FastLEDRenderer topRingLEDRenderer;
   LEDSynth::FastLEDRenderer bottomRingLEDRenderer;
   LEDSynth::FastLEDRenderer ballDotLEDRenderer;

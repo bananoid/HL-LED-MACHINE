@@ -93,24 +93,39 @@ void Flower::registerReceiveDataCB()
 
 void Flower::receiveFilteredDataCB(uint8_t messageType, uint8_t sourceId, uint8_t targetId, const uint8_t *mac, const uint8_t *incomingData, int len)
 {
-  switch (messageType)
-  {
-  case FLOWER_STATE:
-  {
-    FlowerStateMessage msg;
-    memcpy(&msg, incomingData, sizeof(FlowerStateMessage));
-    flowerStateChanged((FlowerStates)msg.state);
-    break;
-  }
+  Serial.printf("Received message from %i to %i\n", sourceId, targetId);
 
-  default:
-    break;
+  if (targetId == peerDescription.id)
+  {
+    /* code */ switch (messageType)
+    {
+    case FLOWER_STATE:
+    {
+      FlowerStateMessage msg;
+      memcpy(&msg, incomingData, sizeof(FlowerStateMessage));
+      flowerStateChanged((FlowerStates)msg.state);
+      break;
+    }
+    case FLOWER_ACTIVATION_PARAMETERS:
+    {
+      FlowerActivationParametersMessage msg;
+      memcpy(&msg, incomingData, sizeof(FlowerActivationParametersMessage));
+      activationIncrease = msg.activationIncrease;
+      activationDecay = msg.activationDecay;
+      break;
+    }
+
+    default:
+      break;
+    }
   }
 }
 
 void Flower::flowerStateChanged(FlowerStates state)
 {
   Serial.printf("Flower State Changed %i\n", state);
+
+  this->state = state;
 
   switch (state)
   {
@@ -155,14 +170,23 @@ void Flower::touchSensorOnTouch(int touchId) {}
 
 void Flower::updateActivation()
 {
-  activation -= activationDecay;
-  activation = max(activation, 0.0f);
-
-  int nTouches = touchSensor->getCrownOnTouches();
-  if (nTouches > 0)
+  if (state == SILENT)
   {
-    activation += activationIncrease;
-    activation = min(activation, 1.0f);
+    activation = 0;
+    return;
+  }
+  else
+  {
+
+    activation -= activationDecay;
+    activation = max(activation, 0.0f);
+
+    int nTouches = touchSensor->getCrownOnTouches();
+    if (nTouches > 0)
+    {
+      activation += activationIncrease;
+      activation = min(activation, 1.0f);
+    }
   }
 
   FlowerActivationMessage msg;

@@ -4,6 +4,16 @@
 #include "TrackerFactory.h"
 #include "AOYAMA_TREE/COMMON/Messages.h"
 
+#define COUNTDOWN_SILENT_TO_CALING 16
+#define COUNTDOWN_CALLING_TO_SILENT 8
+#define COUNTDOWN_ACTIVE_TO_SILENT 8
+
+#define THRESHOLD_ACTIVATION 0.03
+#define THRESHOLD_EXPLOSION 1.0
+
+#define ACTIVATION_INCREASE 0.0007
+#define ACTIVATION_DECAY 0.0005
+
 enum FlowerStates
 {
   SILENT,
@@ -15,6 +25,7 @@ class FlowerStateDelegate
 {
 public:
   virtual void flowerStateChanged(FlowerState *flowerState, FlowerStates state);
+  virtual void flowerActivationParametersChanged(FlowerState *flowerState, float activationIncrease, float activationDecay);
   virtual void flowerExplode();
 };
 
@@ -28,36 +39,27 @@ public:
 
   HLMusicMachine::Track *track;
 
-  int countdownSilentToCalling = 4;
-  int countdownCallingToSilent = 4;
-  int countdownActiveToSilent = 4;
+  int countdownSilentToCalling = COUNTDOWN_SILENT_TO_CALING;
+  int countdownCallingToSilent = COUNTDOWN_CALLING_TO_SILENT;
+  int countdownActiveToSilent = COUNTDOWN_ACTIVE_TO_SILENT;
 
   int callingCountDown = 4; // this decreases to go to call
   int silentCountDown = 4;  // this deacreases to go to silent from calling
 
   void changeState(FlowerStates state);
-
-  // void decreaseSilentCountDown();
-  // void decreaseCallingCountDown();
+  void changeActivationParameters(float activationIncrease, float activationDecay);
 
   unsigned long timer;
 
-  float activationThreshold = 0.2; // activation threshold from Active to silent
-  float explosionThreshold = 0.6;  // activation threshold from Active to silent
+  float thresholdActivation = THRESHOLD_ACTIVATION; // activation threshold from Active to silent
+  float thresholdExplosion = THRESHOLD_EXPLOSION;   // activation threshold from Active to silent
 
   float activation = 0; // 0 - 1
-  // float activationIncrease = 0.0007;
-  // float activationDecay = 0.0005;
-
-  // void increaseActivation();
-
-  // void updateActivation();
+  float activationIncrease = ACTIVATION_INCREASE;
+  float activationDecay = ACTIVATION_DECAY;
 
   static FlowerState *getFlowerStateByPeerId(uint8_t peerId, FlowerState **list, int size);
 
   void updateWithBar();
   void updateWithFrame();
-  // void updateSilentState();
-  // void updateCallingState();
-  // void updateActiveState();
 };

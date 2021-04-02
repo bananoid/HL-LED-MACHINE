@@ -126,4 +126,14 @@ void MusicMachine::flowerStateChanged(FlowerState *flowerState, FlowerStates sta
   SerialMessengerSingleton->sendMessage(&msg, sizeof(FlowerStateMessage));
 }
 
+void MusicMachine::flowerActivationParametersChanged(FlowerState *flowerState, float activationIncrease, float activationDecay)
+{
+  FlowerActivationParametersMessage msg;
+  msg.targetId = flowerState->peerId;
+  msg.activationIncrease = activationIncrease;
+  msg.activationDecay = activationDecay;
+  // msg.state = state;
+  SerialMessengerSingleton->sendMessage(&msg, sizeof(FlowerActivationParametersMessage));
+}
+
 void MusicMachine::flowerExplode(){};

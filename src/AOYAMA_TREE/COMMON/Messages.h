@@ -8,7 +8,7 @@
 // A message is defined by the board that generates (e.g. sensor) or display (e.g. leds) the data
 
 // FLOWER messages:
-#define FLOWER_MESSAGE_TYPES FLOWER_ACTIVATION, FLOWER_STATE, FLOWER_EXPLOSION, FLOWER_GYRO
+#define FLOWER_MESSAGE_TYPES FLOWER_ACTIVATION, FLOWER_ACTIVATION_PARAMETERS, FLOWER_STATE, FLOWER_EXPLOSION, FLOWER_GYRO
 
 // BRANCH messages:
 #define BRANCH_MESSAGE_TYPES BRANCH_STATE
@@ -49,6 +49,16 @@ struct FlowerActivationMessage : public BaseMessage
     type = FLOWER_ACTIVATION;
   }
   float activation = 0;
+};
+
+struct FlowerActivationParametersMessage : public BaseMessage
+{
+  FlowerActivationParametersMessage()
+  {
+    type = FLOWER_ACTIVATION_PARAMETERS;
+  }
+  float activationIncrease = 0.0007;
+  float activationDecay = 0.0005;
 };
 
 struct FlowerStateMessage : public BaseMessage
