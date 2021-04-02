@@ -8,7 +8,7 @@
 // A message is defined by the board that generates (e.g. sensor) or display (e.g. leds) the data
 
 // FLOWER messages:
-#define FLOWER_MESSAGE_TYPES FLOWER_ACTIVATION, FLOWER_ACTIVATION_PARAMETERS, FLOWER_STATE, FLOWER_EXPLOSION, FLOWER_GYRO
+#define FLOWER_MESSAGE_TYPES FLOWER_ACTIVATION, FLOWER_ACTIVATION_PARAMETERS, FLOWER_STATE, FLOWER_EXPLOSION, FLOWER_GYRO, FLOWER_SYNC_TRACK
 
 // BRANCH messages:
 #define BRANCH_MESSAGE_TYPES BRANCH_STATE
@@ -79,4 +79,14 @@ struct ClockSyncMessage : public BaseMessage
   }
   uint32_t tickCounter = 0;
   float bpm = 120;
+};
+
+struct FlowerSyncTrackMessage : public BaseMessage
+{
+  FlowerSyncTrackMessage()
+  {
+    type = FLOWER_SYNC_TRACK;
+  }
+  Sequencer::Parameters sequencerA;
+  Sequencer::Parameters sequencerB;
 };

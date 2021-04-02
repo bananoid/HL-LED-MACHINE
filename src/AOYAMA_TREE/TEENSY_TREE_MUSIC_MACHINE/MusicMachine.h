@@ -41,4 +41,5 @@ public:
   void flowerStateChanged(FlowerState *flowerState, FlowerStates state) override;
   void flowerActivationParametersChanged(FlowerState *flowerState, float activationIncrease, float activationDecay) override;
   void flowerExplode() override;
+  void flowerStateSyncTrack(FlowerState *flowerState);
 };

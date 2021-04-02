@@ -27,5 +27,5 @@ void setup()
 void loop()
 {
   runner.execute();
-  // Serial.println(WiFi.macAddress());
+  BranchSingleton->update();
 }

@@ -46,6 +46,8 @@ void FlowerState::changeState(FlowerStates state)
 
     changeActivationParameters(ACTIVATION_INCREASE, ACTIVATION_DECAY);
 
+    delegate->flowerStateSyncTrack(this);
+
     // Change animation
     break;
 
@@ -53,7 +55,6 @@ void FlowerState::changeState(FlowerStates state)
     countdownActiveToSilent = COUNTDOWN_ACTIVE_TO_SILENT;
     changeActivationParameters(ACTIVATION_INCREASE, ACTIVATION_DECAY);
     // change animation
-
     break;
 
   default:

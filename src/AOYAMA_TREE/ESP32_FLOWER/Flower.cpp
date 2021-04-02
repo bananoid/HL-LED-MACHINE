@@ -10,6 +10,8 @@ void Flower::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, in
   // Peer
   ESPSortedBroadcast::Peer::begin(wifiChannel, peerList, nPeers);
 
+  branchPeerId = peerDescription.id + NUMBER_OF_FLOWERS;
+
 #ifndef OLEDSCREEN_DISABLED
   // Screen
   screen = new OledScreen(8, 22);
@@ -82,6 +84,7 @@ void Flower::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, in
 
 void Flower::update()
 {
+  // Serial.printf("peer id %i, branch id %i\n", peerDescription.id, branchPeerId);
 }
 
 void Flower::registerReceiveDataCB()
@@ -189,6 +192,7 @@ void Flower::updateActivation()
     }
   }
 
+  // send activation to the tree // and the branch
   FlowerActivationMessage msg;
   msg.activation = activation;
   broadcastMessage(&msg, sizeof(FlowerActivationMessage));

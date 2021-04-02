@@ -99,7 +99,7 @@ namespace ESPSortedBroadcast
     BaseMessage msg;
     memcpy(&msg, incomingData, sizeof(BaseMessage));
 
-    if (msg.targetId == 0 || msg.targetId == peerDescription.id)
+    if (!enableFilter || msg.targetId == 0 || msg.targetId == peerDescription.id)
     {
       receiveFilteredDataCB(msg.type, msg.sourceId, msg.targetId, mac, incomingData, len);
     }

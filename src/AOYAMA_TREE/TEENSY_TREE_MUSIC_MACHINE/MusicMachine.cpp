@@ -137,3 +137,15 @@ void MusicMachine::flowerActivationParametersChanged(FlowerState *flowerState, f
 }
 
 void MusicMachine::flowerExplode(){};
+
+void MusicMachine::flowerStateSyncTrack(FlowerState *flowerState)
+{
+  FlowerSyncTrackMessage msg;
+  msg.sequencerA = flowerState->track->getSequencerAt(0)->parameters;
+  msg.sequencerB = flowerState->track->getSequencerAt(1)->parameters;
+  msg.sourceId = 1;
+  msg.targetId = flowerState->peerId;
+  SerialMessengerSingleton->sendMessage(&msg, sizeof(FlowerSyncTrackMessage));
+  msg.targetId = flowerState->branchPeerId;
+  SerialMessengerSingleton->sendMessage(&msg, sizeof(FlowerSyncTrackMessage));
+}

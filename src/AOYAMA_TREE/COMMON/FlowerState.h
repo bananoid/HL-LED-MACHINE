@@ -27,6 +27,7 @@ public:
   virtual void flowerStateChanged(FlowerState *flowerState, FlowerStates state);
   virtual void flowerActivationParametersChanged(FlowerState *flowerState, float activationIncrease, float activationDecay);
   virtual void flowerExplode();
+  virtual void flowerStateSyncTrack(FlowerState *flowerState);
 };
 
 class FlowerState

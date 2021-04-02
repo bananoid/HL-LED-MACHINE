@@ -9,6 +9,7 @@
 #endif
 
 #include <BaseMessages.h>
+
 using namespace Messages;
 
 namespace ESPSortedBroadcast
@@ -73,6 +74,7 @@ namespace ESPSortedBroadcast
     void broadcastMessage(BaseMessage *msg, size_t len);
 
     void sendDataToAddress(uint8_t *macaddr, const uint8_t *data, size_t len);
-  };
 
+    bool enableFilter = true;
+  };
 }

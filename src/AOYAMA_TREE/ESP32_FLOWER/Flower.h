@@ -49,6 +49,8 @@ public:
   Task ping;
   Task readIMU;
 
+  uint8_t branchPeerId;
+
   FlowerStates state;
 
   LEDSynth::FastLEDRenderer topRingLEDRenderer;

@@ -2,6 +2,8 @@
 #include <Peer.h>
 
 #include "AOYAMA_TREE/COMMON/config.h"
+// #include <BaseMessages.h>
+#include "AOYAMA_TREE/COMMON/Messages.h"
 #include "AOYAMA_TREE/COMMON/TrackerFactory.h"
 
 #define _TASK_MICRO_RES
@@ -11,6 +13,7 @@
 #include <Tracker.h>
 #include <Sequencer.h>
 #include <PolyPinInstrumet.h>
+#include "AOYAMA_TREE/COMMON/FlowerState.h"
 
 using namespace HLMusicMachine;
 
@@ -30,6 +33,18 @@ public:
 
   Tracker *tracker;
   Track *track;
+
+  FlowerStates state;
+
+  uint8_t flowerPeerId;
+
+  void flowerStateChanged(FlowerStates state);
+
+  float activation = 0; // 0 - 1
+
+  void update();
+
+  void onActivationChanged();
 };
 
 extern Branch *BranchSingleton;

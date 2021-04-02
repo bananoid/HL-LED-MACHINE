@@ -11,7 +11,6 @@
 #include "TouchSensor.h"
 
 using namespace ESPSortedBroadcast;
-
 Scheduler runner;
 
 PeerRecord peerList[] = PEER_LIST;
@@ -27,4 +26,5 @@ void loop()
 {
   runner.execute();
   FlowerSingleton->update();
+  // Serial.println(FlowerSingleton->peerDescription.macAddress);
 }
