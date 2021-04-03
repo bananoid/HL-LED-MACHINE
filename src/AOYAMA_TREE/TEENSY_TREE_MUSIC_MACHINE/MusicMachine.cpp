@@ -17,7 +17,7 @@ MusicMachine::MusicMachine(Scheduler *runner)
   tracker->clock->play();
 
   //Start Stop button
-  startStopButton.attach(9, INPUT_PULLUP); // USE EXTERNAL PULL-UP
+  startStopButton.attach(32, INPUT_PULLUP); // USE EXTERNAL PULL-UP
   startStopButton.interval(5);
   startStopButton.setPressedState(LOW);
 

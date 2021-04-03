@@ -5,16 +5,16 @@ namespace HLMusicMachine
 {
   Clock::Clock(Scheduler *runner)
   {
-    pinMode(13, OUTPUT);
+    pinMode(31, OUTPUT);
 
     clockTask.set(TASK_SECOND, TASK_FOREVER, [this]() {
       if (tickCounter % (24) == 0)
       {
-        digitalWrite(13, true);
+        digitalWrite(31, true);
       }
       else if ((tickCounter + 12) % (24) == 0)
       {
-        digitalWrite(13, false);
+        digitalWrite(31, false);
       }
 
 #ifdef MIDI_INTERFACE
