@@ -26,4 +26,6 @@ public:
   Adafruit_BNO055 bno;
 
   void printEvent(sensors_event_t *event);
+
+  bool initError = false;
 };

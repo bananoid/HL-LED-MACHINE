@@ -18,11 +18,17 @@ void IMUSensor::begin()
     Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
     // while (1)
     //   ;
+    initError = true;
   }
 }
 
 void IMUSensor::update() // IMU task
 {
+  if (initError)
+  {
+    Serial.println("IMU initialization error");
+    return;
+  }
   sensors_event_t orientationData, angVelocityData, linearAccelData, magnetometerData, accelerometerData, gravityData;
   bno.getEvent(&orientationData, Adafruit_BNO055::VECTOR_EULER);
   // bno.getEvent(&angVelocityData, Adafruit_BNO055::VECTOR_GYROSCOPE);
@@ -31,9 +37,9 @@ void IMUSensor::update() // IMU task
   // bno.getEvent(&accelerometerData, Adafruit_BNO055::VECTOR_ACCELEROMETER);
   // bno.getEvent(&gravityData, Adafruit_BNO055::VECTOR_GRAVITY);
 
-  printEvent(&orientationData);
+  // printEvent(&orientationData);
   // printEvent(&angVelocityData);
-  // printEvent(&linearAccelData);
+  printEvent(&linearAccelData);
   // printEvent(&magnetometerData);
   // printEvent(&accelerometerData);
   // printEvent(&gravityData);
@@ -43,8 +49,8 @@ void IMUSensor::update() // IMU task
     return;
   }
 
-  // delegate->onIMUOrientationData(&orientationData);
-  delegate->onIMUOrientationData(&linearAccelData);
+  delegate->onIMUOrientationData(&orientationData);
+  // delegate->onIMUOrientationData(&linearAccelData);
 }
 
 void IMUSensor::printEvent(sensors_event_t *event)
