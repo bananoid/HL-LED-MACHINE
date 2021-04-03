@@ -39,24 +39,9 @@ void Flower::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, in
 
   leds = new CRGB[24];
   FastLED.addLeds<WS2812B, 18, GRB>(leds, 24); // top
-  topRingLEDRenderer.begin(leds, 24);
-  topRingLEDSynth = new LEDSynth::LEDSynth(24, &topRingLEDRenderer, runner);
-  topRingLEDShaderSynth = topRingLEDSynth->addLEDShaderSynth();
-
-  leds = new CRGB[24];
   FastLED.addLeds<WS2812B, 19, GRB>(leds, 24); // bottom
-  bottomRingLEDRenderer.begin(leds, 24);
-  bottomRingLEDSynth = new LEDSynth::LEDSynth(24, &bottomRingLEDRenderer, runner);
-  bottomRingLEDShaderSynth = bottomRingLEDSynth->addLEDShaderSynth();
-  bottomRingLEDShaderSynth->interpolationSpeed = 1;
-  bottomRingLEDShaderSynth->targetState->hueRad = 0.0;
-  bottomRingLEDShaderSynth->targetState->hue = 0.0;
-  bottomRingLEDShaderSynth->targetState->que = 0.0;
-  bottomRingLEDShaderSynth->targetState->sym = 0;
-  bottomRingLEDShaderSynth->targetState->speed = 10.0;
-  bottomRingLEDShaderSynth->targetState->scale = 1.0;
-  bottomRingLEDShaderSynth->targetState->globalIntensity = 0.0;
-  bottomRingLEDShaderSynth->targetState->saturation = 0.0;
+  ringLEDRenderer.begin(leds, 24);
+  ringLEDSynth = new LEDSynth::LEDSynth(24, &ringLEDRenderer, runner);
 
   leds = new CRGB[1];
   FastLED.addLeds<WS2812B, 5, GRB>(leds, 1); // dot
@@ -64,6 +49,10 @@ void Flower::begin(int wifiChannel, ESPSortedBroadcast::PeerRecord *peerList, in
   ballDotLEDSynth = new LEDSynth::LEDSynth(1, &ballDotLEDRenderer, runner);
   ballDotLEDShaderSynth = ballDotLEDSynth->addLEDShaderSynth();
 
+  layerALEDShaderSynth = ringLEDSynth->addLEDShaderSynth();
+  layerBLEDShaderSynth = ringLEDSynth->addLEDShaderSynth();
+
+  setSilentRingAnimation();
   // IMU
   // imu = new IMUSensor(this);
   // imu->begin();
@@ -96,7 +85,7 @@ void Flower::registerReceiveDataCB()
 
 void Flower::receiveFilteredDataCB(uint8_t messageType, uint8_t sourceId, uint8_t targetId, const uint8_t *mac, const uint8_t *incomingData, int len)
 {
-  Serial.printf("Received message from %i to %i\n", sourceId, targetId);
+  // Serial.printf("Received message  myId:%i to type:%i\n", peerDescription.id, messageType);
 
   if (targetId == peerDescription.id)
   {
@@ -126,7 +115,7 @@ void Flower::receiveFilteredDataCB(uint8_t messageType, uint8_t sourceId, uint8_
 
 void Flower::flowerStateChanged(FlowerStates state)
 {
-  Serial.printf("Flower State Changed %i\n", state);
+  // Serial.printf("Flower State Changed %i\n", state);
 
   this->state = state;
 
@@ -135,26 +124,22 @@ void Flower::flowerStateChanged(FlowerStates state)
   case FlowerStates::SILENT:
   {
     Serial.println("Change State to SILENT");
-    bottomRingLEDShaderSynth->targetState->hue = 0;
-    bottomRingLEDShaderSynth->targetState->globalIntensity = 0.0;
-    bottomRingLEDShaderSynth->targetState->saturation = 0;
 
     activation = 0;
+    setSilentRingAnimation();
     break;
   }
   case FlowerStates::CALLING:
   {
     Serial.println("Change State to CALLING");
-    bottomRingLEDShaderSynth->targetState->globalIntensity = 0.3;
-    bottomRingLEDShaderSynth->targetState->saturation = 0;
+
+    setCallingRingAnimation();
     break;
   }
   case FlowerStates::ACTIVE:
   {
     Serial.println("Change State to ACTIVE");
-    bottomRingLEDShaderSynth->targetState->hue = 0.5;
-    bottomRingLEDShaderSynth->targetState->globalIntensity = 1.;
-    bottomRingLEDShaderSynth->targetState->saturation = 1;
+    setActiveRingAnimation();
 
     break;
   }
@@ -176,7 +161,7 @@ void Flower::updateActivation()
   if (state == SILENT)
   {
     activation = 0;
-    return;
+    setSilentRingAnimation();
   }
   else
   {
@@ -190,10 +175,73 @@ void Flower::updateActivation()
       activation += activationIncrease;
       activation = min(activation, 1.0f);
     }
-  }
+    // send activation to the tree // and the branch
+    FlowerActivationMessage msg;
+    msg.activation = activation;
+    broadcastMessage(&msg, sizeof(FlowerActivationMessage));
 
-  // send activation to the tree // and the branch
-  FlowerActivationMessage msg;
-  msg.activation = activation;
-  broadcastMessage(&msg, sizeof(FlowerActivationMessage));
+    float intensityActivation = constrain(activation * 5.0, 0.0, 1.0);
+
+    layerALEDShaderSynth->targetState->globalIntensity = 1.0 - intensityActivation;
+    layerBLEDShaderSynth->targetState->globalIntensity = intensityActivation;
+
+    // Serial.printf("LA intensity %f  LB intensity %f \n", layerALEDShaderSynth->targetState->globalIntensity, layerBLEDShaderSynth->targetState->globalIntensity);
+    // Serial.printf("activa %f  \n", activation);
+
+    layerALEDShaderSynth->targetState->speed = -0.01 - activation * 1.0;
+    layerBLEDShaderSynth->targetState->speed = 0.02 + activation * 2.0;
+  }
+}
+
+void Flower::setSilentRingAnimation()
+{
+
+  // BLUE
+  layerALEDShaderSynth->interpolationSpeed = 0.03;
+  layerALEDShaderSynth->targetState->hueRad = 0.1;
+  layerALEDShaderSynth->targetState->hue = 0.5;
+  layerALEDShaderSynth->targetState->que = 1.3;
+  layerALEDShaderSynth->targetState->sym = 0.9;
+  layerALEDShaderSynth->targetState->speed = 0.1235;
+  layerALEDShaderSynth->targetState->scale = 1.0;
+  layerALEDShaderSynth->targetState->saturation = 1.0;
+
+  // RED
+  layerBLEDShaderSynth->interpolationSpeed = 0.03;
+  layerBLEDShaderSynth->targetState->hueRad = 0.03;
+  layerBLEDShaderSynth->targetState->hue = 0.0;
+  layerBLEDShaderSynth->targetState->que = 1.3;
+  layerBLEDShaderSynth->targetState->sym = 0.9;
+  layerBLEDShaderSynth->targetState->speed = -0.213;
+  layerBLEDShaderSynth->targetState->scale = 1.0;
+  layerBLEDShaderSynth->targetState->saturation = 1.0;
+
+  layerALEDShaderSynth->targetState->fmAmo = 4.0;
+  layerBLEDShaderSynth->targetState->fmAmo = 4.0;
+
+  layerALEDShaderSynth->targetState->globalIntensity = 0;
+  layerBLEDShaderSynth->targetState->globalIntensity = 0;
+}
+
+void Flower::setCallingRingAnimation()
+{
+  layerALEDShaderSynth->targetState->fmAmo = 20.0;
+  layerBLEDShaderSynth->targetState->fmAmo = 20.0;
+
+  layerALEDShaderSynth->targetState->scale = 3.0;
+  layerBLEDShaderSynth->targetState->scale = 3.0;
+}
+void Flower::setActiveRingAnimation()
+{
+  // layerALEDShaderSynth->targetState->hue = 0.5;
+  // layerBLEDShaderSynth->targetState->hue = 0.0;
+
+  // layerALEDShaderSynth->targetState->fmAmo = 4.0;
+  // layerBLEDShaderSynth->targetState->fmAmo = 4.0;
+
+  // layerALEDShaderSynth->targetState->scale = 1.0;
+  // layerBLEDShaderSynth->targetState->scale = 1.0;
+
+  // layerALEDShaderSynth->targetState->intensity = 1.0;
+  // layerBLEDShaderSynth->targetState->intensity = 1.0;
 }

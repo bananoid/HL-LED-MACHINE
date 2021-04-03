@@ -2,6 +2,7 @@
 #include <Peer.h>
 
 #include "AOYAMA_TREE/COMMON/config.h"
+#include "AOYAMA_TREE/COMMON/Messages.h"
 #include <BaseMessages.h>
 #define _TASK_STD_FUNCTION
 #include <TaskSchedulerDeclarations.h>
@@ -53,16 +54,15 @@ public:
 
   FlowerStates state;
 
-  LEDSynth::FastLEDRenderer topRingLEDRenderer;
-  LEDSynth::FastLEDRenderer bottomRingLEDRenderer;
+  LEDSynth::FastLEDRenderer ringLEDRenderer;
   LEDSynth::FastLEDRenderer ballDotLEDRenderer;
 
-  LEDSynth::LEDSynth *topRingLEDSynth;
-  LEDSynth::LEDSynth *bottomRingLEDSynth;
+  LEDSynth::LEDSynth *ringLEDSynth;
   LEDSynth::LEDSynth *ballDotLEDSynth;
 
-  LEDSynth::LEDShaderSynth *topRingLEDShaderSynth;
-  LEDSynth::LEDShaderSynth *bottomRingLEDShaderSynth;
+  LEDSynth::LEDShaderSynth *layerALEDShaderSynth;
+  LEDSynth::LEDShaderSynth *layerBLEDShaderSynth;
+
   LEDSynth::LEDShaderSynth *ballDotLEDShaderSynth;
 
   // void frameRender();
@@ -86,6 +86,10 @@ public:
   Task activationUpdateTask;
 
   void update();
+
+  void setSilentRingAnimation();
+  void setCallingRingAnimation();
+  void setActiveRingAnimation();
 };
 
 extern Flower *FlowerSingleton;

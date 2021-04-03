@@ -21,6 +21,8 @@
 
 #define CLOCK_TYPES CLOCK_SYNC
 
+#define IMU_TYPES IMU_ORIENTATION
+
 using namespace Messages;
 using namespace HLMusicMachine;
 
@@ -31,7 +33,8 @@ enum MessageTypes
   BRANCH_MESSAGE_TYPES,
   ROCK_MESSAGE_TYPES,
   TREE_MESSAGE_TYPES,
-  CLOCK_TYPES
+  CLOCK_TYPES,
+  IMU_TYPES
 };
 
 struct FlowerGyroMessage : public BaseMessage
@@ -89,4 +92,15 @@ struct FlowerSyncTrackMessage : public BaseMessage
   }
   Sequencer::Parameters sequencerA;
   Sequencer::Parameters sequencerB;
+};
+
+struct IMUOrientation : public BaseMessage
+{
+  IMUOrientation()
+  {
+    type = IMU_ORIENTATION;
+  }
+  float x;
+  float y;
+  float z;
 };

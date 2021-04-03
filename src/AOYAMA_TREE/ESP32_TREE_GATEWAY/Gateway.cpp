@@ -64,6 +64,7 @@ void Gateway::receiveDataCB(const uint8_t *mac, const uint8_t *incomingData, int
 void Gateway::serialMessengerReceiveData(const uint8_t *incomingData, int len)
 {
   uint8_t type = getMessageTypeFromData(incomingData);
+  // Serial.printf("Receiving serial messages %i %i \n", type, random(99));
 #ifndef OLEDSCREEN_DISABLED
   screen->println("Serial -> Wifi [" + String(type) + "]" + String(random(0, 99)), 7);
 #endif
