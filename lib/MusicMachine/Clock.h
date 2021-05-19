@@ -4,6 +4,8 @@
 #include <TaskSchedulerDeclarations.h>
 #include <Arduino.h>
 
+#include <MIDI.h>
+
 namespace HLMusicMachine
 {
   // Delegation: this is to allow clock tick to be called by main controller

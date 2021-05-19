@@ -1,5 +1,8 @@
 #include "MIDIInstrument.h"
 #include <Arduino.h>
+#include <MIDI.h>
+
+#include "SerialMIDI.h"
 
 namespace HLMusicMachine
 {
@@ -18,6 +21,7 @@ namespace HLMusicMachine
 
 #ifdef MIDI_INTERFACE
     usbMIDI.sendNoteOn(note, vel, channel);
+    serialMIDI.ports[1]->sendNoteOn(note, vel, channel);
 #endif
   }
 
@@ -32,15 +36,16 @@ namespace HLMusicMachine
 
 #ifdef MIDI_INTERFACE
     usbMIDI.sendNoteOff(note, 0, channel);
+    serialMIDI.ports[1]->sendNoteOff(note, 0, channel);
 #endif
   }
 
   void MIDIInstrument::randomize()
   {
 #ifdef MIDI_INTERFACE
-    int program = random(0, 6);
+    // int program = random(0, 6);
     // Serial.printf("Program change %i\n", program);
-    usbMIDI.sendProgramChange(program, channel);
+    // usbMIDI.sendProgramChange(program, channel);
 #endif
   }
 }

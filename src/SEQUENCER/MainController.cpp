@@ -4,75 +4,86 @@
 #include <PinInstrument.h>
 #include <Sequencer.h>
 #include <Track.h>
+#include "SerialMIDI.h"
 
 using namespace HLMusicMachine;
 
 MainController::MainController(Scheduler *runner)
 {
+  serialMIDI.begin();
+
   tracker = new Tracker(runner);
 
   Track *track;
   Sequencer *sequencer;
 
-  track = new Track(tracker, new MIDIInstrument(1, runner));
   Sequencer::Parameters params;
-  //////////////////////////
-  params.stepLenght = 3;
-  params.retrig = -1;
-  params.retrigLFO = 64;
-  params.octave = 3;
-  params.noteCount = 4;
-  params.noteSpread = 2;
-  params.steps = 32;
-  params.events = 12;
-  params.offset = 0;
-  params.chord = 2;
-  params.velocity = -1;
-  params.velocityLFO = 2;
-
-  sequencer = track->addSequencer();
-  sequencer->parameters = params;
-  params.events = 1;
-  params.stepLenght = 1;
-  params.noteCount = 1;
-  sequencer->minParameters = params;
-  params.events = 16;
-  params.stepLenght = 8;
-  params.noteCount = 7;
-  sequencer->maxParameters = params;
-  sequencer->randomize();
 
   //////////////////////////
+  track = new Track(tracker, new MIDIInstrument(1, runner));
   sequencer = track->addSequencer();
-  params.stepLenght = 3;
-  params.retrig = -1;
-  params.retrigLFO = 23;
-  params.octave = 4;
-  params.noteCount = 6;
-  params.noteSpread = 2;
-  params.steps = 32;
-  params.events = 7;
-  params.offset = 0;
-  params.chord = 0;
-  params.velocity = -1;
-  params.velocityLFO = 4.2;
-
-  sequencer = track->addSequencer();
-  sequencer->parameters = params;
-  params.events = 1;
-  params.stepLenght = 3;
-  params.noteCount = 1;
-  sequencer->minParameters = params;
-  params.events = 16;
-  params.stepLenght = 6;
-  params.noteCount = 8;
-  sequencer->maxParameters = params;
-  sequencer->randomize();
-
+  sequencer->parameters.stepLenght = 3;
+  sequencer->parameters.retrig = 0;
+  sequencer->parameters.retrigLFO = 84;
+  sequencer->parameters.octave = 0;
+  sequencer->parameters.noteCount = 3;
+  sequencer->parameters.noteOffset = 2;
+  sequencer->parameters.noteSpread = 2;
+  sequencer->parameters.steps = 16;
+  sequencer->parameters.events = 4;
+  sequencer->parameters.offset = 0;
+  sequencer->parameters.chord = 0;
+  // sequencer->parameters.velocity = 0;
+  // sequencer->parameters.velocityLFO = 2;
+  sequencer->parameters.arpeggioType = Sequencer::ArpeggioType_Eucledian;
+  // sequencer->parameters.arpeggioType = Sequencer::ArpeggioType_LFO;
+  sequencer->parameters.arpeggioLFO = 1;
   tracker->appendTrack(track);
+  track->play();
+
+  //////////////////////////
+  // track = new Track(tracker, new MIDIInstrument(2, runner));
+  // params.stepLenght = 5;
+  // params.retrig = -1;
+  // params.retrigLFO = 58;
+  // params.octave = 0;
+  // params.noteCount = 7;
+  // params.noteSpread = 2;
+  // params.steps = 16;
+  // params.events = 7;
+  // params.offset = 0;
+  // params.chord = 0;
+  // params.velocity = -1;
+  // params.velocityLFO = 2;
+  // sequencer = track->addSequencer();
+  // sequencer->parameters = params;
+  // tracker->appendTrack(track);
+  // track->play();
+
+  //////////////////////////
+  // track = new Track(tracker, new MIDIInstrument(3, runner));
+  // params.stepLenght = 1;
+  // params.retrig = 0;
+  // params.retrigLFO = 58;
+  // params.octave = 0;
+  // params.noteCount = 7;
+  // params.noteSpread = 2;
+  // params.steps = 16;
+  // params.events = 5;
+  // params.offset = 0;
+  // params.chord = 0;
+  // params.velocity = -1;
+  // params.velocityLFO = 2;
+  // params.arpeggioType = Sequencer::ArpeggioType_LFO;
+  // sequencer = track->addSequencer();
+  // sequencer->parameters = params;
+  // tracker->appendTrack(track);
+  // track->play();
+
+  tracker->clock->play();
 
   //Start Stop button
-  startStopButton.attach(9, INPUT_PULLUP); // USE EXTERNAL PULL-UP
+  startStopButton.attach(32, INPUT_PULLUP); // USE EXTERNAL PULL-UP
   startStopButton.interval(5);
   startStopButton.setPressedState(LOW);
 }

@@ -23,7 +23,7 @@ namespace HLMusicMachine
 
   void Tracker::clockTick()
   {
-    if ((clock->tickCounter) % (clock->clockDivider * 4) == 0)
+    if ((clock->tickCounter) % (clock->clockDivider * 32) == 0)
     {
       pickNextHarmony();
     }
@@ -95,13 +95,13 @@ namespace HLMusicMachine
         progressionIntervalCounter++;
       }
 
-      currentKey = notes[progressionInterval].type;
+      // currentKey = notes[progressionInterval].type;
     }
 
-    // currentScale = random(4) == 0 ? &Scale::minor : &Scale::major;
+    currentScale = harmonyCounter % 2 == 0 ? &Scale::minor : &Scale::major;
 
-    // Note::printNoteType(currentKey);
-    // Serial.printf(" key %i\n", currentKey);
+    Note::printNoteType(currentKey);
+    Serial.printf(" key %i\n", harmonyCounter);
 
     harmonyCounter++;
   }

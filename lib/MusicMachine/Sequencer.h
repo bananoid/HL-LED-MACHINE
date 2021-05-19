@@ -44,6 +44,7 @@ namespace HLMusicMachine
       int octave = 3;
       int noteCount = 4;
       int noteSpread = 2;
+      int noteOffset = 0;
       ArpeggioType arpeggioType = ArpeggioType_Eucledian;
       int arpeggioLFO = 3;
 

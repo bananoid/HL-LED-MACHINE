@@ -35,15 +35,15 @@ namespace HLMusicMachine
 
   void Sequencer::randomize()
   {
-    parameters.steps = random(minParameters.steps, maxParameters.steps + 1);
+    // parameters.steps = random(minParameters.steps, maxParameters.steps + 1);
 
-    parameters.events = random(minParameters.events, maxParameters.events + 1);
+    // parameters.events = random(minParameters.events, maxParameters.events + 1);
 
-    parameters.offset = random(minParameters.offset, maxParameters.offset + 1);
+    // parameters.offset = random(minParameters.offset, maxParameters.offset + 1);
 
-    parameters.stepLenght = random(minParameters.stepLenght, maxParameters.stepLenght + 1);
+    // parameters.stepLenght = random(minParameters.stepLenght, maxParameters.stepLenght + 1);
 
-    parameters.noteCount = random(minParameters.noteCount, maxParameters.noteCount + 1);
+    // parameters.noteCount = random(minParameters.noteCount, maxParameters.noteCount + 1);
   }
 
   void Sequencer::clockTick(int counter)
@@ -123,7 +123,7 @@ namespace HLMusicMachine
             noteInx *= parameters.noteSpread;
           }
 
-          Note note = tracker->getNote(noteInx, parameters.octave);
+          Note note = tracker->getNote(noteInx + parameters.noteOffset, parameters.octave);
           int midiNote = note.getMIDINoteNumber();
           instrument->trigNote(midiNote, vel, noteLeght);
 

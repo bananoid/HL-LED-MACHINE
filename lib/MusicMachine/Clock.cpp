@@ -1,24 +1,37 @@
 #include "Clock.h"
 #include <Arduino.h>
 
+#include "SerialMIDI.h"
+
 namespace HLMusicMachine
 {
   Clock::Clock(Scheduler *runner)
   {
-    pinMode(31, OUTPUT);
+    const int clockLedPort = 13; //31
+    pinMode(clockLedPort, OUTPUT);
 
     clockTask.set(TASK_SECOND, TASK_FOREVER, [this]() {
+#ifdef MIDI_INTERFACE
+      // usbMIDI.sendRealTime(usbMIDI.Start);
+      if (tickCounter == 12)
+      {
+        serialMIDI.ports[1]->sendRealTime(0xFA); // Start
+      }
+
+#endif
+
       if (tickCounter % (24) == 0)
       {
-        digitalWrite(31, true);
+        digitalWrite(clockLedPort, true);
       }
       else if ((tickCounter + 12) % (24) == 0)
       {
-        digitalWrite(31, false);
+        digitalWrite(clockLedPort, false);
       }
 
 #ifdef MIDI_INTERFACE
-      usbMIDI.sendRealTime(usbMIDI.Clock);
+      // usbMIDI.sendRealTime(usbMIDI.Clock);
+      serialMIDI.ports[1]->sendRealTime(0xF8); // Clock
 #endif
 
       clockTask.setInterval(clockInterval);
@@ -53,10 +66,6 @@ namespace HLMusicMachine
     setBpm(bpm);
     clockTask.setInterval(clockInterval);
     clockTask.enable();
-
-#ifdef MIDI_INTERFACE
-    usbMIDI.sendRealTime(usbMIDI.Start);
-#endif
   };
 
   void Clock::stop()
