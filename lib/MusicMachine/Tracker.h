@@ -50,5 +50,7 @@ namespace HLMusicMachine
     int progressionIntervalCounter = 0;
 
     Note getNote(int inx, int octave);
+    int scaleIndex = 0;
+    void setScaleIndex(int i);
   };
 }

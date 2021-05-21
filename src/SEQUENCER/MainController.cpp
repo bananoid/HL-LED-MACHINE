@@ -85,6 +85,15 @@ void MainController::updateMIDI()
         midiUIInvalid = true;
       }
 
+      for (int i = 0; i < NUM_OF_SCALES; i++)
+      {
+        if (data1 == (73 + i) && type == MIDIDevice::NoteOn)
+        {
+          tracker->setScaleIndex(i);
+          midiUIInvalid = true;
+        }
+      }
+
       for (int i = 0; i < 4; i++)
       {
         if (type == MIDIDevice::ControlChange)
@@ -124,7 +133,7 @@ void MainController::updateMIDI()
           }
           else if (data1 == startCC + 37) // c2 k3
           {
-            cvSequencers[i]->parameters.noteCount = map((float)data2, 0.f, 127.f, 1.f, 5.f);
+            cvSequencers[i]->parameters.noteCount = map((float)data2, 0.f, 127.f, 1.f, 7.f);
             Serial.printf("noteCount %i \n", cvSequencers[i]->parameters.noteCount);
           }
           else if (data1 == startCC + 65) // c2 s4
@@ -161,4 +170,9 @@ void MainController::drawMidiInterface()
   }
 
   midi1.sendNoteOn(108, tracker->clock->isPlaying ? 127 : 0, 2);
+
+  for (int i = 0; i < 4; i++)
+  {
+    midi1.sendNoteOn(73 + i, tracker->scaleIndex == i ? 127 : 0, 2);
+  }
 }

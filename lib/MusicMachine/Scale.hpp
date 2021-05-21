@@ -18,6 +18,8 @@ namespace MusicTheory
 
     const static Scale major;
     const static Scale minor;
+    const static Scale majorPentatonic;
+    const static Scale minorPentatonic;
     const static Scale custom1;
     const static Scale custom2;
   };

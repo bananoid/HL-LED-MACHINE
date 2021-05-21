@@ -14,6 +14,8 @@ namespace HLMusicMachine
     // randomSeed(analogRead(19));
 
     pickNextHarmony();
+    // currentScale = const_cast<Scale *>(&Scale::minor);
+    // currentKey = C;
   }
 
   void Tracker::appendTrack(Track *track)
@@ -23,9 +25,10 @@ namespace HLMusicMachine
 
   void Tracker::clockTick()
   {
-    if ((clock->tickCounter) % (clock->clockDivider * 32) == 0)
+    // if ((clock->tickCounter) % (clock->clockDivider * 32) == 0)
+    if ((clock->tickCounter) % (clock->clockDivider * 8) == 0)
     {
-      pickNextHarmony();
+      // pickNextHarmony();
     }
 
     if ((clock->tickCounter) % (clock->clockDivider * 1) == 0)
@@ -61,7 +64,7 @@ namespace HLMusicMachine
     if (currentScale == nullptr)
     {
       // currentScale = const_cast<Scale *>(&Scale::major);
-      currentScale = const_cast<Scale *>(&Scale::minor);
+      currentScale = const_cast<Scale *>(&Scale::minorPentatonic);
       // currentKey = static_cast<NoteType>(random(12));
       currentKey = C;
     }
@@ -98,7 +101,7 @@ namespace HLMusicMachine
       // currentKey = notes[progressionInterval].type;
     }
 
-    // currentScale = harmonyCounter % 2 == 0 ? &Scale::custom1 : &Scale::custom2;
+    currentScale = harmonyCounter % 2 == 0 ? &Scale::minorPentatonic : &Scale::majorPentatonic;
 
     // Note::printNoteType(currentKey);
     // Serial.printf(" key %i\n", harmonyCounter);
@@ -111,4 +114,23 @@ namespace HLMusicMachine
     return currentScale->getNote(currentKey, inx, octave);
   }
 
+  void Tracker::setScaleIndex(int i)
+  {
+    scaleIndex = i;
+    switch (scaleIndex)
+    {
+    case 0:
+      currentScale = const_cast<Scale *>(&Scale::minorPentatonic);
+      break;
+    case 1:
+      currentScale = const_cast<Scale *>(&Scale::majorPentatonic);
+      break;
+    case 2:
+      currentScale = const_cast<Scale *>(&Scale::minor);
+      break;
+    case 3:
+      currentScale = const_cast<Scale *>(&Scale::major);
+      break;
+    }
+  }
 }

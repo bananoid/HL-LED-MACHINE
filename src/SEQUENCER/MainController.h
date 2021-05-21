@@ -15,6 +15,8 @@
 
 using namespace HLMusicMachine;
 
+#define NUM_OF_SCALES 4
+
 class MainController
 {
 private:
