@@ -94,6 +94,15 @@ void MainController::updateMIDI()
         }
       }
 
+      for (int i = 0; i < NUM_OF_SCALES; i++)
+      {
+        if (data1 == (41 + i) && type == MIDIDevice::NoteOn)
+        {
+          tracker->setKeyIndex(i);
+          midiUIInvalid = true;
+        }
+      }
+
       for (int i = 0; i < 4; i++)
       {
         if (type == MIDIDevice::ControlChange)
@@ -174,5 +183,6 @@ void MainController::drawMidiInterface()
   for (int i = 0; i < 4; i++)
   {
     midi1.sendNoteOn(73 + i, tracker->scaleIndex == i ? 127 : 0, 2);
+    midi1.sendNoteOn(41 + i, tracker->keyIndex == i ? 127 : 0, 2);
   }
 }

@@ -52,5 +52,8 @@ namespace HLMusicMachine
     Note getNote(int inx, int octave);
     int scaleIndex = 0;
     void setScaleIndex(int i);
+
+    int keyIndex = 0;
+    void setKeyIndex(int i);
   };
 }

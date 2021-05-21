@@ -101,7 +101,7 @@ namespace HLMusicMachine
       // currentKey = notes[progressionInterval].type;
     }
 
-    currentScale = harmonyCounter % 2 == 0 ? &Scale::minorPentatonic : &Scale::majorPentatonic;
+    // currentScale = harmonyCounter % 2 == 0 ? &Scale::minorPentatonic : &Scale::majorPentatonic;
 
     // Note::printNoteType(currentKey);
     // Serial.printf(" key %i\n", harmonyCounter);
@@ -117,6 +117,7 @@ namespace HLMusicMachine
   void Tracker::setScaleIndex(int i)
   {
     scaleIndex = i;
+
     switch (scaleIndex)
     {
     case 0:
@@ -126,10 +127,29 @@ namespace HLMusicMachine
       currentScale = const_cast<Scale *>(&Scale::majorPentatonic);
       break;
     case 2:
-      currentScale = const_cast<Scale *>(&Scale::minor);
+      currentScale = const_cast<Scale *>(&Scale::custom1);
       break;
     case 3:
-      currentScale = const_cast<Scale *>(&Scale::major);
+      currentScale = const_cast<Scale *>(&Scale::custom2);
+      break;
+    }
+  }
+  void Tracker::setKeyIndex(int i)
+  {
+    keyIndex = i;
+    switch (keyIndex)
+    {
+    case 0:
+      currentKey = C;
+      break;
+    case 1:
+      currentKey = EFlat;
+      break;
+    case 2:
+      currentKey = A;
+      break;
+    case 3:
+      currentKey = GFlat;
       break;
     }
   }
