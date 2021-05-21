@@ -48,6 +48,12 @@ namespace HLMusicMachine
 
   void Sequencer::clockTick(int counter)
   {
+    if (counter == 0)
+    {
+      lastStepInx = 0;
+      onCounter = 0;
+    }
+
     int retrigSize = parameters.retrig;
 
     int stepLenght = Clock::getQuntizedTimePulses(parameters.stepLenght);

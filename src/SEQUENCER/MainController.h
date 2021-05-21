@@ -8,6 +8,13 @@
 #include <Tracker.h>
 #include <Bounce2.h>
 
+#include <MIDIInstrument.h>
+#include <PinInstrument.h>
+#include <Sequencer.h>
+#include <Track.h>
+
+using namespace HLMusicMachine;
+
 class MainController
 {
 private:
@@ -18,4 +25,7 @@ public:
     Bounce2::Button startStopButton = Bounce2::Button();
 
     HLMusicMachine::Tracker *tracker;
+    void updateMIDI();
+
+    Sequencer *cvSequencers[4];
 };

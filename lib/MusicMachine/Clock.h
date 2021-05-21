@@ -49,7 +49,7 @@ namespace HLMusicMachine
 
     static int getQuntizedTimePulses(int timeInx)
     {
-      int triplet = timeInx % 2 == 0 ? 1 : 3;
+      int triplet = timeInx % 2 == 0 ? 2 : 3;
       return triplet * powf(2, timeInx / 2);
     }
 
