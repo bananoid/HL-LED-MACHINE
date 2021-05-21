@@ -89,16 +89,15 @@ void MainController::updateMIDI()
         }
       }
     }
+    // Start Stop
+    if (data1 == 108 && type == MIDIDevice::NoteOn)
+    {
+      tracker->clock->playStop();
+      midiUIInvalid = true;
+    }
 
     if (channel == 2)
     {
-
-      // Start Stop
-      if (data1 == 108 && type == MIDIDevice::NoteOn)
-      {
-        tracker->clock->playStop();
-        midiUIInvalid = true;
-      }
 
       for (int i = 0; i < NUM_OF_SCALES; i++)
       {
@@ -193,7 +192,9 @@ void MainController::drawMidiInterface()
     midi1.sendNoteOn(57 + i, cvTracks[i]->isPlaying ? 127 : 0, 2);
   }
 
+  midi1.sendNoteOn(108, tracker->clock->isPlaying ? 127 : 0, 1);
   midi1.sendNoteOn(108, tracker->clock->isPlaying ? 127 : 0, 2);
+  midi1.sendNoteOn(108, tracker->clock->isPlaying ? 127 : 0, 3);
 
   for (int i = 0; i < 4; i++)
   {
