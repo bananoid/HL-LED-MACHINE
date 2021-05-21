@@ -75,6 +75,19 @@ void MainController::updateMIDI()
     uint8_t channel = midi1.getChannel();
 
     Serial.printf("type:%i - data1:%i - data2:%i - channel:%i  \n", type, data1, data2, channel);
+    if (channel == 1)
+    {
+      if (type == MIDIDevice::ControlChange)
+      {
+        if (data1 == 50) // c1 s4
+        {
+          float bpm = map((float)data2, 0.f, 127.f, 100.f, 135.f);
+          tracker->clock->setBpm(bpm);
+          Serial.println(bpm);
+        }
+      }
+    }
+
     if (channel == 2)
     {
 
