@@ -61,7 +61,7 @@ namespace HLMusicMachine
     if (currentScale == nullptr)
     {
       // currentScale = const_cast<Scale *>(&Scale::major);
-      currentScale = const_cast<Scale *>(&Scale::custom1);
+      currentScale = const_cast<Scale *>(&Scale::minor);
       // currentKey = static_cast<NoteType>(random(12));
       currentKey = C;
     }
@@ -98,7 +98,7 @@ namespace HLMusicMachine
       // currentKey = notes[progressionInterval].type;
     }
 
-    currentScale = harmonyCounter % 2 == 0 ? &Scale::custom1 : &Scale::custom2;
+    // currentScale = harmonyCounter % 2 == 0 ? &Scale::custom1 : &Scale::custom2;
 
     // Note::printNoteType(currentKey);
     // Serial.printf(" key %i\n", harmonyCounter);

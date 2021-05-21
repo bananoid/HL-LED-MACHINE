@@ -31,5 +31,6 @@ namespace HLMusicMachine
     bool isPlaying = false;
     void play();
     void stop();
+    void togglePlayStop();
   };
 }

@@ -28,4 +28,9 @@ public:
     void updateMIDI();
 
     Sequencer *cvSequencers[4];
+    Track *cvTracks[4];
+
+    bool midiUIInvalid = true;
+    void drawMidiInterface();
+    Task midiUIDrawTask;
 };

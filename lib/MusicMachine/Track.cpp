@@ -18,6 +18,17 @@ namespace HLMusicMachine
     isPlaying = false;
     instrument->isEnabled = false;
   }
+  void Track::togglePlayStop()
+  {
+    if (isPlaying)
+    {
+      stop();
+    }
+    else
+    {
+      play();
+    }
+  }
 
   Sequencer *Track::addSequencer()
   {

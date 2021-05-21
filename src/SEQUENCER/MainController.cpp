@@ -14,6 +14,12 @@ MainController::MainController(Scheduler *runner)
 {
   serialMIDI.begin();
 
+  midiUIDrawTask.set(TASK_MILLISECOND * 20, TASK_FOREVER, [this]() {
+    drawMidiInterface();
+  });
+  runner->addTask(midiUIDrawTask);
+  midiUIDrawTask.enable();
+
   tracker = new Tracker(runner);
 
   Track *track;
@@ -22,37 +28,19 @@ MainController::MainController(Scheduler *runner)
   Sequencer::Parameters params;
   params.arpeggioType = Sequencer::ArpeggioType_Eucledian;
 
-  //////////////////////////
-  track = new Track(tracker, new MIDIInstrument(1, runner, 1));
-  sequencer = track->addSequencer();
-  cvSequencers[0] = sequencer;
-  sequencer->parameters = params;
-  tracker->appendTrack(track);
-  track->play();
+  for (int i = 0; i < 4; i++)
+  {
 
-  //////////////////////////
-  track = new Track(tracker, new MIDIInstrument(2, runner, 1));
-  sequencer = track->addSequencer();
-  cvSequencers[1] = sequencer;
-  sequencer->parameters = params;
-  tracker->appendTrack(track);
-  track->play();
-
-  //////////////////////////
-  track = new Track(tracker, new MIDIInstrument(3, runner, 1));
-  sequencer = track->addSequencer();
-  cvSequencers[2] = sequencer;
-  sequencer->parameters = params;
-  tracker->appendTrack(track);
-  track->play();
-
-  //////////////////////////
-  track = new Track(tracker, new MIDIInstrument(4, runner, 1));
-  sequencer = track->addSequencer();
-  cvSequencers[3] = sequencer;
-  sequencer->parameters = params;
-  tracker->appendTrack(track);
-  track->play();
+    int channel = i + 1;
+    //////////////////////////
+    track = new Track(tracker, new MIDIInstrument(channel, runner, 1));
+    sequencer = track->addSequencer();
+    cvSequencers[i] = sequencer;
+    cvTracks[i] = track;
+    sequencer->parameters = params;
+    tracker->appendTrack(track);
+    track->play();
+  }
 
   // tracker->clock->play();
 
@@ -87,12 +75,12 @@ void MainController::updateMIDI()
     uint8_t channel = midi1.getChannel();
 
     Serial.printf("type:%i - data1:%i - data2:%i - channel:%i  \n", type, data1, data2, channel);
-
-    if (type == MIDIDevice::ControlChange)
+    if (channel == 2)
     {
-      if (channel == 2)
+
+      for (int i = 0; i < 4; i++)
       {
-        for (int i = 0; i < 4; i++)
+        if (type == MIDIDevice::ControlChange)
         {
           int startCC = 13 + (i)*2;
           ///////////////////////////////////////////
@@ -138,7 +126,30 @@ void MainController::updateMIDI()
             Serial.printf("noteOffset %i \n", cvSequencers[i]->parameters.noteOffset);
           }
         }
+
+        // ON/OFF buttons
+        if (data1 == 57 + i)
+        {
+          if (type == MIDIDevice::NoteOn)
+          {
+            cvTracks[i]->togglePlayStop();
+            midiUIInvalid = true;
+          }
+        }
       }
     }
+  }
+}
+
+void MainController::drawMidiInterface()
+{
+  if (!midiUIInvalid)
+  {
+    return;
+  }
+  midiUIInvalid = true;
+  for (int i = 0; i < 4; i++)
+  {
+    midi1.sendNoteOn(57 + i, cvTracks[i]->isPlaying ? 127 : 0, 2);
   }
 }
