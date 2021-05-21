@@ -27,6 +27,8 @@ MainController::MainController(Scheduler *runner)
 
   Sequencer::Parameters params;
   params.arpeggioType = Sequencer::ArpeggioType_Eucledian;
+  // params.arpeggioType = Sequencer::ArpeggioType_LFO;
+  params.arpeggioLFO = 3;
 
   for (int i = 0; i < 4; i++)
   {
@@ -125,7 +127,7 @@ void MainController::updateMIDI()
           // Control Track 1
           if (data1 == startCC) // c1 k1
           {
-            cvSequencers[i]->parameters.stepLenght = map((float)data2, 0.f, 127.f, 1.f, 9.f);
+            cvSequencers[i]->parameters.stepLenght = map((float)data2, 0.f, 127.f, 9.f, 1.f);
             Serial.printf("stepLenght %i \n", cvSequencers[i]->parameters.stepLenght);
           }
           else if (data1 == startCC + 16) // c1 k2
