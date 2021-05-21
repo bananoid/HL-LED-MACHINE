@@ -78,6 +78,13 @@ void MainController::updateMIDI()
     if (channel == 2)
     {
 
+      // Start Stop
+      if (data1 == 108 && type == MIDIDevice::NoteOn)
+      {
+        tracker->clock->playStop();
+        midiUIInvalid = true;
+      }
+
       for (int i = 0; i < 4; i++)
       {
         if (type == MIDIDevice::ControlChange)
@@ -152,4 +159,6 @@ void MainController::drawMidiInterface()
   {
     midi1.sendNoteOn(57 + i, cvTracks[i]->isPlaying ? 127 : 0, 2);
   }
+
+  midi1.sendNoteOn(108, tracker->clock->isPlaying ? 127 : 0, 2);
 }
