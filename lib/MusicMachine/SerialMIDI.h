@@ -47,6 +47,16 @@ public:
 
     ports[2]->begin(MIDI_CHANNEL_OMNI);
     ports[2]->turnThruOff();
+
+    ports[3]->begin(MIDI_CHANNEL_OMNI);
+    ports[3]->turnThruOff();
+  }
+
+  void update()
+  {
+    ports[1]->read();
+    ports[2]->read();
+    ports[3]->read();
   }
 };
 

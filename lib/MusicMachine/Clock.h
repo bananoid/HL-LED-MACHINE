@@ -23,9 +23,12 @@ namespace HLMusicMachine
     Clock(Scheduler *runner);
 
     Task clockTask;
+    bool externalClock = true;
+    void tick();
 
     ClockDelegate *delegate;
 
+    const int clockLedPort = 13; //31
     void clockTick();
     unsigned long tickCounter = 0;
 

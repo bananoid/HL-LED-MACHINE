@@ -5,41 +5,51 @@
 
 namespace HLMusicMachine
 {
+
   Clock::Clock(Scheduler *runner)
   {
-    const int clockLedPort = 13; //31
+
     pinMode(clockLedPort, OUTPUT);
 
     clockTask.set(TASK_SECOND, TASK_FOREVER, [this]() {
-#ifdef MIDI_INTERFACE
-      // usbMIDI.sendRealTime(usbMIDI.Start);
-      if (tickCounter == 12)
-      {
-        serialMIDI.ports[1]->sendRealTime(0xFA); // Start
-      }
-
-#endif
-
-      if (tickCounter % (24) == 0)
-      {
-        digitalWrite(clockLedPort, true);
-      }
-      else if ((tickCounter + 12) % (24) == 0)
-      {
-        digitalWrite(clockLedPort, false);
-      }
-
-#ifdef MIDI_INTERFACE
-      // usbMIDI.sendRealTime(usbMIDI.Clock);
-      serialMIDI.ports[1]->sendRealTime(0xF8); // Clock
-#endif
-
-      clockTask.setInterval(clockInterval);
-      delegate->clockTick();
-      tickCounter++;
+      // tick();
     });
     runner->addTask(clockTask);
     clockTask.disable();
+  }
+
+  void Clock::tick()
+  {
+#ifdef MIDI_INTERFACE
+    // usbMIDI.sendRealTime(usbMIDI.Start);
+    if (tickCounter == 12)
+    {
+      serialMIDI.ports[1]->sendRealTime(0xFA); // Start
+      serialMIDI.ports[2]->sendRealTime(0xFA); // Start
+      // serialMIDI.ports[3]->sendRealTime(0xFA); // Start
+    }
+
+#endif
+
+    if (tickCounter % (24) == 0)
+    {
+      digitalWrite(clockLedPort, true);
+    }
+    else if ((tickCounter + 12) % (24) == 0)
+    {
+      digitalWrite(clockLedPort, false);
+    }
+
+#ifdef MIDI_INTERFACE
+    // usbMIDI.sendRealTime(usbMIDI.Clock);
+    serialMIDI.ports[1]->sendRealTime(0xF8); // Clock
+    serialMIDI.ports[2]->sendRealTime(0xF8); // Clock
+                                             // serialMIDI.ports[3]->sendRealTime(0xF8); // Clock
+#endif
+
+    clockTask.setInterval(clockInterval);
+    delegate->clockTick();
+    tickCounter++;
   }
 
   void Clock::setBpm(float bpm)
@@ -76,7 +86,10 @@ namespace HLMusicMachine
     clockTask.disable();
 
 #ifdef MIDI_INTERFACE
-    usbMIDI.sendRealTime(usbMIDI.Stop);
+    // usbMIDI.sendRealTime(usbMIDI.Stop);
+    serialMIDI.ports[1]->sendRealTime(0xFC);
+    serialMIDI.ports[2]->sendRealTime(0xFC);
+    // serialMIDI.ports[3]->sendRealTime(0xFC);
 #endif
   };
 
