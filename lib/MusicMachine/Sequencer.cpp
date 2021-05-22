@@ -111,23 +111,24 @@ namespace HLMusicMachine
 
       if (type == MELODY)
       {
+        int noteInx = 0;
+
+        if (parameters.arpeggioType == ArpeggioType_Eucledian)
+        {
+          noteInx = (lastStep.note % parameters.noteCount) * parameters.noteSpread;
+        }
+        else if (parameters.arpeggioType == ArpeggioType_LFO)
+        {
+          float phase = counter / 24.0f * (1.0 / parameters.arpeggioLFO);
+          float aLFO = sinf(phase * TWO_PI);
+          aLFO = asinf(aLFO) / HALF_PI;
+          aLFO = map(aLFO, -1.f, 1.f, 0, parameters.noteCount);
+          noteInx = round(aLFO);
+          noteInx *= parameters.noteSpread;
+        }
+
         if (parameters.chord == 0) // Arpeggio
         {
-          int noteInx = 0;
-
-          if (parameters.arpeggioType == ArpeggioType_Eucledian)
-          {
-            noteInx = (lastStep.note % parameters.noteCount) * parameters.noteSpread;
-          }
-          else if (parameters.arpeggioType == ArpeggioType_LFO)
-          {
-            float phase = counter / 24.0f * (1.0 / parameters.arpeggioLFO);
-            float aLFO = sinf(phase * TWO_PI);
-            aLFO = asinf(aLFO) / HALF_PI;
-            aLFO = map(aLFO, -1.f, 1.f, 0, parameters.noteCount);
-            noteInx = round(aLFO);
-            noteInx *= parameters.noteSpread;
-          }
 
           Note note = tracker->getNote(noteInx + parameters.noteOffset, parameters.octave);
           int midiNote = note.getMIDINoteNumber();
@@ -140,7 +141,7 @@ namespace HLMusicMachine
           int chordCount = parameters.chord == 1 ? 3 : 4;
           for (int i = 0; i < chordCount; i++)
           {
-            Note note = tracker->getNote(i * 2, parameters.octave);
+            Note note = tracker->getNote(i * (2 * parameters.noteSpread) + noteInx + parameters.noteOffset, parameters.octave);
             int midiNote = note.getMIDINoteNumber();
             instrument->trigNote(midiNote, vel, noteLeght);
           }

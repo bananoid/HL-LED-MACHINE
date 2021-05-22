@@ -44,6 +44,9 @@ public:
   {
     ports[1]->begin(MIDI_CHANNEL_OMNI);
     ports[1]->turnThruOff();
+
+    ports[2]->begin(MIDI_CHANNEL_OMNI);
+    ports[2]->turnThruOff();
   }
 };
 

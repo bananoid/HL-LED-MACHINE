@@ -6,9 +6,10 @@
 
 namespace HLMusicMachine
 {
-  MIDIInstrument::MIDIInstrument(int channel, Scheduler *runner, int voiceCount) : Instrument(runner, voiceCount)
+  MIDIInstrument::MIDIInstrument(int channel, Scheduler *runner, int voiceCount, int port) : Instrument(runner, voiceCount)
   {
     this->channel = channel;
+    this->port = port;
   }
 
   void MIDIInstrument::noteOn(int note, int vel, uint8_t voiceIndex)
@@ -21,7 +22,7 @@ namespace HLMusicMachine
 
 #ifdef MIDI_INTERFACE
     usbMIDI.sendNoteOn(note, vel, channel);
-    serialMIDI.ports[1]->sendNoteOn(note, vel, channel);
+    serialMIDI.ports[port]->sendNoteOn(note, vel, channel);
 #endif
   }
 
@@ -36,7 +37,7 @@ namespace HLMusicMachine
 
 #ifdef MIDI_INTERFACE
     usbMIDI.sendNoteOff(note, 0, channel);
-    serialMIDI.ports[1]->sendNoteOff(note, 0, channel);
+    serialMIDI.ports[port]->sendNoteOff(note, 0, channel);
 #endif
   }
 

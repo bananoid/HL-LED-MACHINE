@@ -32,6 +32,9 @@ public:
     Sequencer *cvSequencers[4];
     Track *cvTracks[4];
 
+    Sequencer *midiSequencers[4];
+    Track *midiTracks[4];
+
     bool midiUIInvalid = true;
     void drawMidiInterface();
     Task midiUIDrawTask;

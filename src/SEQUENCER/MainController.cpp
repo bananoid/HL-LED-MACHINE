@@ -44,6 +44,20 @@ MainController::MainController(Scheduler *runner)
     track->play();
   }
 
+  for (int i = 0; i < 4; i++)
+  {
+    int channel = i + 1;
+    //////////////////////////
+    track = new Track(tracker, new MIDIInstrument(channel, runner, 3, 2));
+    sequencer = track->addSequencer();
+    midiSequencers[i] = sequencer;
+    midiTracks[i] = track;
+    sequencer->parameters = params;
+    sequencer->parameters.chord = 3;
+    tracker->appendTrack(track);
+    track->play();
+  }
+
   // tracker->clock->play();
 
   //Start Stop button
@@ -96,26 +110,26 @@ void MainController::updateMIDI()
       midiUIInvalid = true;
     }
 
+    for (int i = 0; i < NUM_OF_SCALES; i++)
+    {
+      if (data1 == (73 + i) && type == MIDIDevice::NoteOn)
+      {
+        tracker->setScaleIndex(i);
+        midiUIInvalid = true;
+      }
+    }
+
+    for (int i = 0; i < NUM_OF_SCALES; i++)
+    {
+      if (data1 == (41 + i) && type == MIDIDevice::NoteOn)
+      {
+        tracker->setKeyIndex(i);
+        midiUIInvalid = true;
+      }
+    }
+
     if (channel == 2)
     {
-
-      for (int i = 0; i < NUM_OF_SCALES; i++)
-      {
-        if (data1 == (73 + i) && type == MIDIDevice::NoteOn)
-        {
-          tracker->setScaleIndex(i);
-          midiUIInvalid = true;
-        }
-      }
-
-      for (int i = 0; i < NUM_OF_SCALES; i++)
-      {
-        if (data1 == (41 + i) && type == MIDIDevice::NoteOn)
-        {
-          tracker->setKeyIndex(i);
-          midiUIInvalid = true;
-        }
-      }
 
       for (int i = 0; i < 4; i++)
       {
@@ -177,6 +191,71 @@ void MainController::updateMIDI()
         }
       }
     }
+
+    // MIDI Instruments Tracks
+
+    if (channel == 3)
+    {
+      for (int i = 0; i < 4; i++)
+      {
+        if (type == MIDIDevice::ControlChange)
+        {
+          int startCC = 13 + (i)*2;
+          ///////////////////////////////////////////
+          // Control Track 1
+          if (data1 == startCC) // c1 k1
+          {
+            midiSequencers[i]->parameters.stepLenght = map((float)data2, 0.f, 127.f, 9.f, 1.f);
+            Serial.printf("stepLenght %i \n", midiSequencers[i]->parameters.stepLenght);
+          }
+          else if (data1 == startCC + 16) // c1 k2
+          {
+            midiSequencers[i]->parameters.events = map((float)data2, 0.f, 127.f, 1.f, 16.f);
+            Serial.printf("events %i \n", midiSequencers[i]->parameters.events);
+          }
+          else if (data1 == startCC + 36) // c1 k3
+          {
+            midiSequencers[i]->parameters.offset = map((float)data2, 0.f, 127.f, 0.f, 16.f);
+            Serial.printf("offset %i \n", midiSequencers[i]->parameters.offset);
+          }
+          else if (data1 == startCC + 64) // c1 s4
+          {
+            midiSequencers[i]->parameters.octave = map((float)data2, 0.f, 127.f, -1.f, 4.f);
+            Serial.printf("octave %i \n", midiSequencers[i]->parameters.octave);
+          }
+          else if (data1 == startCC + 1) // c2 k1
+          {
+            midiSequencers[i]->parameters.retrig = map((float)data2, 0.f, 127.f, 0.f, 7.f);
+            Serial.printf("retrig %i \n", midiSequencers[i]->parameters.retrig);
+          }
+          else if (data1 == startCC + 17) // c2 k2
+          {
+            midiSequencers[i]->parameters.noteSpread = map((float)data2, 0.f, 127.f, 1.f, 5.f);
+            Serial.printf("noteSpread %i \n", midiSequencers[i]->parameters.noteSpread);
+          }
+          else if (data1 == startCC + 37) // c2 k3
+          {
+            midiSequencers[i]->parameters.noteCount = map((float)data2, 0.f, 127.f, 1.f, 7.f);
+            Serial.printf("noteCount %i \n", midiSequencers[i]->parameters.noteCount);
+          }
+          else if (data1 == startCC + 65) // c2 s4
+          {
+            midiSequencers[i]->parameters.noteOffset = map((float)data2, 0.f, 127.f, 0.f, 6.f);
+            Serial.printf("noteOffset %i \n", midiSequencers[i]->parameters.noteOffset);
+          }
+        }
+
+        // ON/OFF buttons
+        if (data1 == 57 + i)
+        {
+          if (type == MIDIDevice::NoteOn)
+          {
+            midiTracks[i]->togglePlayStop();
+            midiUIInvalid = true;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -190,6 +269,7 @@ void MainController::drawMidiInterface()
   for (int i = 0; i < 4; i++)
   {
     midi1.sendNoteOn(57 + i, cvTracks[i]->isPlaying ? 127 : 0, 2);
+    midi1.sendNoteOn(57 + i, midiTracks[i]->isPlaying ? 127 : 0, 3);
   }
 
   midi1.sendNoteOn(108, tracker->clock->isPlaying ? 127 : 0, 1);
@@ -198,7 +278,11 @@ void MainController::drawMidiInterface()
 
   for (int i = 0; i < 4; i++)
   {
+    midi1.sendNoteOn(73 + i, tracker->scaleIndex == i ? 127 : 0, 1);
+    midi1.sendNoteOn(41 + i, tracker->keyIndex == i ? 127 : 0, 1);
     midi1.sendNoteOn(73 + i, tracker->scaleIndex == i ? 127 : 0, 2);
     midi1.sendNoteOn(41 + i, tracker->keyIndex == i ? 127 : 0, 2);
+    midi1.sendNoteOn(73 + i, tracker->scaleIndex == i ? 127 : 0, 3);
+    midi1.sendNoteOn(41 + i, tracker->keyIndex == i ? 127 : 0, 3);
   }
 }
