@@ -31,6 +31,7 @@ namespace HLMusicMachine
     const int clockLedPort = 13; //31
     void clockTick();
     unsigned long tickCounter = 0;
+    unsigned long prevClickTime = 0;
 
     // BPM
     float getBpm();

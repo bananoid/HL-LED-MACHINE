@@ -12,7 +12,10 @@ namespace HLMusicMachine
     pinMode(clockLedPort, OUTPUT);
 
     clockTask.set(TASK_SECOND, TASK_FOREVER, [this]() {
-      // tick();
+      if (!externalClock)
+      {
+        tick();
+      }
     });
     runner->addTask(clockTask);
     clockTask.disable();
@@ -20,6 +23,16 @@ namespace HLMusicMachine
 
   void Clock::tick()
   {
+
+    if (externalClock)
+    {
+      // TODO: Calculate clockInterval from external clock
+      unsigned long curTime = micros();
+      int deltaTime = curTime - prevClickTime;
+      prevClickTime = curTime;
+      Serial.printf("clockTick time %i /n", deltaTime);
+    }
+
 #ifdef MIDI_INTERFACE
     // usbMIDI.sendRealTime(usbMIDI.Start);
     if (tickCounter == 12)
