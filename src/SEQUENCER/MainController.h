@@ -15,7 +15,9 @@
 
 using namespace HLMusicMachine;
 
-#define NUM_OF_SCALES 4
+#define NUM_OF_SCALES 0
+#define NUM_OF_CV_TRAKS 0
+#define NUM_OF_MIDI_TRAKS 0
 
 class MainController
 {
@@ -29,11 +31,11 @@ public:
     HLMusicMachine::Tracker *tracker;
     void updateMIDI();
 
-    Sequencer *cvSequencers[4];
-    Track *cvTracks[4];
+    Sequencer *cvSequencers[NUM_OF_CV_TRAKS];
+    Track *cvTracks[NUM_OF_CV_TRAKS];
 
-    Sequencer *midiSequencers[4];
-    Track *midiTracks[4];
+    Sequencer *midiSequencers[NUM_OF_MIDI_TRAKS];
+    Track *midiTracks[NUM_OF_MIDI_TRAKS];
 
     bool midiUIInvalid = true;
     void drawMidiInterface();

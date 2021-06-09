@@ -23,7 +23,7 @@ namespace HLMusicMachine
     Clock(Scheduler *runner);
 
     Task clockTask;
-    bool externalClock = true;
+    bool externalClock = false;
     void tick();
 
     ClockDelegate *delegate;
@@ -40,8 +40,8 @@ namespace HLMusicMachine
     float bpm = 100;
     const int clockDivider = 24;           // number of time intervals within a beat
     unsigned long clockInterval = 1000000; // default value to 1 sec
-    const float minBpm = 10;
-    const float maxBpm = 400;
+    const float minBpm = 30;
+    const float maxBpm = 300;
 
     bool isPlaying = false;
     void play();
@@ -58,5 +58,7 @@ namespace HLMusicMachine
     }
 
     void syncTo(unsigned long syncTickCounter, float bpm);
+
+    long debugTickTime = 0;
   };
 }

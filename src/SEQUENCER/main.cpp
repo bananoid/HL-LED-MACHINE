@@ -10,34 +10,34 @@ using namespace HLMusicMachine;
 
 void externalClock()
 {
-    Serial.println("Clock in");
+    // Serial.println("Clock in");
     mainController->tracker->clock->tick();
 }
 
 void externalStart()
 {
-    Serial.println("External Start");
+    // Serial.println("External Start");
     mainController->tracker->clock->play();
 }
 
 void externalStop()
 {
-    Serial.println("External Stop");
+    // Serial.println("External Stop");
     mainController->tracker->clock->stop();
 }
 
 void setup()
 {
-    Serial.begin(2000000);
+    Serial.begin(31250);
     mainController = new MainController(&runner);
-    serialMIDI.ports[2]->setHandleClock(externalClock);
-    serialMIDI.ports[2]->setHandleStart(externalStart);
-    serialMIDI.ports[2]->setHandleStop(externalStop);
+    // serialMIDI.ports[2]->setHandleClock(externalClock);
+    // serialMIDI.ports[2]->setHandleStart(externalStart);
+    // serialMIDI.ports[2]->setHandleStop(externalStop);
 }
 
 void loop()
 {
     mainController->update();
     runner.execute();
-    serialMIDI.update();
+    // serialMIDI.update();
 }

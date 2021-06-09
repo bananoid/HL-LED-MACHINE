@@ -11,12 +11,12 @@ namespace HLMusicMachine
 
     pinMode(clockLedPort, OUTPUT);
 
-    clockTask.set(TASK_SECOND, TASK_FOREVER, [this]() {
-      if (!externalClock)
-      {
-        tick();
-      }
-    });
+    clockTask.set(TASK_SECOND, TASK_FOREVER, [this]()
+                  {
+                    unsigned long curTime = micros();
+                    tick();
+                    debugTickTime = micros() - curTime;
+                  });
     runner->addTask(clockTask);
     clockTask.disable();
   }
@@ -24,45 +24,53 @@ namespace HLMusicMachine
   void Clock::tick()
   {
 
-    if (externalClock)
+    // if (tickCounter == clockDivider * 2) // Preroll Start
+    if (tickCounter == 0) // Preroll Start
     {
-      // TODO: Calculate clockInterval from external clock
-      unsigned long curTime = micros();
-      int deltaTime = curTime - prevClickTime;
-      prevClickTime = curTime;
-      Serial.printf("clockTick time %i /n", deltaTime);
-    }
-
+      serialMIDI.clockStart();
 #ifdef MIDI_INTERFACE
-    // usbMIDI.sendRealTime(usbMIDI.Start);
-    if (tickCounter == 12)
-    {
-      serialMIDI.ports[1]->sendRealTime(0xFA); // Start
-      serialMIDI.ports[2]->sendRealTime(0xFA); // Start
-      // serialMIDI.ports[3]->sendRealTime(0xFA); // Start
-    }
-
+      // usbMIDI.sendRealTime(usbMIDI.Start);
 #endif
+    }
 
     if (tickCounter % (24) == 0)
     {
       digitalWrite(clockLedPort, true);
+
+      if (externalClock)
+      {
+        // TODO: Calculate clockInterval from external clock
+        // int deltaTime;
+        // unsigned long curTime = micros();
+        // deltaTime = curTime - prevClickTime;
+        // prevClickTime = curTime;
+        // Serial.printf("clockTick time %i \n", deltaTime);
+      }
     }
     else if ((tickCounter + 12) % (24) == 0)
     {
       digitalWrite(clockLedPort, false);
+      Serial.println(debugTickTime);
     }
 
 #ifdef MIDI_INTERFACE
     // usbMIDI.sendRealTime(usbMIDI.Clock);
-    serialMIDI.ports[1]->sendRealTime(0xF8); // Clock
-    serialMIDI.ports[2]->sendRealTime(0xF8); // Clock
-                                             // serialMIDI.ports[3]->sendRealTime(0xF8); // Clock
 #endif
 
     clockTask.setInterval(clockInterval);
     delegate->clockTick();
     tickCounter++;
+
+    if (tickCounter % (12) == 0)
+    {
+      serialMIDI.sendTestNotes(true);
+    }
+    else if ((tickCounter + 6) % (12) == 0)
+    {
+      serialMIDI.sendTestNotes(false);
+    }
+
+    serialMIDI.clockTick();
   }
 
   void Clock::setBpm(float bpm)
@@ -70,9 +78,9 @@ namespace HLMusicMachine
     bpm = constrain(bpm, minBpm, maxBpm);
 
     this->bpm = bpm;
-    this->clockInterval = 60 * TASK_SECOND / bpm / this->clockDivider; // microseconds
+    clockInterval = (float)(60 * TASK_SECOND) / bpm / (float)clockDivider; // microseconds
 
-    // Serial.printf("Bpm is  %f\n", bpm);
+    Serial.printf("Bpm is  %f %i\n", bpm, clockInterval);
   }
 
   float Clock::getBpm()
@@ -83,26 +91,30 @@ namespace HLMusicMachine
   void Clock::play()
   {
     isPlaying = true;
-    Serial.println("Play");
+    // Serial.println("Play");
 
-    tickCounter = 0;
-    setBpm(bpm);
-    clockTask.setInterval(clockInterval);
-    clockTask.enable();
+    tickCounter = clockDivider * -2; // preroll 2 brats
+    if (!externalClock)
+    {
+      setBpm(bpm);
+      clockTask.setInterval(clockInterval);
+      clockTask.enable();
+    }
   };
 
   void Clock::stop()
   {
     isPlaying = false;
-    Serial.println("Stop");
+    // Serial.println("Stop");
 
-    clockTask.disable();
+    if (!externalClock)
+    {
+      clockTask.disable();
+    }
 
+    serialMIDI.clockStop();
 #ifdef MIDI_INTERFACE
     // usbMIDI.sendRealTime(usbMIDI.Stop);
-    serialMIDI.ports[1]->sendRealTime(0xFC);
-    serialMIDI.ports[2]->sendRealTime(0xFC);
-    // serialMIDI.ports[3]->sendRealTime(0xFC);
 #endif
   };
 
@@ -137,4 +149,5 @@ namespace HLMusicMachine
     // long deltaTicks = tickCounter - syncTickCounter;
     // Serial.printf("deltaTicks:%i tickCounter:%i syncTickCounter:%i\n", deltaTicks, tickCounter, syncTickCounter);
   }
+
 }

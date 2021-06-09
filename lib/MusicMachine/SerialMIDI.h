@@ -20,43 +20,88 @@ enum MidiPort
 using MidiTransport = MIDI_NAMESPACE::SerialMIDI<HardwareSerial>;
 using MidiInterface = MIDI_NAMESPACE::MidiInterface<MidiTransport>;
 
+#define MIDI_PORT_ENABLE_FIRST 6
+#define MIDI_PORT_ENABLE_LAST 7
+
 class SerialMIDI
 {
 private:
 public:
   MidiInterface *ports[MIDI_PORT_COUNT];
+  HardwareSerial *serials[8] = {&Serial1, &Serial2, &Serial3, &Serial4, &Serial5, &Serial6, &Serial7, &Serial8};
 
   SerialMIDI()
   {
-    ports[0] = new MidiInterface(*new MidiTransport(Serial1));
-    ports[1] = new MidiInterface(*new MidiTransport(Serial2));
-    ports[2] = new MidiInterface(*new MidiTransport(Serial3));
-    ports[3] = new MidiInterface(*new MidiTransport(Serial4));
-    ports[4] = new MidiInterface(*new MidiTransport(Serial5));
-    ports[5] = new MidiInterface(*new MidiTransport(Serial6));
-    ports[6] = new MidiInterface(*new MidiTransport(Serial7));
-    ports[7] = new MidiInterface(*new MidiTransport(Serial8));
+    for (int i = MIDI_PORT_ENABLE_FIRST; i < MIDI_PORT_ENABLE_LAST; i++)
+    {
+      ports[i] = new MidiInterface(*new MidiTransport(*serials[i]));
+    }
   };
 
   ~SerialMIDI(){};
 
   void begin()
   {
-    ports[1]->begin(MIDI_CHANNEL_OMNI);
-    ports[1]->turnThruOff();
-
-    ports[2]->begin(MIDI_CHANNEL_OMNI);
-    ports[2]->turnThruOff();
-
-    ports[3]->begin(MIDI_CHANNEL_OMNI);
-    ports[3]->turnThruOff();
+    for (int i = MIDI_PORT_ENABLE_FIRST; i < MIDI_PORT_ENABLE_LAST; i++)
+    {
+      ports[i]->begin(MIDI_CHANNEL_OMNI);
+      ports[i]->turnThruOff();
+    }
   }
 
   void update()
   {
-    ports[1]->read();
-    ports[2]->read();
-    ports[3]->read();
+    for (int i = MIDI_PORT_ENABLE_FIRST; i < MIDI_PORT_ENABLE_LAST; i++)
+    {
+      ports[i]->read();
+    }
+  }
+
+  void clockStart()
+  {
+    for (int i = MIDI_PORT_ENABLE_FIRST; i < MIDI_PORT_ENABLE_LAST; i++)
+    {
+      ports[i]->sendRealTime(midi::Start);
+    }
+  }
+
+  void clockStop()
+  {
+    for (int i = MIDI_PORT_ENABLE_FIRST; i < MIDI_PORT_ENABLE_LAST; i++)
+    {
+      ports[i]->sendRealTime(midi::Stop);
+    }
+  }
+
+  void clockTick()
+  {
+    for (int i = MIDI_PORT_ENABLE_FIRST; i < MIDI_PORT_ENABLE_LAST; i++)
+    {
+      ports[i]->sendRealTime(midi::Clock);
+      serials[i]->flush();
+      serials[i]->clear();
+    }
+  }
+
+  void sendTestNotes(bool on)
+  {
+    for (int i = MIDI_PORT_ENABLE_FIRST; i < MIDI_PORT_ENABLE_LAST; i++)
+    {
+      if (on)
+      {
+        ports[i]->sendNoteOn(60, 127, 1);
+        ports[i]->sendNoteOn(60, 127, 2);
+        ports[i]->sendNoteOn(60, 127, 3);
+        ports[i]->sendNoteOn(60, 127, 4);
+      }
+      else
+      {
+        ports[i]->sendNoteOff(60, 127, 1);
+        ports[i]->sendNoteOff(60, 127, 2);
+        ports[i]->sendNoteOff(60, 127, 3);
+        ports[i]->sendNoteOff(60, 127, 4);
+      }
+    }
   }
 };
 

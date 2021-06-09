@@ -14,9 +14,8 @@ MainController::MainController(Scheduler *runner)
 {
   serialMIDI.begin();
 
-  midiUIDrawTask.set(TASK_MILLISECOND * 20, TASK_FOREVER, [this]() {
-    drawMidiInterface();
-  });
+  midiUIDrawTask.set(TASK_MILLISECOND * 20, TASK_FOREVER, [this]()
+                     { drawMidiInterface(); });
   runner->addTask(midiUIDrawTask);
   midiUIDrawTask.enable();
 
@@ -30,7 +29,7 @@ MainController::MainController(Scheduler *runner)
   // params.arpeggioType = Sequencer::ArpeggioType_LFO;
   params.arpeggioLFO = 3;
 
-  for (int i = 0; i < 4; i++)
+  for (int i = 0; i < NUM_OF_CV_TRAKS; i++)
   {
 
     int channel = i + 1;
@@ -44,7 +43,7 @@ MainController::MainController(Scheduler *runner)
     track->play();
   }
 
-  for (int i = 0; i < 4; i++)
+  for (int i = 0; i < NUM_OF_MIDI_TRAKS; i++)
   {
     int channel = i + 1;
     //////////////////////////
@@ -58,7 +57,8 @@ MainController::MainController(Scheduler *runner)
     track->play();
   }
 
-  // tracker->clock->play();
+  tracker->clock->setBpm(120);
+  tracker->clock->play();
 
   //Start Stop button
   startStopButton.attach(32, INPUT_PULLUP); // USE EXTERNAL PULL-UP
@@ -97,7 +97,7 @@ void MainController::updateMIDI()
       {
         if (data1 == 50) // c1 s4
         {
-          float bpm = map((float)data2, 0.f, 127.f, 100.f, 135.f);
+          float bpm = map((float)data2, 0.f, 127.f, 30.f, 300.f);
           tracker->clock->setBpm(bpm);
           Serial.println(bpm);
         }
@@ -131,7 +131,7 @@ void MainController::updateMIDI()
     if (channel == 2)
     {
 
-      for (int i = 0; i < 4; i++)
+      for (int i = 0; i < NUM_OF_CV_TRAKS; i++)
       {
         if (type == MIDIDevice::ControlChange)
         {
@@ -196,7 +196,7 @@ void MainController::updateMIDI()
 
     if (channel == 3)
     {
-      for (int i = 0; i < 4; i++)
+      for (int i = 0; i < NUM_OF_MIDI_TRAKS; i++)
       {
         if (type == MIDIDevice::ControlChange)
         {
@@ -266,9 +266,12 @@ void MainController::drawMidiInterface()
     return;
   }
   midiUIInvalid = true;
-  for (int i = 0; i < 4; i++)
+  for (int i = 0; i < NUM_OF_CV_TRAKS; i++)
   {
     midi1.sendNoteOn(57 + i, cvTracks[i]->isPlaying ? 127 : 0, 2);
+  }
+  for (int i = 0; i < NUM_OF_MIDI_TRAKS; i++)
+  {
     midi1.sendNoteOn(57 + i, midiTracks[i]->isPlaying ? 127 : 0, 3);
   }
 
