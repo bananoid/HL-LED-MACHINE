@@ -85,23 +85,23 @@ public:
 
   void sendTestNotes(bool on)
   {
-    for (int i = MIDI_PORT_ENABLE_FIRST; i < MIDI_PORT_ENABLE_LAST; i++)
-    {
-      if (on)
-      {
-        ports[i]->sendNoteOn(60, 127, 1);
-        ports[i]->sendNoteOn(60, 127, 2);
-        ports[i]->sendNoteOn(60, 127, 3);
-        ports[i]->sendNoteOn(60, 127, 4);
-      }
-      else
-      {
-        ports[i]->sendNoteOff(60, 127, 1);
-        ports[i]->sendNoteOff(60, 127, 2);
-        ports[i]->sendNoteOff(60, 127, 3);
-        ports[i]->sendNoteOff(60, 127, 4);
-      }
-    }
+    //   for (int i = MIDI_PORT_ENABLE_FIRST; i < MIDI_PORT_ENABLE_LAST; i++)
+    //   {
+    //     if (on)
+    //     {
+    //       ports[i]->sendNoteOn(60, 127, 1);
+    //       ports[i]->sendNoteOn(60, 127, 2);
+    //       ports[i]->sendNoteOn(60, 127, 3);
+    //       ports[i]->sendNoteOn(60, 127, 4);
+    //     }
+    //     else
+    //     {
+    //       ports[i]->sendNoteOff(60, 127, 1);
+    //       ports[i]->sendNoteOff(60, 127, 2);
+    //       ports[i]->sendNoteOff(60, 127, 3);
+    //       ports[i]->sendNoteOff(60, 127, 4);
+    //     }
+    //   }
   }
 };
 
