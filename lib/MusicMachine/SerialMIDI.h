@@ -20,8 +20,8 @@ enum MidiPort
 using MidiTransport = MIDI_NAMESPACE::SerialMIDI<HardwareSerial>;
 using MidiInterface = MIDI_NAMESPACE::MidiInterface<MidiTransport>;
 
-#define MIDI_PORT_ENABLE_FIRST 6
-#define MIDI_PORT_ENABLE_LAST 7
+#define MIDI_PORT_ENABLE_FIRST 1
+#define MIDI_PORT_ENABLE_LAST 3
 
 class SerialMIDI
 {
@@ -62,6 +62,7 @@ public:
     for (int i = MIDI_PORT_ENABLE_FIRST; i < MIDI_PORT_ENABLE_LAST; i++)
     {
       ports[i]->sendRealTime(midi::Start);
+      // ports[i]->sendStart();
     }
   }
 
@@ -70,6 +71,7 @@ public:
     for (int i = MIDI_PORT_ENABLE_FIRST; i < MIDI_PORT_ENABLE_LAST; i++)
     {
       ports[i]->sendRealTime(midi::Stop);
+      // ports[i]->sendStop();
     }
   }
 
@@ -78,30 +80,31 @@ public:
     for (int i = MIDI_PORT_ENABLE_FIRST; i < MIDI_PORT_ENABLE_LAST; i++)
     {
       ports[i]->sendRealTime(midi::Clock);
-      serials[i]->flush();
-      serials[i]->clear();
+      // ports[i]->sendClock();
+      // serials[i]->flush();
+      // serials[i]->clear();
     }
   }
 
   void sendTestNotes(bool on)
   {
-    //   for (int i = MIDI_PORT_ENABLE_FIRST; i < MIDI_PORT_ENABLE_LAST; i++)
-    //   {
-    //     if (on)
-    //     {
-    //       ports[i]->sendNoteOn(60, 127, 1);
-    //       ports[i]->sendNoteOn(60, 127, 2);
-    //       ports[i]->sendNoteOn(60, 127, 3);
-    //       ports[i]->sendNoteOn(60, 127, 4);
-    //     }
-    //     else
-    //     {
-    //       ports[i]->sendNoteOff(60, 127, 1);
-    //       ports[i]->sendNoteOff(60, 127, 2);
-    //       ports[i]->sendNoteOff(60, 127, 3);
-    //       ports[i]->sendNoteOff(60, 127, 4);
-    //     }
-    //   }
+    for (int i = MIDI_PORT_ENABLE_FIRST; i < MIDI_PORT_ENABLE_LAST; i++)
+    {
+      if (on)
+      {
+        ports[i]->sendNoteOn(60, 127, 1);
+        ports[i]->sendNoteOn(60, 127, 2);
+        ports[i]->sendNoteOn(60, 127, 3);
+        ports[i]->sendNoteOn(60, 127, 4);
+      }
+      else
+      {
+        ports[i]->sendNoteOff(60, 127, 1);
+        ports[i]->sendNoteOff(60, 127, 2);
+        ports[i]->sendNoteOff(60, 127, 3);
+        ports[i]->sendNoteOff(60, 127, 4);
+      }
+    }
   }
 };
 

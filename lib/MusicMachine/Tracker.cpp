@@ -5,7 +5,8 @@ namespace HLMusicMachine
   Tracker::Tracker(Scheduler *runner)
   {
     this->runner = runner;
-    clock = new Clock(runner);
+    clock = masterClock;
+    clock->begin();
     clock->delegate = this;
     // clock->play();
 

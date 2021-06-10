@@ -22,7 +22,7 @@ namespace HLMusicMachine
 
 #ifdef MIDI_INTERFACE
     // usbMIDI.sendNoteOn(note, vel, channel);
-    // serialMIDI.ports[port]->sendNoteOn(note, vel, channel);
+    serialMIDI.ports[port]->sendNoteOn(note, vel, channel);
 #endif
   }
 
@@ -37,7 +37,7 @@ namespace HLMusicMachine
 
 #ifdef MIDI_INTERFACE
     // usbMIDI.sendNoteOff(note, 0, channel);
-    // serialMIDI.ports[port]->sendNoteOff(note, 0, channel);
+    serialMIDI.ports[port]->sendNoteOff(note, 0, channel);
 #endif
   }
 

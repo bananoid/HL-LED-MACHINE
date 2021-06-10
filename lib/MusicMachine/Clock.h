@@ -1,13 +1,12 @@
 #pragma once
 
-#include "config.h"
-#include <TaskSchedulerDeclarations.h>
 #include <Arduino.h>
 
 #include <MIDI.h>
 
 namespace HLMusicMachine
 {
+  static void timerTick();
   // Delegation: this is to allow clock tick to be called by main controller
   class ClockDelegate
   {
@@ -20,9 +19,12 @@ namespace HLMusicMachine
     /* data */
 
   public:
-    Clock(Scheduler *runner);
+    Clock();
 
-    Task clockTask;
+    void begin();
+
+    IntervalTimer timer;
+
     bool externalClock = false;
     void tick();
 
@@ -61,4 +63,6 @@ namespace HLMusicMachine
 
     long debugTickTime = 0;
   };
+
+  extern Clock *masterClock;
 }

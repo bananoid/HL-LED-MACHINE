@@ -6,19 +6,13 @@
 namespace HLMusicMachine
 {
 
-  Clock::Clock(Scheduler *runner)
+  Clock::Clock()
   {
+  }
 
+  void Clock::begin()
+  {
     pinMode(clockLedPort, OUTPUT);
-
-    clockTask.set(TASK_SECOND, TASK_FOREVER, [this]()
-                  {
-                    unsigned long curTime = micros();
-                    tick();
-                    debugTickTime = micros() - curTime;
-                  });
-    runner->addTask(clockTask);
-    clockTask.disable();
   }
 
   void Clock::tick()
@@ -32,6 +26,8 @@ namespace HLMusicMachine
       // usbMIDI.sendRealTime(usbMIDI.Start);
 #endif
     }
+
+    serialMIDI.clockTick();
 
     if (tickCounter % (24) == 0)
     {
@@ -57,20 +53,19 @@ namespace HLMusicMachine
     // usbMIDI.sendRealTime(usbMIDI.Clock);
 #endif
 
-    clockTask.setInterval(clockInterval);
+    timer.update(clockInterval);
+
     delegate->clockTick();
     tickCounter++;
 
-    if (tickCounter % (12) == 0)
-    {
-      serialMIDI.sendTestNotes(true);
-    }
-    else if ((tickCounter + 6) % (12) == 0)
-    {
-      serialMIDI.sendTestNotes(false);
-    }
-
-    serialMIDI.clockTick();
+    // if (tickCounter % (12) == 0)
+    // {
+    //   serialMIDI.sendTestNotes(true);
+    // }
+    // else if ((tickCounter + 6) % (12) == 0)
+    // {
+    //   serialMIDI.sendTestNotes(false);
+    // }
   }
 
   void Clock::setBpm(float bpm)
@@ -78,7 +73,7 @@ namespace HLMusicMachine
     bpm = constrain(bpm, minBpm, maxBpm);
 
     this->bpm = bpm;
-    clockInterval = (float)(60 * TASK_SECOND) / bpm / (float)clockDivider; // microseconds
+    clockInterval = 60000000.0f / bpm / (float)clockDivider; // microseconds
 
     Serial.printf("Bpm is  %f %i\n", bpm, clockInterval);
   }
@@ -97,8 +92,7 @@ namespace HLMusicMachine
     if (!externalClock)
     {
       setBpm(bpm);
-      clockTask.setInterval(clockInterval);
-      clockTask.enable();
+      timer.begin(timerTick, clockInterval);
     }
   };
 
@@ -109,7 +103,7 @@ namespace HLMusicMachine
 
     if (!externalClock)
     {
-      clockTask.disable();
+      timer.end();
     }
 
     serialMIDI.clockStop();
@@ -148,6 +142,15 @@ namespace HLMusicMachine
 
     // long deltaTicks = tickCounter - syncTickCounter;
     // Serial.printf("deltaTicks:%i tickCounter:%i syncTickCounter:%i\n", deltaTicks, tickCounter, syncTickCounter);
+  }
+
+  Clock *masterClock = new Clock();
+
+  void timerTick()
+  {
+    unsigned long curTime = micros();
+    masterClock->tick();
+    masterClock->debugTickTime = micros() - curTime;
   }
 
 }
