@@ -46,7 +46,7 @@ namespace HLMusicMachine
     else if ((tickCounter + 12) % (24) == 0)
     {
       digitalWrite(clockLedPort, false);
-      Serial.println(debugTickTime);
+      // Serial.println(debugTickTime);
     }
 
 #ifdef MIDI_INTERFACE
@@ -148,9 +148,9 @@ namespace HLMusicMachine
 
   void timerTick()
   {
-    unsigned long curTime = micros();
+    // unsigned long curTime = micros();
     masterClock->tick();
-    masterClock->debugTickTime = micros() - curTime;
+    // masterClock->debugTickTime = micros() - curTime;
   }
 
 }
