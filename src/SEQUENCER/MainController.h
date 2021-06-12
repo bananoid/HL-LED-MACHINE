@@ -19,6 +19,12 @@ using namespace HLMusicMachine;
 #define NUM_OF_CV_TRAKS 4
 #define NUM_OF_MIDI_TRAKS 4
 
+struct GlobalSettings
+{
+    Sequencer::Parameters trackParams[NUM_OF_CV_TRAKS];
+    bool tracksEnabled[NUM_OF_CV_TRAKS];
+};
+
 class MainController
 {
 private:
@@ -40,4 +46,9 @@ public:
     bool midiUIInvalid = true;
     void drawMidiInterface();
     Task midiUIDrawTask;
+
+    GlobalSettings globalSettings;
+    bool globalSettingsUnsaved = false;
+    void saveGlobalSettings();
+    void loadGlobalSettings();
 };

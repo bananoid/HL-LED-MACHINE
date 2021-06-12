@@ -1,6 +1,7 @@
 #include "MainController.h"
 
 #include "SerialMIDI.h"
+#include "Storage.h"
 
 #include <USBHost_t36.h> // access to USB MIDI devices (plugged into 2nd USB port)
 USBHost myusb;
@@ -12,6 +13,7 @@ using namespace HLMusicMachine;
 
 MainController::MainController(Scheduler *runner)
 {
+  storage->begin(runner);
   serialMIDI.begin();
 
   midiUIDrawTask.set(TASK_MILLISECOND * 20, TASK_FOREVER, [this]()
@@ -58,7 +60,7 @@ MainController::MainController(Scheduler *runner)
   }
 
   tracker->clock->setBpm(120);
-  tracker->clock->play();
+  // tracker->clock->play();
 
   //Start Stop button
   startStopButton.attach(32, INPUT_PULLUP); // USE EXTERNAL PULL-UP
@@ -66,6 +68,11 @@ MainController::MainController(Scheduler *runner)
   startStopButton.setPressedState(LOW);
 
   myusb.begin();
+
+  loadGlobalSettings();
+
+  // delay(2000);
+  // midiUIInvalid = true;
 }
 
 void MainController::update()
@@ -85,6 +92,14 @@ void MainController::updateMIDI()
 {
   while (midi1.read())
   {
+    if (millis() < 3000)
+    {
+      return;
+    }
+
+    midiUIInvalid = true;
+    globalSettingsUnsaved = true;
+
     uint8_t type = midi1.getType();
     uint8_t data1 = midi1.getData1();
     uint8_t data2 = midi1.getData2();
@@ -103,6 +118,19 @@ void MainController::updateMIDI()
         }
       }
     }
+
+    // load
+    if (data1 == 106 && type == MIDIDevice::NoteOn)
+    {
+      loadGlobalSettings();
+    }
+
+    // Save
+    if (data1 == 107 && type == MIDIDevice::NoteOn)
+    {
+      saveGlobalSettings();
+    }
+
     // Start Stop
     if (data1 == 108 && type == MIDIDevice::NoteOn)
     {
@@ -141,42 +169,42 @@ void MainController::updateMIDI()
           if (data1 == startCC) // c1 k1
           {
             cvSequencers[i]->parameters.stepLenght = map((float)data2, 0.f, 127.f, 9.f, 1.f);
-            Serial.printf("stepLenght %i \n", cvSequencers[i]->parameters.stepLenght);
+            // Serial.printf("stepLenght %i \n", cvSequencers[i]->parameters.stepLenght);
           }
           else if (data1 == startCC + 16) // c1 k2
           {
             cvSequencers[i]->parameters.events = map((float)data2, 0.f, 127.f, 1.f, 16.f);
-            Serial.printf("events %i \n", cvSequencers[i]->parameters.events);
+            // Serial.printf("events %i \n", cvSequencers[i]->parameters.events);
           }
           else if (data1 == startCC + 36) // c1 k3
           {
             cvSequencers[i]->parameters.offset = map((float)data2, 0.f, 127.f, 0.f, 16.f);
-            Serial.printf("offset %i \n", cvSequencers[i]->parameters.offset);
+            // Serial.printf("offset %i \n", cvSequencers[i]->parameters.offset);
           }
           else if (data1 == startCC + 64) // c1 s4
           {
             cvSequencers[i]->parameters.octave = map((float)data2, 0.f, 127.f, -1.f, 4.f);
-            Serial.printf("octave %i \n", cvSequencers[i]->parameters.octave);
+            // Serial.printf("octave %i \n", cvSequencers[i]->parameters.octave);
           }
           else if (data1 == startCC + 1) // c2 k1
           {
             cvSequencers[i]->parameters.retrig = map((float)data2, 0.f, 127.f, 0.f, 7.f);
-            Serial.printf("retrig %i \n", cvSequencers[i]->parameters.retrig);
+            // Serial.printf("retrig %i \n", cvSequencers[i]->parameters.retrig);
           }
           else if (data1 == startCC + 17) // c2 k2
           {
             cvSequencers[i]->parameters.noteSpread = map((float)data2, 0.f, 127.f, 1.f, 5.f);
-            Serial.printf("noteSpread %i \n", cvSequencers[i]->parameters.noteSpread);
+            // Serial.printf("noteSpread %i \n", cvSequencers[i]->parameters.noteSpread);
           }
           else if (data1 == startCC + 37) // c2 k3
           {
             cvSequencers[i]->parameters.noteCount = map((float)data2, 0.f, 127.f, 1.f, 7.f);
-            Serial.printf("noteCount %i \n", cvSequencers[i]->parameters.noteCount);
+            // Serial.printf("noteCount %i \n", cvSequencers[i]->parameters.noteCount);
           }
           else if (data1 == startCC + 65) // c2 s4
           {
             cvSequencers[i]->parameters.noteOffset = map((float)data2, 0.f, 127.f, 0.f, 6.f);
-            Serial.printf("noteOffset %i \n", cvSequencers[i]->parameters.noteOffset);
+            // Serial.printf("noteOffset %i \n", cvSequencers[i]->parameters.noteOffset);
           }
         }
 
@@ -265,7 +293,7 @@ void MainController::drawMidiInterface()
   {
     return;
   }
-  midiUIInvalid = true;
+  midiUIInvalid = false;
   for (int i = 0; i < NUM_OF_CV_TRAKS; i++)
   {
     midi1.sendNoteOn(57 + i, cvTracks[i]->isPlaying ? 127 : 0, 2);
@@ -288,4 +316,37 @@ void MainController::drawMidiInterface()
     midi1.sendNoteOn(73 + i, tracker->scaleIndex == i ? 127 : 0, 3);
     midi1.sendNoteOn(41 + i, tracker->keyIndex == i ? 127 : 0, 3);
   }
+
+  midi1.sendNoteOn(107, globalSettingsUnsaved ? 127 : 0, 1);
+  midi1.sendNoteOn(107, globalSettingsUnsaved ? 127 : 0, 2);
+  midi1.sendNoteOn(107, globalSettingsUnsaved ? 127 : 0, 3);
+
+  // Serial.println("midi ui redraw");
+  // saveGlobalSettings();
+}
+
+void MainController::saveGlobalSettings()
+{
+  for (int i = 0; i < NUM_OF_CV_TRAKS; i++)
+  {
+    memcpy(&globalSettings.trackParams[i], &cvSequencers[i]->parameters, sizeof(Sequencer::Parameters));
+    globalSettings.tracksEnabled[i] = cvTracks[i]->isPlaying;
+  }
+
+  storage->save((uint8_t *)&globalSettings, sizeof(GlobalSettings));
+
+  globalSettingsUnsaved = false;
+}
+
+void MainController::loadGlobalSettings()
+{
+  storage->load((uint8_t *)&globalSettings, sizeof(GlobalSettings));
+
+  for (int i = 0; i < NUM_OF_CV_TRAKS; i++)
+  {
+    memcpy(&cvSequencers[i]->parameters, &globalSettings.trackParams[i], sizeof(Sequencer::Parameters));
+    globalSettings.tracksEnabled[i] ? cvTracks[i]->play() : cvTracks[i]->stop();
+  }
+
+  globalSettingsUnsaved = false;
 }

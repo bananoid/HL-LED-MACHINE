@@ -28,7 +28,7 @@ void externalStop()
 
 void setup()
 {
-    Serial.begin(31250);
+    Serial.begin(115200);
     mainController = new MainController(&runner);
     // serialMIDI.ports[2]->setHandleClock(externalClock);
     // serialMIDI.ports[2]->setHandleStart(externalStart);
