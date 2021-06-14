@@ -47,6 +47,8 @@ public:
     void drawMidiInterface();
     Task midiUIDrawTask;
 
+    Task uiOledTask;
+
     GlobalSettings globalSettings;
     bool globalSettingsUnsaved = false;
     void saveGlobalSettings();
