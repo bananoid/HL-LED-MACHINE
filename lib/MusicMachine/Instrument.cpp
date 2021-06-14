@@ -46,6 +46,10 @@ namespace HLMusicMachine
   {
   }
 
+  void Instrument::pitchBend(double val)
+  {
+  }
+
   void Instrument::randomize()
   {
   }

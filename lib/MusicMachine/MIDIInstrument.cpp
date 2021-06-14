@@ -19,10 +19,10 @@ namespace HLMusicMachine
       return;
     }
     // Serial.printf("noteOn %i\n", note);
+    serialMIDI.ports[port]->sendNoteOn(note, vel, channel);
 
 #ifdef MIDI_INTERFACE
     // usbMIDI.sendNoteOn(note, vel, channel);
-    serialMIDI.ports[port]->sendNoteOn(note, vel, channel);
 #endif
   }
 
@@ -31,13 +31,13 @@ namespace HLMusicMachine
     // if (!isEnabled)
     // {
     //   return;
-    // }
+    //
 
     // Serial.printf("noteOff %i\n", note);
+    serialMIDI.ports[port]->sendNoteOff(note, 0, channel);
 
 #ifdef MIDI_INTERFACE
     // usbMIDI.sendNoteOff(note, 0, channel);
-    serialMIDI.ports[port]->sendNoteOff(note, 0, channel);
 #endif
   }
 
@@ -48,5 +48,12 @@ namespace HLMusicMachine
     // Serial.printf("Program change %i\n", program);
     // usbMIDI.sendProgramChange(program, channel);
 #endif
+  }
+
+  void MIDIInstrument::pitchBend(double val)
+  {
+    serialMIDI.ports[port]->sendPitchBend(val, channel);
+
+    Serial.println(val);
   }
 }

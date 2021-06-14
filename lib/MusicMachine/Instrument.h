@@ -38,6 +38,7 @@ namespace HLMusicMachine
     virtual void noteOn(int note = 0, int vel = 127, uint8_t voiceIndex = 0);
     virtual void noteOff(int note = 0, uint8_t voiceIndex = 0);
     virtual void randomize();
+    virtual void pitchBend(double val);
 
     long getClockTime() override;
   };

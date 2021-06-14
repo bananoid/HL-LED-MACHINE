@@ -48,6 +48,9 @@ namespace HLMusicMachine
 
   void Sequencer::clockTick(int counter)
   {
+    // float pbLFO = sinf(3 * counter / 24.0f * TWO_PI * (1.0 / parameters.velocityLFO));
+    // instrument->pitchBend(pbLFO);
+
     if (counter == 0)
     {
       lastStepInx = 0;
@@ -99,7 +102,11 @@ namespace HLMusicMachine
     // Serial.printf("isOn %i %i %i\n", isOn, retrigCount, stepInx);
     if (isOn)
     {
-      int noteLeght = retrigSize > 0 ? retrigSize : stepLenght;
+      int noteLenght = retrigSize > 0 ? retrigSize : stepLenght;
+      if (retrigSize > 0)
+      {
+        noteLenght = min(stepLenght, retrigSize);
+      }
 
       int vel = parameters.velocity;
       if (vel == -1)
@@ -132,7 +139,7 @@ namespace HLMusicMachine
 
           Note note = tracker->getNote(noteInx + parameters.noteOffset, parameters.octave);
           int midiNote = note.getMIDINoteNumber();
-          instrument->trigNote(midiNote, vel, noteLeght);
+          instrument->trigNote(midiNote, vel, noteLenght);
 
           // Serial.printf("noteInx %i %f\n", noteInx);
         }
@@ -143,14 +150,14 @@ namespace HLMusicMachine
           {
             Note note = tracker->getNote(i * (2 * parameters.noteSpread) + noteInx + parameters.noteOffset, parameters.octave);
             int midiNote = note.getMIDINoteNumber();
-            instrument->trigNote(midiNote, vel, noteLeght);
+            instrument->trigNote(midiNote, vel, noteLenght);
           }
         }
       }
       else
       {
         int midiNote = percussionNote.getMIDINoteNumber();
-        instrument->trigNote(midiNote, vel, noteLeght);
+        instrument->trigNote(midiNote, vel, noteLenght);
       }
     }
   }
