@@ -18,7 +18,7 @@ namespace HLMusicMachine
     {
       return;
     }
-    // Serial.printf("noteOn %i\n", note);
+    // Serial.printf("noteOn %i vel %i\n", note, vel);
     serialMIDI.ports[port]->sendNoteOn(note, vel, channel);
 
 #ifdef MIDI_INTERFACE
