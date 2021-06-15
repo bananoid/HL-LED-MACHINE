@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 #include <ssd1351.h>
+#include "GFX_fonts/Font5x7FixedMono.h"
 
 //typedef ssd1351::IndexedColor Color;
 // typedef ssd1351::LowColor Color;
@@ -22,7 +23,12 @@ void UIOled128x128::update()
 
   float t = micros() / 300000.0;
 
-  display.fillScreen(ssd1351::RGB());
+  display.fillScreen(ssd1351::RGB(255, 200, 200));
+
+  display.fillCircle(10, 50, 16, ssd1351::RGB(255, 120, 100));
+  display.fillCircle(128 - 10, 50, 16, ssd1351::RGB(255, 120, 100));
+  display.fillCircle(10, 50, 7, ssd1351::RGB(255, 80, 70));
+  display.fillCircle(128 - 10, 50, 7, ssd1351::RGB(255, 80, 70));
 
   for (int x = 0; x < 128; x++)
   {
@@ -31,8 +37,21 @@ void UIOled128x128::update()
     float s = sinf(x * 0.005 * fm + t);
     s = asinf(s) / HALF_PI * 0.2 + 0.5;
 
-    display.drawLine(x, 128, x, (s)*128, ssd1351::RGB(255, x * 2, x * 2));
+    display.drawLine(x, 128, x, (s)*128, ssd1351::RGB(255, 180, 180));
+    // display.drawPixel(x, (s)*128 + 20, ssd1351::RGB(255, 0, 0));
   }
+
+  // display.drawRoundRect(10, 10, 128 - 20, 128 - 20, 20, ssd1351::RGB(0, 100, 255));
+
+  display.setFont(Font5x7FixedMono);
+  display.setTextSize(1);
+  display.setCursor(20, 100);
+  display.setTextColor(ssd1351::RGB(30, 30, 30));
+  display.print(t);
+  display.setCursor(20, 120);
+  display.setTextColor(ssd1351::RGB(30, 30, 30));
+  display.setTextSize(2);
+  display.print("NIPPLES");
 
   display.updateScreen();
 }
