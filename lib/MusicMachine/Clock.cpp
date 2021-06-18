@@ -146,7 +146,7 @@ namespace HLMusicMachine
 
   Clock *masterClock = new Clock();
 
-  void timerTick()
+  static void timerTick()
   {
     // unsigned long curTime = micros();
     masterClock->tick();
