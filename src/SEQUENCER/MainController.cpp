@@ -9,7 +9,7 @@ USBHub hub1(myusb);
 USBHub hub2(myusb);
 MIDIDevice midi1(myusb);
 
-#include "UIOlend128x128.h"
+#include "UI.h"
 
 using namespace HLMusicMachine;
 
@@ -77,11 +77,7 @@ MainController::MainController(Scheduler *runner)
   // delay(2000);
   // midiUIInvalid = true;
 
-  uiOled128x128->begin();
-  uiOledTask.set(TASK_MILLISECOND * 16, TASK_FOREVER, [this]()
-                 { uiOled128x128->update(); });
-  runner->addTask(uiOledTask);
-  uiOledTask.enable();
+  ui->begin(runner);
 }
 
 void MainController::update()
