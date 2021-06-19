@@ -65,11 +65,6 @@ MainController::MainController(Scheduler *runner)
   tracker->clock->setBpm(120);
   // tracker->clock->play();
 
-  //Start Stop button
-  startStopButton.attach(32, INPUT_PULLUP); // USE EXTERNAL PULL-UP
-  startStopButton.interval(5);
-  startStopButton.setPressedState(LOW);
-
   myusb.begin();
 
   loadGlobalSettings();
@@ -82,14 +77,6 @@ MainController::MainController(Scheduler *runner)
 
 void MainController::update()
 {
-
-  startStopButton.update();
-  if (startStopButton.pressed())
-  {
-    tracker->clock->playStop();
-    Serial.println("button press");
-  }
-
   updateMIDI();
 };
 

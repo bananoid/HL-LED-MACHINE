@@ -32,7 +32,6 @@ private:
 public:
     MainController(Scheduler *runner);
     void update();
-    Bounce2::Button startStopButton = Bounce2::Button();
 
     HLMusicMachine::Tracker *tracker;
     void updateMIDI();

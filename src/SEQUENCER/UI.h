@@ -17,8 +17,7 @@ class UI
 {
 private:
 public:
-  Task oledTask;
-  Task encoderTask;
+  Task updateTask;
 
   Encoder *leftEncoder;
   Bounce *leftEncoderButton;
@@ -27,8 +26,8 @@ public:
   Bounce *rightEncoderButton;
 
   void begin(Scheduler *runner);
-  void updateOled();
-  void updateEncoders();
+  void update();
+  void draw();
 };
 
 extern UI *ui;
