@@ -6,7 +6,7 @@
 
 namespace HLMusicMachine
 {
-  static void timerTick();
+  void timerTick();
   // Delegation: this is to allow clock tick to be called by main controller
   class ClockDelegate
   {

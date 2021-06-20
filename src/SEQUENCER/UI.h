@@ -24,6 +24,13 @@
 #define FRONT_RIGHT_BTN_PIN 39
 #define FRONT_RIGHT_LED_PIN 38
 
+#include <Tracker.h>
+using namespace HLMusicMachine;
+
+#include "UIDisplayConfig.h"
+
+#include "UIComponent.h"
+
 class UIDelegate
 {
 public:
@@ -50,7 +57,8 @@ public:
   Bounce2::Button *frontLeftButton;
   Bounce2::Button *frontRightButton;
 
-  void begin(Scheduler *runner);
+  Tracker *tracker;
+  void begin(Scheduler *runner, Tracker *tracker);
   void update();
   void draw();
 };

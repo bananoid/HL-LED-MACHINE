@@ -1,22 +1,13 @@
 #include "UI.h"
 
-#include "UIComponents.h"
-
 #include <Arduino.h>
 #include <SPI.h>
 
-#include <ssd1351.h>
-//typedef ssd1351::IndexedColor Color;
-// typedef ssd1351::LowColor Color;
-typedef ssd1351::HighColor Color;
-typedef ssd1351::SSD1351<Color, ssd1351::SingleBuffer, 128, 128> Display;
-
-// auto display = ssd1351::SSD1351<Color, ssd1351::NoBuffer, 128, 96>();
 auto display = Display();
-// auto display = ssd1351::SSD1351<Color, ssd1351::DoubleBuffer, 128, 128>();
 
-void UI::begin(Scheduler *runner)
+void UI::begin(Scheduler *runner, Tracker *tracker)
 {
+  this->tracker = tracker;
   display.begin();
 
   leftEncoder = new Encoder(ENCODER_LEFT_PIN_A, ENCODER_LEFT_PIN_B);
@@ -75,22 +66,22 @@ void UI::draw()
 {
   display.fillScreen(ssd1351::RGB(0, 0, 0));
 
-  UIComponents::ParamState state;
-  state.value = leftEncoder->read() / 4;
-  state.label = "events";
-  uint cols = 128 / state.w;
-  uint rows = 128 / state.h;
-  for (uint yi = 0; yi < rows; yi++)
-  {
-    for (uint xi = 0; xi < cols; xi++)
-    {
-      state.color = !screenBtns[xi % NUM_SCREEN_BTN]->read() ? ssd1351::RGB(255, 255, 255) : ssd1351::RGB(255, 0, 0);
-      state.x = xi * state.w;
-      state.y = yi * state.h;
-      state.value += (sinf(xi * yi) * 0.5 + 0.5) * 10;
-      UIComponents::drawParam(&display, state);
-    }
-  }
+  // UIComponents::ParamState state;
+  // state.value = leftEncoder->read() / 4;
+  // state.label = "events";
+  // uint cols = 128 / state.w;
+  // uint rows = 128 / state.h;
+  // for (uint yi = 0; yi < rows; yi++)
+  // {
+  //   for (uint xi = 0; xi < cols; xi++)
+  //   {
+  //     state.color = !screenBtns[xi % NUM_SCREEN_BTN]->read() ? ssd1351::RGB(255, 255, 255) : ssd1351::RGB(255, 0, 0);
+  //     state.x = xi * state.w;
+  //     state.y = yi * state.h;
+  //     state.value += (sinf(xi * yi) * 0.5 + 0.5) * 10;
+  //     UIComponents::drawParam(&display, state);
+  //   }
+  // }
 
   if (frontLeftButton->released())
   {
