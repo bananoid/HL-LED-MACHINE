@@ -4,8 +4,7 @@
 #include "Instrument.h"
 #include "Sequencer.h"
 
-#include <list>
-#include <iterator>
+#include <vector>
 
 using namespace std;
 
@@ -18,7 +17,7 @@ namespace HLMusicMachine
   public:
     Tracker *tracker;
     Instrument *instrument;
-    list<Sequencer *> sequencers;
+    vector<Sequencer *> sequencers;
 
     Track(Tracker *tracker, Instrument *instrument);
     Sequencer *addSequencer();

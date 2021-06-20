@@ -9,7 +9,7 @@
 #include "Scale.hpp"
 #include "Track.h"
 
-#include <list>
+#include <vector>
 #include <iterator>
 using namespace std;
 
@@ -29,7 +29,7 @@ namespace HLMusicMachine
   {
   private:
   public:
-    list<Track *> tracks;
+    vector<Track *> tracks;
     Tracker(Scheduler *runner);
     Scheduler *runner;
 

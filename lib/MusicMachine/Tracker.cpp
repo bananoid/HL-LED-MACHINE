@@ -40,17 +40,8 @@ namespace HLMusicMachine
       }
     }
 
-    Track *track;
-    list<Track *>::iterator it;
-    for (it = tracks.begin(); it != tracks.end(); ++it)
+    for (Track *track : tracks)
     {
-      track = *it;
-
-      if (clock->tickCounter == 0)
-      {
-        track->radomize();
-      }
-
       track->clockTick(clock->tickCounter);
     }
   }

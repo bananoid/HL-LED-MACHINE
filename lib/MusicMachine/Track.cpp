@@ -38,45 +38,29 @@ namespace HLMusicMachine
   }
   Sequencer *Track::getSequencerAt(int inx)
   {
-    list<Sequencer *>::iterator it;
-    it = sequencers.begin();
-    for (uint8_t i = 0; i < inx; i++)
-    {
-      it++;
-    }
-    return *it;
+    return sequencers[inx];
   }
 
   void Track::clockTick(int counter)
   {
-    list<Sequencer *>::iterator it;
-    Sequencer *seq;
-    for (it = sequencers.begin(); it != sequencers.end(); ++it)
+    for (Sequencer *seq : sequencers)
     {
-      seq = *it;
       seq->clockTick(counter);
     }
   }
 
   void Track::radomize()
   {
-    instrument->randomize();
-    list<Sequencer *>::iterator it;
-    Sequencer *seq;
-    for (it = sequencers.begin(); it != sequencers.end(); ++it)
+    for (Sequencer *seq : sequencers)
     {
-      seq = *it;
       seq->randomize();
     }
   }
 
   void Track::setFillFactor(float fillFactor)
   {
-    list<Sequencer *>::iterator it;
-    Sequencer *seq;
-    for (it = sequencers.begin(); it != sequencers.end(); ++it)
+    for (Sequencer *seq : sequencers)
     {
-      seq = *it;
       seq->parameters.fillFactor = fillFactor;
     }
   }
