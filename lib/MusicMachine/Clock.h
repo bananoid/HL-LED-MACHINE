@@ -31,7 +31,7 @@ namespace HLMusicMachine
     ClockDelegate *delegate;
 
     // const int clockLedPort = 13; //31
-    const int clockLedPort = 31; //31
+    const int clockLedPort = 40; //31
     void clockTick();
     unsigned long tickCounter = 0;
     unsigned long prevClickTime = 0;

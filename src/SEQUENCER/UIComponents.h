@@ -17,6 +17,7 @@ public:
     int y = 0;
     int w = 32;
     int h = 16;
+    Color color = ssd1351::RGB(255, 0, 0);
   };
 
   struct ParamState : UIState
@@ -32,10 +33,10 @@ public:
   {
     int val = constrain(state.value, state.min, state.max);
     int barValW = map(val, state.min, state.max, 0, state.w - 2);
-    ctx->drawRect(state.x + 1, state.y + 1, barValW, 3, ssd1351::RGB(255, 0, 0));
+    ctx->drawRect(state.x + 1, state.y + 1, barValW, 3, state.color);
     ctx->setFont(Font5x7FixedMono);
     ctx->setTextSize(1);
-    ctx->setTextColor(ssd1351::RGB(255, 0, 0));
+    ctx->setTextColor(state.color);
     // ctx->setCursor(state.x, state.y);
     ctx->setCursor(state.x + 1, state.y + state.h - 2);
     ctx->print(val);

@@ -9,8 +9,6 @@ USBHub hub1(myusb);
 USBHub hub2(myusb);
 MIDIDevice midi1(myusb);
 
-#include "UI.h"
-
 using namespace HLMusicMachine;
 
 MainController::MainController(Scheduler *runner)
@@ -73,6 +71,7 @@ MainController::MainController(Scheduler *runner)
   // midiUIInvalid = true;
 
   ui->begin(runner);
+  ui->delegate = this;
 }
 
 void MainController::update()
@@ -353,4 +352,12 @@ void MainController::loadGlobalSettings()
   }
 
   globalSettingsUnsaved = false;
+}
+
+void MainController::frontLeftButtonClick()
+{
+  // loadGlobalSettings();
+  // Serial.println("frontLeftButtonClick");
+
+  tracker->clock->playStop();
 }

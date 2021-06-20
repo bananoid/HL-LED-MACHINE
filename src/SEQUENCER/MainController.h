@@ -19,13 +19,15 @@ using namespace HLMusicMachine;
 #define NUM_OF_CV_TRAKS 4
 #define NUM_OF_MIDI_TRAKS 0
 
+#include "UI.h"
+
 struct GlobalSettings
 {
     Sequencer::Parameters trackParams[NUM_OF_CV_TRAKS];
     bool tracksEnabled[NUM_OF_CV_TRAKS];
 };
 
-class MainController
+class MainController : UIDelegate
 {
 private:
     /* data */
@@ -52,4 +54,7 @@ public:
     bool globalSettingsUnsaved = false;
     void saveGlobalSettings();
     void loadGlobalSettings();
+
+    //UI delegates
+    void frontLeftButtonClick() override;
 };

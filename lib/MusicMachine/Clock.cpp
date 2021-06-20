@@ -110,6 +110,8 @@ namespace HLMusicMachine
 #ifdef MIDI_INTERFACE
     // usbMIDI.sendRealTime(usbMIDI.Stop);
 #endif
+
+    digitalWrite(clockLedPort, false);
   };
 
   void Clock::playStop()
