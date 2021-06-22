@@ -46,6 +46,14 @@ void UI::begin(Scheduler *runner, Tracker *tracker)
 
   pinMode(FRONT_LEFT_LED_PIN, OUTPUT);
   pinMode(FRONT_RIGHT_LED_PIN, OUTPUT);
+
+  //Views
+  tracksView = new UITracksView(tracker);
+  tracksView->ctx = &display;
+  tracksView->frame.w = 128;
+  tracksView->frame.h = 128;
+  tracksView->color = color;
+  tracksView->build();
 }
 
 void UI::update()
@@ -60,6 +68,20 @@ void UI::update()
 
   frontLeftButton->update();
   frontRightButton->update();
+
+  if (frontLeftButton->released())
+  {
+    delegate->frontLeftButtonClick();
+  }
+
+  if (frontRightButton->read() || !rightEncoderButton->read())
+  {
+    digitalWrite(FRONT_RIGHT_LED_PIN, true);
+  }
+  else
+  {
+    digitalWrite(FRONT_RIGHT_LED_PIN, false);
+  }
 }
 
 void UI::draw()
@@ -83,19 +105,7 @@ void UI::draw()
   //   }
   // }
 
-  if (frontLeftButton->released())
-  {
-    delegate->frontLeftButtonClick();
-  }
-
-  if (frontRightButton->read() || !rightEncoderButton->read())
-  {
-    digitalWrite(FRONT_RIGHT_LED_PIN, true);
-  }
-  else
-  {
-    digitalWrite(FRONT_RIGHT_LED_PIN, false);
-  }
+  tracksView->show();
 
   display.updateScreen();
 }

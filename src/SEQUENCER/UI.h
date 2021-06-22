@@ -29,7 +29,8 @@ using namespace HLMusicMachine;
 
 #include "UIDisplayConfig.h"
 
-#include "UIComponent.h"
+#include "UIView.h"
+#include "UITracksView.h"
 
 class UIDelegate
 {
@@ -56,6 +57,10 @@ public:
 
   Bounce2::Button *frontLeftButton;
   Bounce2::Button *frontRightButton;
+
+  //Views
+  Color color = ssd1351::RGB(255, 255, 255);
+  UITracksView *tracksView;
 
   Tracker *tracker;
   void begin(Scheduler *runner, Tracker *tracker);
