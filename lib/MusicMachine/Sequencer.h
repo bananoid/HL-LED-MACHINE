@@ -50,11 +50,6 @@ namespace HLMusicMachine
       {
         return value;
       }
-
-      inline operator&() const
-      {
-        return &value;
-      }
     };
 
     struct Parameters

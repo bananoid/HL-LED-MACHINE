@@ -17,25 +17,16 @@ public:
   {
     UIParameterView<uint8_t> *paramView;
 
-    paramView = new UIParameterView<uint8_t>();
+    paramView = new UIParameterView<uint8_t>(&track->sequencers[0]->parameters.stepLenght);
     paramView->label = "Step Lenght";
-    paramView->value = &track->sequencers[0]->parameters.stepLenght;
-    paramView->min = 9;
-    paramView->max = 1;
     addChild(paramView);
 
-    paramView = new UIParameterView<uint8_t>();
+    paramView = new UIParameterView<uint8_t>(&track->sequencers[0]->parameters.events);
     paramView->label = "Events";
-    paramView->value = &track->sequencers[0]->parameters.events;
-    paramView->min = 1;
-    paramView->max = 16;
     addChild(paramView);
 
-    paramView = new UIParameterView<uint8_t>();
+    paramView = new UIParameterView<uint8_t>(&track->sequencers[0]->parameters.offset);
     paramView->label = "Offset";
-    paramView->value = &track->sequencers[0]->parameters.offset;
-    paramView->min = 0;
-    paramView->max = 16;
     addChild(paramView);
 
     int itInx = 0;
