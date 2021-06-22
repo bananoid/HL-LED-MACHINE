@@ -15,23 +15,23 @@ public:
   }
   void build() override
   {
-    UIParameterView<int> *paramView;
+    UIParameterView<uint8_t> *paramView;
 
-    paramView = new UIParameterView<int>();
+    paramView = new UIParameterView<uint8_t>();
     paramView->label = "Step Lenght";
     paramView->value = &track->sequencers[0]->parameters.stepLenght;
     paramView->min = 9;
     paramView->max = 1;
     addChild(paramView);
 
-    paramView = new UIParameterView<int>();
+    paramView = new UIParameterView<uint8_t>();
     paramView->label = "Events";
     paramView->value = &track->sequencers[0]->parameters.events;
     paramView->min = 1;
     paramView->max = 16;
     addChild(paramView);
 
-    paramView = new UIParameterView<int>();
+    paramView = new UIParameterView<uint8_t>();
     paramView->label = "Offset";
     paramView->value = &track->sequencers[0]->parameters.offset;
     paramView->min = 0;

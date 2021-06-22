@@ -30,7 +30,10 @@ namespace HLMusicMachine
 
   bool Sequencer::isEuclidean(int stepInx)
   {
-    return isEuclidean(stepInx, parameters.steps, parameters.events, parameters.offset);
+    return isEuclidean(stepInx,
+                       parameters.steps.value,
+                       parameters.events.value,
+                       parameters.offset.value);
   }
 
   void Sequencer::randomize()
@@ -66,7 +69,7 @@ namespace HLMusicMachine
       // TODO: parametrize retrig LFO
       float rLFO = sinf(counter / 24.0f * TWO_PI * (1.0 / parameters.retrigLFO));
       rLFO = asinf(rLFO) / HALF_PI;
-      retrigSize = map(rLFO, -1.f, 1.f, parameters.retrigLFOMin, parameters.retrigLFOMax);
+      retrigSize = map(rLFO, -1.f, 1.f, parameters.retrigLFO.min, parameters.retrigLFO.max);
       retrigSize = Clock::getQuntizedTimePulses(retrigSize);
     }
 
@@ -113,7 +116,7 @@ namespace HLMusicMachine
       {
         float vLFO = sinf(counter / 24.0f * TWO_PI * (1.0 / parameters.velocityLFO));
         vLFO = asinf(vLFO) / HALF_PI;
-        vel = map(vLFO, -1.f, 1.f, parameters.velocityLFOMin, parameters.velocityLFOMax);
+        vel = map(vLFO, -1.f, 1.f, parameters.velocityLFO.min, parameters.velocityLFO.max);
       }
 
       if (type == MELODY)
@@ -134,7 +137,7 @@ namespace HLMusicMachine
           noteInx *= parameters.noteSpread;
         }
 
-        if (parameters.chord == 0) // Arpeggio
+        if (parameters.chord) // Arpeggio
         {
 
           Note note = tracker->getNote(noteInx + parameters.noteOffset, parameters.octave);

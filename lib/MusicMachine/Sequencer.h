@@ -33,34 +33,53 @@ namespace HLMusicMachine
       int velocity = 127;
     };
 
+    template <typename T>
+    struct Parameter
+    {
+      T value;
+      T min;
+      T max;
+
+      inline Parameter operator=(T v)
+      {
+        value = v;
+        return *this;
+      }
+
+      inline operator T() const
+      {
+        return value;
+      }
+
+      inline operator&() const
+      {
+        return &value;
+      }
+    };
+
     struct Parameters
     {
-      int steps = 16;
-      int events = 4;
-      int offset = 0;
+      Parameter<uint8_t> steps = {16, 1, 16};
+      Parameter<uint8_t> events = {4, 1, 16};
+      Parameter<uint8_t> offset = {0, 1, 16};
+      Parameter<uint8_t> stepLenght = {4, 9, 1};
 
-      int stepLenght = 4;
+      Parameter<int8_t> octave = {3, -1, 4};
+      Parameter<uint8_t> noteCount = {4, 1, 7};
+      Parameter<uint8_t> noteSpread = {2, 1, 5};
+      Parameter<uint8_t> noteOffset = {0, 0, 6};
+      Parameter<ArpeggioType> arpeggioType = {ArpeggioType_Eucledian, ArpeggioType_Eucledian, ArpeggioType_LFO};
+      Parameter<uint8_t> arpeggioLFO = {3, 1, 32};
 
-      int octave = 3;
-      int noteCount = 4;
-      int noteSpread = 2;
-      int noteOffset = 0;
-      ArpeggioType arpeggioType = ArpeggioType_Eucledian;
-      int arpeggioLFO = 3;
+      Parameter<bool> chord = {false, false, true};
 
-      int chord = 0;
+      Parameter<int8_t> retrig = {0, -1, 7}; // 0 is disable -1 is auto with lfo
+      Parameter<float> retrigLFO = {32, 1, 8};
 
-      int retrig = 0; // 0 is disable -1 is auto with lfo
-      float retrigLFO = 32;
-      int retrigLFOMin = 1;
-      int retrigLFOMax = 8;
+      Parameter<int8_t> velocity = {127, -1, 127}; // -1 enable lfo
+      Parameter<float> velocityLFO = {16, 30, 127};
 
-      int velocity = 127; // -1 enable lfo
-      float velocityLFO = 16;
-      int velocityLFOMin = 30;
-      int velocityLFOMax = 127;
-
-      float fillFactor = 1; // 0 - 1 percentange of notes that are pick from sequence
+      Parameter<float> fillFactor = {1, 0, 1}; // 0 - 1 percentange of notes that are pick from sequence
     };
 
     Type type = MELODY;

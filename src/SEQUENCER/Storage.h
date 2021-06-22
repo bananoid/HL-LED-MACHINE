@@ -41,6 +41,8 @@ public:
   }
   void load(uint8_t *data, int size)
   {
+    unsigned long curTime = micros();
+
     if (!checkSDCard())
     {
       return;
@@ -57,6 +59,9 @@ public:
     file.readBytes(data, size);
 
     file.close();
+
+    long deltaTime = micros() - curTime;
+    Serial.printf("Load in %ius\n", deltaTime);
   }
 
   void save(uint8_t *data, int size)
@@ -75,7 +80,6 @@ public:
     frec.close();
 
     long deltaTime = micros() - curTime;
-
     Serial.printf("Save in %ius\n", deltaTime);
   }
 
