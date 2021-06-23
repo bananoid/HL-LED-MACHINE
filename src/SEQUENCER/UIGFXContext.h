@@ -8,6 +8,10 @@ using namespace GFX;
 
 // #define  DEBUG_VIEW_TREE
 
+static const uint8_t ALIGN_LEFT = 0;
+static const uint8_t ALIGN_CENTER = 1;
+static const uint8_t ALIGN_RIGHT = 2;
+
 class UIGFXContext : public Print
 {
 public:
@@ -107,5 +111,10 @@ public:
   size_t write(uint8_t c)
   {
     return display->write(c);
+  }
+
+  void drawText(String str, int16_t x, int16_t y, uint8_t align = ALIGN_LEFT)
+  {
+    display->drawText(str.c_str(), offset.x + x, offset.y + y, align);
   }
 };

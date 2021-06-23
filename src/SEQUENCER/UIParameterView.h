@@ -26,6 +26,6 @@ public:
     ctx->setTextSize(1);
     ctx->setTextColor({1, 1, 1});
     ctx->setCursor(1, frame.h - 2);
-    ctx->print(param->value);
+    ctx->drawText(String(param->value), frame.w / 2, frame.h - 2, ALIGN_CENTER);
   }
 };
