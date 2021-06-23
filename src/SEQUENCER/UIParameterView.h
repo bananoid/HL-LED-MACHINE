@@ -22,10 +22,10 @@ public:
 
     ctx->drawRect({1, 1, frame.w - 2, frame.h - 2}, {0, 0.1, 0.1}, true);
     ctx->drawRect({1, 1, barValW, 3}, {1, 0, 0}, true);
-    // ctx->setFont(Font5x7FixedMono);
-    // ctx->setTextSize(1);
-    // ctx->setTextColor(color);
-    // ctx->setCursor(frame.x + 1, frame.y + frame.h - 2);
-    // ctx->print(param->value);
+    ctx->setFont(Font5x7FixedMono);
+    ctx->setTextSize(1);
+    ctx->setTextColor({1, 1, 1});
+    ctx->setCursor(1, frame.h - 2);
+    ctx->print(param->value);
   }
 };
