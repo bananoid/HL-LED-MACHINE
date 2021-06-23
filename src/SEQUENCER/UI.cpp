@@ -3,12 +3,11 @@
 #include <Arduino.h>
 #include <SPI.h>
 
-auto display = Display();
-
 void UI::begin(Scheduler *runner, Tracker *tracker)
 {
   this->tracker = tracker;
-  display.begin();
+
+  ctx = new UIGFXContext();
 
   leftEncoder = new Encoder(ENCODER_LEFT_PIN_A, ENCODER_LEFT_PIN_B);
   rightEncoder = new Encoder(ENCODER_RIGHT_PIN_A, ENCODER_RIGHT_PIN_B);
@@ -49,10 +48,9 @@ void UI::begin(Scheduler *runner, Tracker *tracker)
 
   //Views
   tracksView = new UITracksView(tracker);
-  tracksView->ctx = &display;
+  tracksView->ctx = ctx;
   tracksView->frame.w = 128;
   tracksView->frame.h = 128;
-  tracksView->color = color;
   tracksView->build();
 }
 
@@ -86,28 +84,9 @@ void UI::update()
 
 void UI::draw()
 {
-  display.fillScreen(ssd1351::RGB(0, 0, 0));
-
-  // UIComponents::ParamState state;
-  // state.value = leftEncoder->read() / 4;
-  // state.label = "events";
-  // uint cols = 128 / state.w;
-  // uint rows = 128 / state.h;
-  // for (uint yi = 0; yi < rows; yi++)
-  // {
-  //   for (uint xi = 0; xi < cols; xi++)
-  //   {
-  //     state.color = !screenBtns[xi % NUM_SCREEN_BTN]->read() ? ssd1351::RGB(255, 255, 255) : ssd1351::RGB(255, 0, 0);
-  //     state.x = xi * state.w;
-  //     state.y = yi * state.h;
-  //     state.value += (sinf(xi * yi) * 0.5 + 0.5) * 10;
-  //     UIComponents::drawParam(&display, state);
-  //   }
-  // }
-
+  ctx->clear();
   tracksView->show();
-
-  display.updateScreen();
+  ctx->commit();
 }
 
 UI *ui = new UI();

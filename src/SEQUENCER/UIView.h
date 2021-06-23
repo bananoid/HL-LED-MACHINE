@@ -1,25 +1,18 @@
 #pragma once
 #include <Arduino.h>
 
-#include "UIDisplayConfig.h"
+#include "UIGFXContext.h"
+#include <GFXUtils.h>
+using namespace GFX;
 
 #include <vector>
 using namespace std;
 
-struct Rect
-{
-  int x = 0;
-  int y = 0;
-  int w = 32;
-  int h = 16;
-};
-
 class UIView
 {
 public:
-  Display *ctx = nullptr;
-  Color color;
-  Rect frame;
+  UIGFXContext *ctx = nullptr;
+  Rect frame = {0, 0, 16, 16};
   String label;
   vector<UIView *> childs;
   UIView *parent;

@@ -5,16 +5,20 @@ UIView::UIView()
 }
 void UIView::show()
 {
+  ctx->pushOffset(frame);
   draw();
   for (UIView *view : childs)
   {
     view->show();
   }
+  ctx->popOffset(frame);
 }
 void UIView::build()
 {
 }
-void UIView::draw() {}
+void UIView::draw()
+{
+}
 
 void UIView::addChild(UIView *view)
 {

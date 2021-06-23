@@ -32,23 +32,24 @@ public:
     int itInx = 0;
     for (auto *item : childs)
     {
-      item->color = color;
-      item->frame.x = frame.x;
-      item->frame.w = 32;
       item->frame.h = 16;
-      item->frame.y = frame.y + itInx * item->frame.h;
+      item->frame.w = frame.w;
+      item->frame.x = 0;
+      item->frame.y = itInx * 16;
       itInx++;
     }
   }
   void draw() override
   {
+    // ctx->drawRect({1, 1, frame.w - 2, frame.h - 2}, {0, 0.1, 0.1}, true);
+
     if (track->isPlaying)
     {
-      ctx->fillRect(frame.x + 1, frame.y + frame.h - 15, 30, 14, color);
+      ctx->drawRect({1, frame.h - 15, 30, 14}, {0, 1, 1}, true);
     }
     else
     {
-      ctx->drawRect(frame.x + 1, frame.y + frame.h - 15, 30, 14, color);
+      ctx->drawRect({1, frame.h - 15, 30, 14}, {0, 0.2, 0.2});
     }
   }
 };

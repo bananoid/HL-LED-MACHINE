@@ -27,7 +27,7 @@
 #include <Tracker.h>
 using namespace HLMusicMachine;
 
-#include "UIDisplayConfig.h"
+#include "UIGFXContext.h"
 
 #include "UIView.h"
 #include "UITracksView.h"
@@ -43,6 +43,7 @@ class UI
 private:
 public:
   UIDelegate *delegate;
+  UIGFXContext *ctx;
 
   Task updateTask;
 

@@ -1,7 +1,8 @@
-#pragma once
+#ifndef HL_LIB_GFX_GFXUTILS
+#define HL_LIB_GFX_GFXUTILS
 
 #include <Arduino.h>
-namespace LEDSynth
+namespace GFX
 {
 
   typedef struct
@@ -17,6 +18,42 @@ namespace LEDSynth
     uint8_t s;
     uint8_t v;
   } HSV;
+
+  struct Rect
+  {
+    int x = 0;
+    int y = 0;
+    int w = 32;
+    int h = 16;
+
+    Rect(int x, int y, int w, int h)
+    {
+      this->x = x;
+      this->y = y;
+      this->w = w;
+      this->h = h;
+    }
+
+    Rect operator+(Rect r)
+    {
+      return Rect(x + r.x, x + r.x, x + r.x, x + r.x);
+    }
+
+    Rect operator-(Rect r)
+    {
+      return Rect(x - r.x, x - r.x, x - r.x, x - r.x);
+    }
+
+    Rect operator*(Rect r)
+    {
+      return Rect(x * r.x, x * r.x, x * r.x, x * r.x);
+    }
+
+    Rect operator/(Rect r)
+    {
+      return Rect(x / r.x, x / r.x, x / r.x, x / r.x);
+    }
+  };
 
   struct fRGB
   {
@@ -297,3 +334,5 @@ namespace LEDSynth
     }
   };
 }
+
+#endif /* HL_LIB_GFX_GFXUTILS */

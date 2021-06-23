@@ -18,20 +18,22 @@ public:
     UITrackCollView *trackView;
 
     uint8_t tInx = 0;
-    for (Track *track : tracker->tracks)
+    for (auto *track : tracker->tracks)
     {
       trackView = new UITrackCollView(track);
       trackView->frame.x = tInx * 32;
-      trackView->frame.y = 0;
       trackView->frame.w = 32;
-      trackView->frame.h = frame.h;
-      trackView->color = color;
+      trackView->frame.y = 16;
+      trackView->frame.h = frame.h - 16;
       addChild(trackView);
       tInx++;
     }
   }
   void draw() override
   {
-    ctx->drawRect(frame.x, frame.y, frame.w, frame.h, color);
+    // for (int i = 0; i < tracker->tracks.size(); i++)
+    // {
+    //   ctx->drawRect({i * 32, 0, 1, frame.h}, {0.1, 0.1, 0.1});
+    // }
   }
 };
