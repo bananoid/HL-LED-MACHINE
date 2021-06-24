@@ -70,7 +70,7 @@ MainController::MainController(Scheduler *runner)
   // delay(2000);
   // midiUIInvalid = true;
 
-  ui->begin(runner, tracker);
+  ui->init(runner, tracker);
   ui->delegate = this;
 }
 

@@ -1,8 +1,5 @@
 #pragma once
 
-#include "config.h"
-#include <TaskSchedulerDeclarations.h>
-
 #include <Encoder.h>
 #include <Bounce2.h>
 
@@ -27,10 +24,10 @@
 #include <Tracker.h>
 using namespace HLMusicMachine;
 
-#include "UIGFXContext.h"
-
 #include "UIView.h"
 #include "UITracksView.h"
+
+#include "UIViewController.h"
 
 class UIDelegate
 {
@@ -38,14 +35,11 @@ public:
   virtual void frontLeftButtonClick();
 };
 
-class UI
+class UI : public UIViewController
 {
 private:
 public:
   UIDelegate *delegate;
-  UIGFXContext *ctx;
-
-  Task updateTask;
 
   Encoder *leftEncoder;
   Bounce2::Button *leftEncoderButton;
@@ -59,14 +53,12 @@ public:
   Bounce2::Button *frontLeftButton;
   Bounce2::Button *frontRightButton;
 
-  //Views
-  Color color = ssd1351::RGB(255, 255, 255);
   UITracksView *tracksView;
 
   Tracker *tracker;
-  void begin(Scheduler *runner, Tracker *tracker);
-  void update();
-  void draw();
+  void init(Scheduler *runner, Tracker *tracker);
+  void update() override;
+  UIView *initRootView() override;
 };
 
 extern UI *ui;

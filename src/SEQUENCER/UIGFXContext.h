@@ -12,22 +12,24 @@ static const uint8_t ALIGN_LEFT = 0;
 static const uint8_t ALIGN_CENTER = 1;
 static const uint8_t ALIGN_RIGHT = 2;
 
+#define BG_INT 50
+
 static const Color COLOR_WHITE_F = Color(255, 255, 255);
-static const Color COLOR_WHITE_B = Color(100, 100, 100);
+static const Color COLOR_WHITE_B = Color(BG_INT, BG_INT, BG_INT);
 static const Color COLOR_BLACK_F = Color(10, 10, 10);
 static const Color COLOR_BLACK_B = Color(0, 0, 0);
 static const Color COLOR_RED_F = Color(255, 0, 0);
-static const Color COLOR_RED_B = Color(100, 0, 0);
+static const Color COLOR_RED_B = Color(BG_INT, 0, 0);
 static const Color COLOR_GREEN_F = Color(0, 255, 0);
-static const Color COLOR_GREEN_B = Color(0, 100, 0);
+static const Color COLOR_GREEN_B = Color(0, BG_INT, 0);
 static const Color COLOR_BLUE_F = Color(0, 0, 255);
 static const Color COLOR_BLUE_B = Color(0, 0, 255);
 static const Color COLOR_CYAN_F = Color(0, 255, 255);
-static const Color COLOR_CYAN_B = Color(0, 100, 100);
+static const Color COLOR_CYAN_B = Color(0, BG_INT, BG_INT);
 static const Color COLOR_MAGENTA_F = Color(255, 0, 255);
-static const Color COLOR_MAGENTA_B = Color(100, 0, 100);
+static const Color COLOR_MAGENTA_B = Color(BG_INT, 0, BG_INT);
 static const Color COLOR_YELLOW_F = Color(255, 255, 0);
-static const Color COLOR_YELLOW_B = Color(100, 100, 0);
+static const Color COLOR_YELLOW_B = Color(BG_INT, BG_INT, 0);
 
 class UIGFXContext : public Print
 {

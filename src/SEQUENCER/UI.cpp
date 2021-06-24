@@ -3,22 +3,12 @@
 #include <Arduino.h>
 #include <SPI.h>
 
-void UI::begin(Scheduler *runner, Tracker *tracker)
+void UI::init(Scheduler *runner, Tracker *tracker)
 {
   this->tracker = tracker;
 
-  ctx = new UIGFXContext();
-
   leftEncoder = new Encoder(ENCODER_LEFT_PIN_A, ENCODER_LEFT_PIN_B);
   rightEncoder = new Encoder(ENCODER_RIGHT_PIN_A, ENCODER_RIGHT_PIN_B);
-
-  updateTask.set(TASK_MILLISECOND * 16, TASK_FOREVER, [this]()
-                 {
-                   ui->update();
-                   ui->draw();
-                 });
-  runner->addTask(updateTask);
-  updateTask.enable();
 
   leftEncoderButton = new Bounce2::Button();
   leftEncoderButton->attach(ENCODER_LEFT_PIN_SW, INPUT);
@@ -46,12 +36,13 @@ void UI::begin(Scheduler *runner, Tracker *tracker)
   pinMode(FRONT_LEFT_LED_PIN, OUTPUT);
   pinMode(FRONT_RIGHT_LED_PIN, OUTPUT);
 
-  //Views
+  UIViewController::init(runner);
+}
+
+UIView *UI::initRootView()
+{
   tracksView = new UITracksView(tracker);
-  tracksView->ctx = ctx;
-  tracksView->frame.w = 128;
-  tracksView->frame.h = 128;
-  tracksView->build();
+  return tracksView;
 }
 
 void UI::update()
@@ -80,13 +71,6 @@ void UI::update()
   {
     digitalWrite(FRONT_RIGHT_LED_PIN, false);
   }
-}
-
-void UI::draw()
-{
-  ctx->clear();
-  tracksView->show();
-  ctx->commit();
 }
 
 UI *ui = new UI();

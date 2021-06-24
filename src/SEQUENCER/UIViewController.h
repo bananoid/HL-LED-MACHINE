@@ -1,11 +1,21 @@
 #pragma once
-#include "UIDisplayConfig.h"
+
+#include "config.h"
+#include <TaskSchedulerDeclarations.h>
+
+#include "UIGFXContext.h"
 #include "UIView.h"
+
 class UIViewController
 {
 public:
-  UIViewController();
+  UIGFXContext *ctx;
+  Task updateTask;
   UIView *rootView;
-  UIView *getRootView();
-  void show();
+  virtual UIView *initRootView();
+  virtual void init(Scheduler *runner);
+
+  UIViewController();
+  virtual void update();
+  void draw();
 };
