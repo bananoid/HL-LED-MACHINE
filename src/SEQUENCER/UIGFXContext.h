@@ -12,6 +12,23 @@ static const uint8_t ALIGN_LEFT = 0;
 static const uint8_t ALIGN_CENTER = 1;
 static const uint8_t ALIGN_RIGHT = 2;
 
+static const Color COLOR_WHITE_F = Color(255, 255, 255);
+static const Color COLOR_WHITE_B = Color(100, 100, 100);
+static const Color COLOR_BLACK_F = Color(10, 10, 10);
+static const Color COLOR_BLACK_B = Color(0, 0, 0);
+static const Color COLOR_RED_F = Color(255, 0, 0);
+static const Color COLOR_RED_B = Color(100, 0, 0);
+static const Color COLOR_GREEN_F = Color(0, 255, 0);
+static const Color COLOR_GREEN_B = Color(0, 100, 0);
+static const Color COLOR_BLUE_F = Color(0, 0, 255);
+static const Color COLOR_BLUE_B = Color(0, 0, 255);
+static const Color COLOR_CYAN_F = Color(0, 255, 255);
+static const Color COLOR_CYAN_B = Color(0, 100, 100);
+static const Color COLOR_MAGENTA_F = Color(255, 0, 255);
+static const Color COLOR_MAGENTA_B = Color(100, 0, 100);
+static const Color COLOR_YELLOW_F = Color(255, 255, 0);
+static const Color COLOR_YELLOW_B = Color(100, 100, 0);
+
 class UIGFXContext : public Print
 {
 public:
@@ -75,16 +92,15 @@ public:
     display->updateScreen();
   }
 
-  void drawRect(Rect frame, fRGB color, bool fill = false)
+  void drawRect(Rect frame, const Color color, bool fill = false)
   {
-    ssd1351::RGB c = {color.r * 255, color.g * 255, color.b * 255};
     if (fill)
     {
-      display->fillRect(offset.x + frame.x, offset.y + frame.y, frame.w, frame.h, c);
+      display->fillRect(offset.x + frame.x, offset.y + frame.y, frame.w, frame.h, color);
     }
     else
     {
-      display->drawRect(offset.x + frame.x, offset.y + frame.y, frame.w, frame.h, c);
+      display->drawRect(offset.x + frame.x, offset.y + frame.y, frame.w, frame.h, color);
     }
   }
 
@@ -98,9 +114,9 @@ public:
     display->setTextSize(new_size);
   }
 
-  void setTextColor(fRGB color)
+  void setTextColor(const Color color)
   {
-    display->setTextColor({color.r * 255, color.g * 255, color.b * 255});
+    display->setTextColor(color);
   }
 
   void setCursor(int16_t x, int16_t y)

@@ -20,11 +20,11 @@ public:
   {
     int barValW = map(param->value, param->min, param->max, 0, frame.w - 2);
 
-    ctx->drawRect({1, 1, frame.w - 2, frame.h - 2}, {0, 0.1, 0.1}, true);
-    ctx->drawRect({1, 1, barValW, 3}, {1, 0, 0}, true);
+    ctx->drawRect({1, 1, frame.w - 2, frame.h - 2}, COLOR_RED_B, true);
+    ctx->drawRect({1, 1, barValW, 3}, COLOR_RED_F, true);
     ctx->setFont(Font5x7FixedMono);
     ctx->setTextSize(1);
-    ctx->setTextColor({1, 1, 1});
+    ctx->setTextColor(COLOR_WHITE_F);
     ctx->setCursor(1, frame.h - 2);
     ctx->drawText(String(param->value), frame.w / 2, frame.h - 2, ALIGN_CENTER);
   }

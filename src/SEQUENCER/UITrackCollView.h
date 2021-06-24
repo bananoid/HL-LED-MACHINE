@@ -41,15 +41,13 @@ public:
   }
   void draw() override
   {
-    // ctx->drawRect({1, 1, frame.w - 2, frame.h - 2}, {0, 0.1, 0.1}, true);
-
     if (track->isPlaying)
     {
-      ctx->drawRect({1, frame.h - 15, 30, 14}, {0, 1, 1}, true);
+      ctx->drawRect({1, frame.h - 15, 30, 14}, COLOR_CYAN_F, true);
     }
     else
     {
-      ctx->drawRect({1, frame.h - 15, 30, 14}, {0, 0.2, 0.2});
+      ctx->drawRect({1, frame.h - 15, 30, 14}, COLOR_CYAN_B);
     }
   }
 };
