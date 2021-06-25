@@ -16,9 +16,14 @@ public:
   String label;
   vector<UIView *> childs;
   UIView *parent;
-  UIView();
+  UIView(){};
   void show();
-  virtual void build();
-  virtual void draw();
+  virtual void build(){};
+  virtual void draw(){};
   void addChild(UIView *view);
+
+  bool isfocused = false;
+  virtual void onKeyPress(uint16_t id) { parent->onKeyPress(id); };
+  virtual void onKeyRelease(uint16_t id) { parent->onKeyRelease(id); };
+  virtual void onWheelRotate(uint16_t id, float speed) { parent->onWheelRotate(id, speed); };
 };

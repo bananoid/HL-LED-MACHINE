@@ -1,8 +1,5 @@
 #include "UIView.h"
 
-UIView::UIView()
-{
-}
 void UIView::show()
 {
   ctx->pushOffset(frame);
@@ -12,12 +9,6 @@ void UIView::show()
     view->show();
   }
   ctx->popOffset(frame);
-}
-void UIView::build()
-{
-}
-void UIView::draw()
-{
 }
 
 void UIView::addChild(UIView *view)

@@ -6,6 +6,48 @@
 #include "UIGFXContext.h"
 #include "UIView.h"
 
+#include <Encoder.h>
+#include <Bounce2.h>
+
+#include <map>
+#include <memory>
+
+struct EncoderConfig
+{
+  uint8_t a;
+  uint8_t b;
+};
+
+struct ButtonConfig
+{
+  uint8_t pin;
+  uint8_t portType;
+  bool invert;
+};
+
+class EncoderWrapper
+{
+public:
+  int32_t value = 0;
+  int32_t lastValue = 0;
+  int32_t speed = 0;
+
+  Encoder *encoder;
+  EncoderWrapper(uint8_t pin1, uint8_t pin2)
+  {
+    encoder = new Encoder(pin1, pin2);
+  }
+  void update()
+  {
+    value = encoder->read();
+    speed = value - lastValue;
+    lastValue = value;
+  }
+};
+
+typedef std::map<uint16_t, ButtonConfig> MapIdToButtonConfig;
+typedef std::map<uint16_t, EncoderConfig> MapIdToEncoderConfig;
+
 class UIViewController
 {
 public:
@@ -15,7 +57,20 @@ public:
   virtual UIView *initRootView();
   virtual void init(Scheduler *runner);
 
+  std::map<uint16_t, Bounce2::Button *> buttonKeys;
+  std::map<uint16_t, EncoderWrapper *> wheelEncoders;
+
+  void initKeys(MapIdToButtonConfig map);
+  void initWheels(MapIdToEncoderConfig map);
+  // void initLeds(MapPinToId map);
+
   UIViewController();
   virtual void update();
   void draw();
+
+  void dispatchKeyPress(uint16_t id);
+  void dispatchKeyRelease(uint16_t id);
+  void dispatchWheelRotate(uint16_t id, float speed);
+
+  UIView *focusView = nullptr;
 };

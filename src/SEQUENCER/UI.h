@@ -3,22 +3,7 @@
 #include <Encoder.h>
 #include <Bounce2.h>
 
-#define ENCODER_LEFT_PIN_SW 2
-#define ENCODER_LEFT_PIN_A 3
-#define ENCODER_LEFT_PIN_B 4
-#define ENCODER_RIGHT_PIN_SW 30
-#define ENCODER_RIGHT_PIN_A 31
-#define ENCODER_RIGHT_PIN_B 32
-
-#define NUM_SCREEN_BTN 4
-#define SCREEN_BTN_PINS \
-  {                     \
-    23, 22, 19, 18      \
-  }
-
-#define FRONT_LEFT_BTN_PIN 41
 #define FRONT_LEFT_LED_PIN 40
-#define FRONT_RIGHT_BTN_PIN 39
 #define FRONT_RIGHT_LED_PIN 38
 
 #include <Tracker.h>
@@ -28,6 +13,24 @@ using namespace HLMusicMachine;
 #include "UITracksView.h"
 
 #include "UIViewController.h"
+
+#include "config.h"
+
+const MapIdToButtonConfig buttonsConfig = {
+    {KEY_ID_SCREEN_A, {23, INPUT_PULLUP, true}},
+    {KEY_ID_SCREEN_B, {22, INPUT_PULLUP, true}},
+    {KEY_ID_SCREEN_C, {19, INPUT_PULLUP, true}},
+    {KEY_ID_SCREEN_D, {18, INPUT_PULLUP, true}},
+    {KEY_ID_FRONT_LEFT, {41, INPUT_PULLUP, false}},
+    {KEY_ID_FRONT_RIGHT, {39, INPUT_PULLUP, false}},
+    {KEY_ID_WHEEL_LEFT, {2, INPUT, true}},
+    {KEY_ID_WHEEL_RIGHT, {30, INPUT, true}},
+};
+
+const MapIdToEncoderConfig encodersConfig = {
+    {WHEEL_ID_LEFT, {3, 4}},
+    {WHEEL_ID_RIGHT, {31, 32}},
+};
 
 class UIDelegate
 {
@@ -40,18 +43,6 @@ class UI : public UIViewController
 private:
 public:
   UIDelegate *delegate;
-
-  Encoder *leftEncoder;
-  Bounce2::Button *leftEncoderButton;
-
-  Encoder *rightEncoder;
-  Bounce2::Button *rightEncoderButton;
-
-  const uint8_t screenBtnPins[NUM_SCREEN_BTN] = SCREEN_BTN_PINS;
-  Bounce *screenBtns[NUM_SCREEN_BTN];
-
-  Bounce2::Button *frontLeftButton;
-  Bounce2::Button *frontRightButton;
 
   UITracksView *tracksView;
 
