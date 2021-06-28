@@ -52,6 +52,9 @@ public:
       ctx->drawRect({1, frame.h - 15, 30, 14}, COLOR_CYAN_B);
     }
 
-    // if(ctx->controller->buttonKeys[])
+    if (ctx->controller->buttonKeys[keyId]->pressed())
+    {
+      track->togglePlayStop();
+    }
   }
 };

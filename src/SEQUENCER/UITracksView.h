@@ -16,11 +16,13 @@ public:
   void build() override
   {
     UITrackCollView *trackView;
+    uint16_t activeKeys[] = {KEY_ID_SCREEN_A, KEY_ID_SCREEN_B, KEY_ID_SCREEN_C, KEY_ID_SCREEN_D};
 
     uint8_t tInx = 0;
     for (auto *track : tracker->tracks)
     {
-      trackView = new UITrackCollView(track, 1); // todo asign button key to track
+      uint16_t activeKey = activeKeys[tInx % 4];
+      trackView = new UITrackCollView(track, activeKey); // todo asign button key to track
       trackView->frame.x = tInx * 32;
       trackView->frame.w = 32;
       trackView->frame.y = 16;
