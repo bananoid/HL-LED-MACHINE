@@ -19,6 +19,16 @@ public:
   {
     this->param = param;
   }
+
+  void update() override
+  {
+    auto wheelSpeed = ctx->controller->wheelEncoders[WHEEL_ID_RIGHT]->speed;
+    if (wheelSpeed != 0)
+    {
+      *param += wheelSpeed;
+    }
+  }
+
   void draw() override
   {
     int barValW = param->scale(0, frame.w - 2);
@@ -30,12 +40,5 @@ public:
     ctx->setTextColor(COLOR_WHITE_F);
     ctx->drawText(String(param->min) + "/" + String(param->max), frame.w / 2, frame.h - 16, ALIGN_CENTER);
     ctx->drawText(String(*param), frame.w / 2, frame.h - 2, ALIGN_CENTER);
-
-    auto wheelSpeed = ctx->controller->wheelEncoders[WHEEL_ID_RIGHT]->speed;
-
-    if (wheelSpeed != 0)
-    {
-      *param += wheelSpeed;
-    }
   }
 };

@@ -41,6 +41,15 @@ public:
       itInx++;
     }
   }
+
+  void update() override
+  {
+    if (ctx->controller->buttonKeys[keyId]->pressed())
+    {
+      track->togglePlayStop();
+    }
+  }
+
   void draw() override
   {
     if (track->isPlaying)
@@ -50,11 +59,6 @@ public:
     else
     {
       ctx->drawRect({1, frame.h - 15, 30, 14}, COLOR_CYAN_B);
-    }
-
-    if (ctx->controller->buttonKeys[keyId]->pressed())
-    {
-      track->togglePlayStop();
     }
   }
 };

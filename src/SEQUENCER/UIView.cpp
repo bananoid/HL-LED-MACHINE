@@ -3,6 +3,7 @@
 void UIView::show()
 {
   ctx->pushOffset(frame);
+  update();
   draw();
   for (UIView *view : childs)
   {

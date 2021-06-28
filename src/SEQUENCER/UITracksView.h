@@ -33,9 +33,5 @@ public:
   }
   void draw() override
   {
-    // for (int i = 0; i < tracker->tracks.size(); i++)
-    // {
-    //   ctx->drawRect({i * 32, 0, 1, frame.h}, {0.1, 0.1, 0.1});
-    // }
   }
 };
