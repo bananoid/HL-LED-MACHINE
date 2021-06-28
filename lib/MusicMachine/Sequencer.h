@@ -77,11 +77,6 @@ namespace HLMusicMachine
 
       T scale(T a, T b)
       {
-        if (min > max)
-        {
-          return MathUtils::scale((T)value, max, min, a, b);
-        }
-
         return MathUtils::scale((T)value, min, max, a, b);
       }
     };

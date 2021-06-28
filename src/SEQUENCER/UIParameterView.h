@@ -25,6 +25,10 @@ public:
     auto wheelSpeed = ctx->controller->wheelEncoders[WHEEL_ID_RIGHT]->speed;
     if (wheelSpeed != 0)
     {
+      if (param->min > param->max)
+      {
+        wheelSpeed *= -1;
+      }
       *param += wheelSpeed;
     }
   }
@@ -38,7 +42,8 @@ public:
     ctx->setFont(Font5x7FixedMono);
     ctx->setTextSize(1);
     ctx->setTextColor(COLOR_WHITE_F);
-    ctx->drawText(String(param->min) + "/" + String(param->max), frame.w / 2, frame.h - 16, ALIGN_CENTER);
+    // ctx->drawText(String(param->min) + "/" + String(param->max), frame.w / 2, frame.h - 16, ALIGN_CENTER);
+    ctx->drawText(label, frame.w / 2, frame.h - 16, ALIGN_CENTER);
     ctx->drawText(String(*param), frame.w / 2, frame.h - 2, ALIGN_CENTER);
   }
 };
