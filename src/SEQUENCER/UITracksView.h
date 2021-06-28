@@ -20,7 +20,7 @@ public:
     uint8_t tInx = 0;
     for (auto *track : tracker->tracks)
     {
-      trackView = new UITrackCollView(track);
+      trackView = new UITrackCollView(track, 1); // todo asign button key to track
       trackView->frame.x = tInx * 32;
       trackView->frame.w = 32;
       trackView->frame.y = 16;

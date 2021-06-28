@@ -8,6 +8,7 @@ UIViewController::UIViewController()
 void UIViewController::init(Scheduler *runner)
 {
   ctx = new UIGFXContext();
+  ctx->controller = this;
   rootView = initRootView();
   rootView->ctx = ctx;
   rootView->frame.w = 128;

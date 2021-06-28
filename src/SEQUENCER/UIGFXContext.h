@@ -3,6 +3,7 @@
 #include "UIDisplayConfig.h"
 #include <GFXUtils.h>
 #include <Arduino.h>
+#include "UIViewController.h"
 
 using namespace GFX;
 
@@ -31,10 +32,12 @@ static const Color COLOR_MAGENTA_B = Color(BG_INT, 0, BG_INT);
 static const Color COLOR_YELLOW_F = Color(255, 255, 0);
 static const Color COLOR_YELLOW_B = Color(BG_INT, BG_INT, 0);
 
+class UIViewController;
 class UIGFXContext : public Print
 {
 public:
   Display *display;
+  UIViewController *controller;
   struct Offset
   {
     int x = 0;

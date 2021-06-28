@@ -7,6 +7,7 @@
 #include "Tracker.h"
 
 using namespace MusicTheory;
+#include <MathUtils.h>
 
 namespace HLMusicMachine
 {
@@ -36,9 +37,19 @@ namespace HLMusicMachine
     template <typename T>
     struct Parameter
     {
-      T value;
+    private:
+      float value;
+
+    public:
       T min;
       T max;
+
+      Parameter(T value, T min, T max)
+      {
+        this->value = value;
+        this->min = min;
+        this->max = max;
+      }
 
       inline Parameter operator=(T v)
       {
@@ -48,7 +59,30 @@ namespace HLMusicMachine
 
       inline operator T() const
       {
-        return value;
+        return (T)value;
+      }
+
+      Parameter &operator+=(const float inc)
+      {
+        if (min < max)
+        {
+          value = constrain(value + inc, (float)min, (float)max);
+        }
+        else
+        {
+          value = constrain(value + inc, (float)max, (float)min);
+        }
+        return *this;
+      }
+
+      T scale(T a, T b)
+      {
+        if (min > max)
+        {
+          return MathUtils::scale((T)value, max, min, a, b);
+        }
+
+        return MathUtils::scale((T)value, min, max, a, b);
       }
     };
 

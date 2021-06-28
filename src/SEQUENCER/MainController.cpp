@@ -325,6 +325,8 @@ void MainController::saveGlobalSettings()
     memcpy(&globalSettings.trackParams[i], &cvSequencers[i]->parameters, sizeof(Sequencer::Parameters));
     globalSettings.tracksEnabled[i] = cvTracks[i]->isPlaying;
   }
+  Serial.printf("all params size = %i \n", sizeof(cvSequencers[0]->parameters));
+  Serial.printf("steps param size = %i \n", sizeof(cvSequencers[0]->parameters.steps));
 
   storage->save((uint8_t *)&globalSettings, sizeof(GlobalSettings));
 

@@ -31,9 +31,9 @@ namespace HLMusicMachine
   bool Sequencer::isEuclidean(int stepInx)
   {
     return isEuclidean(stepInx,
-                       parameters.steps.value,
-                       parameters.events.value,
-                       parameters.offset.value);
+                       parameters.steps,
+                       parameters.events,
+                       parameters.offset);
   }
 
   void Sequencer::randomize()

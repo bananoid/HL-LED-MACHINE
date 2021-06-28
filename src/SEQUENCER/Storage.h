@@ -80,7 +80,7 @@ public:
     frec.close();
 
     long deltaTime = micros() - curTime;
-    Serial.printf("Save in %ius\n", deltaTime);
+    Serial.printf("Save in %ius size:%i\n", deltaTime, size);
   }
 
   // void autoSave()

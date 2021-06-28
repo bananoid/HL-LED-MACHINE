@@ -30,7 +30,7 @@ class EncoderWrapper
 public:
   int32_t value = 0;
   int32_t lastValue = 0;
-  int32_t speed = 0;
+  float speed = 0;
 
   Encoder *encoder;
   EncoderWrapper(uint8_t pin1, uint8_t pin2)
@@ -40,7 +40,7 @@ public:
   void update()
   {
     value = encoder->read();
-    speed = value - lastValue;
+    speed = (value - lastValue) / 4.f;
     lastValue = value;
   }
 };
@@ -48,6 +48,8 @@ public:
 typedef std::map<uint16_t, ButtonConfig> MapIdToButtonConfig;
 typedef std::map<uint16_t, EncoderConfig> MapIdToEncoderConfig;
 
+class UIGFXContext;
+class UIView;
 class UIViewController
 {
 public:

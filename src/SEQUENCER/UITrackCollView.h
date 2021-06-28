@@ -9,9 +9,11 @@ class UITrackCollView : public UIView
 {
 public:
   Track *track;
-  UITrackCollView(Track *track)
+  uint16_t keyId = 0;
+  UITrackCollView(Track *track, uint16_t keyId)
   {
     this->track = track;
+    this->keyId = keyId;
   }
   void build() override
   {
@@ -32,10 +34,10 @@ public:
     int itInx = 0;
     for (auto *item : childs)
     {
-      item->frame.h = 16;
+      item->frame.h = 32;
       item->frame.w = frame.w;
       item->frame.x = 0;
-      item->frame.y = itInx * 16;
+      item->frame.y = itInx * item->frame.h;
       itInx++;
     }
   }
@@ -49,5 +51,7 @@ public:
     {
       ctx->drawRect({1, frame.h - 15, 30, 14}, COLOR_CYAN_B);
     }
+
+    // if(ctx->controller->buttonKeys[])
   }
 };
