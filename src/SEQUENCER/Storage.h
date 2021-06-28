@@ -66,6 +66,11 @@ public:
 
   void save(uint8_t *data, int size)
   {
+    if (!checkSDCard())
+    {
+      return;
+    }
+
     unsigned long curTime = micros();
 
     if (SD.exists(DATA_FILE_NAME))
