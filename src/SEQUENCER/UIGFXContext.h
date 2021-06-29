@@ -4,6 +4,7 @@
 #include <GFXUtils.h>
 #include <Arduino.h>
 #include "UIViewController.h"
+#include "GFX_fonts/Font5x7FixedMono.h"
 
 using namespace GFX;
 
@@ -54,6 +55,7 @@ public:
   {
     display = new Display();
     display->begin();
+    setFont(Font5x7FixedMono);
   }
 
   void pushOffset(Rect frame)
@@ -106,6 +108,18 @@ public:
     else
     {
       display->drawRect(offset.x + frame.x, offset.y + frame.y, frame.w, frame.h, color);
+    }
+  }
+
+  void drawCircle(Rect frame, const Color color, bool fill = false)
+  {
+    if (fill)
+    {
+      display->fillCircle(offset.x + frame.x, offset.y + frame.y, frame.w, color);
+    }
+    else
+    {
+      display->drawCircle(offset.x + frame.x, offset.y + frame.y, frame.w, color);
     }
   }
 

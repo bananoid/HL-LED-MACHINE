@@ -39,7 +39,6 @@ public:
 
     ctx->drawRect({1, 1, frame.w - 2, frame.h - 2}, COLOR_RED_B, true);
     ctx->drawRect({1, 1, barValW, 3}, COLOR_RED_F, true);
-    ctx->setFont(Font5x7FixedMono);
     ctx->setTextSize(1);
     ctx->setTextColor(COLOR_WHITE_F);
     ctx->setCursor(0, 0);
