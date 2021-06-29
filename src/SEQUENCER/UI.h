@@ -11,6 +11,7 @@ using namespace HLMusicMachine;
 
 #include "UIView.h"
 #include "UIClockView.h"
+#include "UIHarmonyView.h"
 #include "UITracksView.h"
 
 #include "UIViewController.h"
@@ -44,8 +45,6 @@ class UI : public UIViewController
 private:
 public:
   UIDelegate *delegate;
-
-  UITracksView *tracksView;
 
   Tracker *tracker;
   void init(Scheduler *runner, Tracker *tracker);

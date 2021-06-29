@@ -18,9 +18,9 @@ void UI::init(Scheduler *runner, Tracker *tracker)
 
 UIView *UI::initRootView()
 {
-  // tracksView = new UITracksView(tracker);
-  // return tracksView;
-  return new UIClockView(tracker);
+  return new UITracksView(tracker);
+  // return new UIClockView(tracker);
+  // return new UIHarmonyView(tracker);
 }
 
 void UI::update()

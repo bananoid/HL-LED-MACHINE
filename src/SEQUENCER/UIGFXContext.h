@@ -55,6 +55,7 @@ public:
   {
     display = new Display();
     display->begin();
+    display->setTextWrap(false);
     setFont(Font5x7FixedMono);
   }
 

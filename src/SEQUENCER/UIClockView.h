@@ -37,7 +37,7 @@ public:
     ctx->setTextSize(2);
     ctx->drawText("CLOCK", frame.w / 2, 24, ALIGN_CENTER);
     ctx->setCursor(0, 0);
-    ctx->setTextSize(1);
+    ctx->setTextSize(2);
     ctx->drawText(String(tracker->clock->getBpm()), frame.w / 2, frame.h / 2, ALIGN_CENTER);
 
     ctx->setCursor(0, 0);
