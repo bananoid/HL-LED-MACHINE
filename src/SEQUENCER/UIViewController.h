@@ -30,7 +30,7 @@ class EncoderWrapper
 public:
   int32_t value = 0;
   int32_t lastValue = 0;
-  float speed = 0;
+  int32_t speed = 0;
 
   Encoder *encoder;
   EncoderWrapper(uint8_t pin1, uint8_t pin2)
@@ -39,8 +39,8 @@ public:
   }
   void update()
   {
-    value = encoder->read();
-    speed = (value - lastValue) / 4.0;
+    value = encoder->read() / 4;
+    speed = (value - lastValue);
     lastValue = value;
   }
 };

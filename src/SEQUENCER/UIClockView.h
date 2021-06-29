@@ -1,5 +1,4 @@
-#ifndef HL_SRC_SEQUENCER_UICLOCKVIEW
-#define HL_SRC_SEQUENCER_UICLOCKVIEW
+#pragma once
 #include "UIView.h"
 #include <Tracker.h>
 
@@ -18,10 +17,10 @@ public:
   }
   void update() override
   {
-    auto wheelSpeed = ctx->controller->wheelEncoders[WHEEL_ID_RIGHT]->speed;
-    if (!ctx->controller->buttonKeys[KEY_ID_WHEEL_RIGHT]->isPressed())
+    float wheelSpeed = ctx->controller->wheelEncoders[WHEEL_ID_RIGHT]->speed;
+    if (ctx->controller->buttonKeys[KEY_ID_WHEEL_RIGHT]->isPressed())
     {
-      wheelSpeed /= 4.0;
+      wheelSpeed /= 10.0;
     }
     if (wheelSpeed != 0)
     {
@@ -55,5 +54,3 @@ public:
     }
   }
 };
-
-#endif /* HL_SRC_SEQUENCER_UICLOCKVIEW */

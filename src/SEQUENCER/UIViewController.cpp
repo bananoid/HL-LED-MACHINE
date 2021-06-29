@@ -79,14 +79,14 @@ void UIViewController::update()
     // }
   }
 
-  if (buttonKeys[KEY_ID_WHEEL_LEFT]->isPressed())
+  // if (buttonKeys[KEY_ID_WHEEL_LEFT]->isPressed())
+  // {
+  float leftWheelSpeed = wheelEncoders[WHEEL_ID_LEFT]->speed;
+  if (leftWheelSpeed != 0)
   {
-    float leftWheelSpeed = wheelEncoders[WHEEL_ID_LEFT]->speed;
-    if (leftWheelSpeed != 0)
-    {
-      Serial.println(leftWheelSpeed);
-    }
+    Serial.printf("speed %f %i %i\n", leftWheelSpeed, random());
   }
+  // }
 }
 
 void UIViewController::draw()
