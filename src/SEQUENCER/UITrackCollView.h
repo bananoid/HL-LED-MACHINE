@@ -20,15 +20,15 @@ public:
     UIParameterView<uint8_t> *paramView;
 
     paramView = new UIParameterView<uint8_t>(&track->sequencers[0]->parameters.stepLenght);
-    paramView->label = "Step Lenght";
+    paramView->label = "SLen";
     addChild(paramView);
 
     paramView = new UIParameterView<uint8_t>(&track->sequencers[0]->parameters.events);
-    paramView->label = "Events";
+    paramView->label = "Evts";
     addChild(paramView);
 
     paramView = new UIParameterView<uint8_t>(&track->sequencers[0]->parameters.offset);
-    paramView->label = "Offset";
+    paramView->label = "Ofst";
     addChild(paramView);
 
     int itInx = 0;

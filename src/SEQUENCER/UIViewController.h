@@ -40,7 +40,7 @@ public:
   void update()
   {
     value = encoder->read();
-    speed = (value - lastValue) / 4.f;
+    speed = (value - lastValue) / 4.0;
     lastValue = value;
   }
 };

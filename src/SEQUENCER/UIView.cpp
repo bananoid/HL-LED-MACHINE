@@ -5,6 +5,12 @@ void UIView::show()
   ctx->pushOffset(frame);
   update();
   draw();
+
+  if (isFocused)
+  {
+    ctx->drawRect({0, 0, frame.w, frame.h}, COLOR_WHITE_F);
+  }
+
   for (UIView *view : childs)
   {
     view->show();

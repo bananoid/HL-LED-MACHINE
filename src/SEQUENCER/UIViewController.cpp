@@ -10,6 +10,7 @@ void UIViewController::init(Scheduler *runner)
   ctx = new UIGFXContext();
   ctx->controller = this;
   rootView = initRootView();
+  rootView->isFocused = true;
   rootView->ctx = ctx;
   rootView->frame.w = 128;
   rootView->frame.h = 128;
@@ -62,19 +63,28 @@ void UIViewController::update()
     //   }
     // }
 
-    if (p.second->pressed())
-    {
-      Serial.printf("key pressed %i\n", p.first);
-    }
+    // if (p.second->pressed())
+    // {
+    //   Serial.printf("key pressed %i\n", p.first);
+    // }
   }
 
   for (auto const &p : wheelEncoders)
   {
     p.second->update();
 
-    if (p.second->speed != 0)
+    // if (p.second->speed != 0)
+    // {
+    //   Serial.println(p.second->speed);
+    // }
+  }
+
+  if (buttonKeys[KEY_ID_WHEEL_LEFT]->isPressed())
+  {
+    float leftWheelSpeed = wheelEncoders[WHEEL_ID_LEFT]->speed;
+    if (leftWheelSpeed != 0)
     {
-      Serial.println(p.second->speed);
+      Serial.println(leftWheelSpeed);
     }
   }
 }
