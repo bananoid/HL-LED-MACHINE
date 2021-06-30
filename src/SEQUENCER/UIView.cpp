@@ -27,13 +27,37 @@ void UIView::addChild(UIView *view)
 }
 bool UIView::isFocused()
 {
-  return ctx->controller->focusView == this;
+  if (this->parent == nullptr)
+  {
+    return false;
+  }
+  if (ctx->controller->focusView != this->parent)
+  {
+    return false;
+  }
+  return this->parent->childs[this->parent->focusIndex] == this;
 }
 void UIView::focusParent()
 {
   if (parent != nullptr)
   {
     ctx->controller->focusView = parent;
-    Serial.println("Focus Parent");
   }
+}
+
+void UIView::focusPrev()
+{
+  focusIndex = (focusIndex - 1 + childs.size()) % childs.size();
+};
+void UIView::focusNext()
+{
+  focusIndex = (focusIndex + 1) % childs.size();
+};
+void UIView::focusChild()
+{
+  if (focusIndex >= childs.size() || focusIndex < 0)
+  {
+    return;
+  }
+  ctx->controller->focusView = childs[focusIndex];
 }

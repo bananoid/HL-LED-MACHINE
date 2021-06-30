@@ -15,6 +15,7 @@ public:
   Rect frame = {0, 0, 16, 16};
   String label;
   vector<UIView *> childs;
+  uint16_t focusIndex = 0;
   UIView *parent;
   UIView(){};
   virtual void show();
@@ -28,8 +29,8 @@ public:
   virtual void onKeyRelease(uint16_t id) { parent->onKeyRelease(id); };
   virtual void onWheelRotate(uint16_t id, float speed) { parent->onWheelRotate(id, speed); };
 
-  virtual void focusPrev(){};
-  virtual void focusNext(){};
-  virtual void focusChild(){};
+  virtual void focusPrev();
+  virtual void focusNext();
+  virtual void focusChild();
   virtual void focusParent();
 };

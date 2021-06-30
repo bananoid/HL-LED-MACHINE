@@ -22,14 +22,17 @@ public:
 
   void update() override
   {
-    auto wheelSpeed = ctx->controller->wheelEncoders[WHEEL_ID_RIGHT]->speed;
-    if (wheelSpeed != 0)
+    if (isFocused())
     {
-      if (param->min > param->max)
+      auto wheelSpeed = ctx->controller->wheelEncoders[WHEEL_ID_RIGHT]->speed;
+      if (wheelSpeed != 0)
       {
-        wheelSpeed *= -1;
+        if (param->min > param->max)
+        {
+          wheelSpeed *= -1;
+        }
+        *param += wheelSpeed;
       }
-      *param += wheelSpeed;
     }
   }
 

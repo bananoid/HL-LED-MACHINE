@@ -56,7 +56,7 @@ public:
   UIGFXContext *ctx;
   Task updateTask;
   UIView *rootView;
-  UIView *focusView = nullptr;
+  UIView *focusView;
   virtual UIView *initRootView();
   virtual void init(Scheduler *runner);
 

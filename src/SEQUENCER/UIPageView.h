@@ -4,9 +4,6 @@
 #include <vector>
 class UIPageView : public UIView
 {
-private:
-  int pageInx = 0;
-
 public:
   vector<UIView *> pages;
   UIPageView(const vector<UIView *> pages)
@@ -30,38 +27,14 @@ public:
     update();
     draw();
 
-    auto currentView = pages[(uint16_t)pageInx];
+    auto currentView = pages[(uint16_t)focusIndex];
     currentView->show();
 
     ctx->popOffset(frame);
   }
 
-  void focusPrev() override
-  {
-    pageInx = (pageInx + 1) % pages.size();
-  };
-  void focusNext() override
-  {
-    pageInx = (pageInx - 1 + pages.size()) % pages.size();
-  };
-  void focusChild() override
-  {
-    ctx->controller->focusView = pages[(uint16_t)pageInx];
-    Serial.println("Focus Child");
-  }
-
   void update() override
   {
-    // auto wheelSpeed = ctx->controller->wheelEncoders[WHEEL_ID_RIGHT]->speed;
-    // if (!ctx->controller->buttonKeys[KEY_ID_WHEEL_RIGHT]->isPressed())
-    // {
-    //   wheelSpeed /= 4.0;
-    // }
-    // if (wheelSpeed != 0)
-    // {
-    //   auto bpm = tracker->clock->getBpm();
-    //   tracker->clock->setBpm(bpm + wheelSpeed);
-    // }
   }
   void draw() override
   {

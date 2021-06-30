@@ -78,7 +78,7 @@ void UIViewController::update()
     // }
   }
 
-  float leftWheelSpeed = wheelEncoders[WHEEL_ID_LEFT]->speed;
+  auto leftWheelSpeed = wheelEncoders[WHEEL_ID_LEFT]->speed;
   if (!buttonKeys[KEY_ID_WHEEL_LEFT]->isPressed())
   // if (focusView != nullptr)
   {
