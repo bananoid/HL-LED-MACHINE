@@ -56,6 +56,7 @@ public:
   UIGFXContext *ctx;
   Task updateTask;
   UIView *rootView;
+  UIView *focusView = nullptr;
   virtual UIView *initRootView();
   virtual void init(Scheduler *runner);
 
@@ -73,6 +74,4 @@ public:
   void dispatchKeyPress(uint16_t id);
   void dispatchKeyRelease(uint16_t id);
   void dispatchWheelRotate(uint16_t id, float speed);
-
-  UIView *focusView = nullptr;
 };

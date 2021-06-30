@@ -10,12 +10,11 @@ void UIViewController::init(Scheduler *runner)
   ctx = new UIGFXContext();
   ctx->controller = this;
   rootView = initRootView();
-  rootView->isFocused = true;
   rootView->ctx = ctx;
   rootView->frame.w = 128;
   rootView->frame.h = 128;
+  focusView = rootView;
   rootView->build();
-
   updateTask.set(TASK_MILLISECOND * 16, TASK_FOREVER, [this]()
                  {
                    update();
@@ -79,14 +78,31 @@ void UIViewController::update()
     // }
   }
 
-  // if (buttonKeys[KEY_ID_WHEEL_LEFT]->isPressed())
-  // {
   float leftWheelSpeed = wheelEncoders[WHEEL_ID_LEFT]->speed;
-  if (leftWheelSpeed != 0)
+  if (!buttonKeys[KEY_ID_WHEEL_LEFT]->isPressed())
+  // if (focusView != nullptr)
   {
-    Serial.printf("speed %f %i %i\n", leftWheelSpeed, random());
+
+    if (leftWheelSpeed > 0)
+    {
+      focusView->focusNext();
+    }
+    else if (leftWheelSpeed < 0)
+    {
+      focusView->focusPrev();
+    }
   }
-  // }
+  else
+  {
+    if (leftWheelSpeed > 0)
+    {
+      focusView->focusChild();
+    }
+    else if (leftWheelSpeed < 0)
+    {
+      focusView->focusParent();
+    }
+  }
 }
 
 void UIViewController::draw()

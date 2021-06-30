@@ -17,14 +17,19 @@ public:
   vector<UIView *> childs;
   UIView *parent;
   UIView(){};
-  void show();
+  virtual void show();
   virtual void build(){};
   virtual void update(){};
   virtual void draw(){};
   void addChild(UIView *view);
 
-  bool isFocused = false;
+  bool isFocused();
   virtual void onKeyPress(uint16_t id) { parent->onKeyPress(id); };
   virtual void onKeyRelease(uint16_t id) { parent->onKeyRelease(id); };
   virtual void onWheelRotate(uint16_t id, float speed) { parent->onWheelRotate(id, speed); };
+
+  virtual void focusPrev(){};
+  virtual void focusNext(){};
+  virtual void focusChild(){};
+  virtual void focusParent();
 };

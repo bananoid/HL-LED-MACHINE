@@ -6,7 +6,7 @@ void UIView::show()
   update();
   draw();
 
-  if (isFocused)
+  if (isFocused())
   {
     ctx->drawRect({0, 0, frame.w, frame.h}, COLOR_WHITE_F);
   }
@@ -24,4 +24,16 @@ void UIView::addChild(UIView *view)
   view->ctx = ctx;
   childs.push_back(view);
   view->build();
+}
+bool UIView::isFocused()
+{
+  return ctx->controller->focusView == this;
+}
+void UIView::focusParent()
+{
+  if (parent != nullptr)
+  {
+    ctx->controller->focusView = parent;
+    Serial.println("Focus Parent");
+  }
 }

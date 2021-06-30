@@ -10,6 +10,7 @@
 using namespace HLMusicMachine;
 
 #include "UIView.h"
+#include "UIPageView.h"
 #include "UIClockView.h"
 #include "UIHarmonyView.h"
 #include "UITracksView.h"
