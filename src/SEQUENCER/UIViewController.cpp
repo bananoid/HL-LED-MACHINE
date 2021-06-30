@@ -96,11 +96,11 @@ void UIViewController::update()
   {
     if (leftWheelSpeed > 0)
     {
-      focusView->focusChild();
+      focusView->focusIn();
     }
     else if (leftWheelSpeed < 0)
     {
-      focusView->focusParent();
+      focusView->focusOut();
     }
   }
 }

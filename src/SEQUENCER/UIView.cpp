@@ -37,14 +37,6 @@ bool UIView::isFocused()
   }
   return this->parent->childs[this->parent->focusIndex] == this;
 }
-void UIView::focusParent()
-{
-  if (parent != nullptr)
-  {
-    ctx->controller->focusView = parent;
-  }
-}
-
 void UIView::focusPrev()
 {
   focusIndex = (focusIndex - 1 + childs.size()) % childs.size();
@@ -53,9 +45,20 @@ void UIView::focusNext()
 {
   focusIndex = (focusIndex + 1) % childs.size();
 };
-void UIView::focusChild()
+void UIView::focusOut()
+{
+  if (parent != nullptr)
+  {
+    ctx->controller->focusView = parent;
+  }
+}
+void UIView::focusIn()
 {
   if (focusIndex >= childs.size() || focusIndex < 0)
+  {
+    return;
+  }
+  if (childs[focusIndex]->childs.size() == 0)
   {
     return;
   }
