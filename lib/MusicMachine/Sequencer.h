@@ -85,7 +85,7 @@ namespace HLMusicMachine
     {
       Parameter<uint8_t> steps = {16, 1, 16};
       Parameter<uint8_t> events = {4, 1, 16};
-      Parameter<uint8_t> offset = {0, 1, 16};
+      Parameter<uint8_t> offset = {0, 0, 16};
       Parameter<uint8_t> stepLenght = {4, 9, 1};
 
       Parameter<int8_t> octave = {3, -1, 4};
