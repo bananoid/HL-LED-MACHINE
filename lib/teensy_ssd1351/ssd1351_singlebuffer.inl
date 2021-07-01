@@ -5,7 +5,7 @@ MEMBER_REQUIRES(std::is_same<B, SingleBuffer>::value)
 void drawPixel(int16_t x, int16_t y, const C &color)
 {
 	// Single-buffered pixel drawing is trivial: just put the color in the buffer.
-	if ((x < 0) || (x >= W) || (y < 0) || (y >= H))
+	if ((x < bounds.x) || (x >= bounds.x + bounds.w) || (y < bounds.y) || (y >= bounds.y + bounds.h))
 	{
 		return;
 	}
@@ -65,28 +65,27 @@ void drawFastHLine(int16_t x, int16_t y, int16_t w, const C &color)
 MEMBER_REQUIRES(std::is_same<B, SingleBuffer>::value)
 void fillRect(int16_t x, int16_t y, int16_t w, int16_t h, const C &color)
 {
-	if ((x >= W) || (y >= H))
+	if ((x >= bounds.x + bounds.w) || (y >= bounds.y + bounds.h))
 	{
 		return;
 	}
-	if (x < 0)
+	if (x < bounds.x)
 	{
-		w -= abs(x);
-		x = 0;
+		w -= bounds.x - x;
+		x = bounds.x;
 	}
-	if (y < 0)
+	if (y < bounds.y)
 	{
-		y -= abs(y);
-		y = 0;
+		h -= bounds.y - y;
+		y = bounds.y;
 	}
-	if ((x + w - 1) >= W)
+	if ((x + w - 1) >= bounds.x + bounds.w)
 	{
-
-		w = W - x;
+		w = bounds.x + bounds.w - x;
 	}
-	if ((y + h - 1) >= H)
+	if ((y + h - 1) >= bounds.y + bounds.h)
 	{
-		h = H - y;
+		h = bounds.y + bounds.h - y;
 	}
 
 	ArrayType &buffer = frontBuffer();

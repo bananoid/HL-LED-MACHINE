@@ -227,6 +227,8 @@ namespace ssd1351
 			sendLastCommand(CMD_DISPLAY_WAKE);
 
 			endSPITransaction();
+
+			resetBounds();
 		}
 
 		void sleep(bool enable)
@@ -234,6 +236,28 @@ namespace ssd1351
 			beginSPITransaction();
 			sendLastCommand(enable ? CMD_DISPLAY_SLEEP : CMD_DISPLAY_WAKE);
 			endSPITransaction();
+		}
+
+		Rect bounds;
+		void setBounds(Rect bounds)
+		{
+			bounds.x = constrain(bounds.x, 0, W - 1);
+			bounds.y = constrain(bounds.y, 0, H - 1);
+
+			if ((bounds.x + bounds.w - 1) >= W)
+			{
+				bounds.w = W - bounds.x;
+			}
+			if ((bounds.y + bounds.h - 1) >= H)
+			{
+				bounds.h = H - bounds.y;
+			}
+
+			this->bounds = bounds;
+		}
+		void resetBounds()
+		{
+			setBounds({0, 0, W, H});
 		}
 
 		void drawRect(int16_t x, int16_t y, int16_t w, int16_t h, const C &color)
