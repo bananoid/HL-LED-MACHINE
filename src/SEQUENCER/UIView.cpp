@@ -2,29 +2,47 @@
 
 void UIView::show()
 {
+  auto clippingBounds = ctx->pushClippingBounds(frame);
+  if (clippingBounds.w <= 0 || clippingBounds.h <= 0)
+  {
+    return;
+  }
+
   ctx->pushOffset(frame);
+
+  //// Debuging frane
+  // uint8_t dc = 255 - depht * 80;
+  // int padding = depht * 1;
+  // ctx->drawRect({padding, padding, frame.w - padding * 2, frame.h - padding * 2}, {dc, dc, dc});
+
   update();
   draw();
 
   if (isFocused())
   {
-    ctx->drawRect({0, 0, frame.w, frame.h}, COLOR_WHITE_F);
+    ctx->drawRect({0, 0, frame.w, frame.h}, COLOR_RED_F);
   }
 
+  ctx->pushOffset(scroll);
   for (UIView *view : childs)
   {
     view->show();
+    ctx->popClippingBounds(clippingBounds);
   }
+  ctx->popOffset(scroll);
   ctx->popOffset(frame);
 }
 
-void UIView::addChild(UIView *view)
+UIView *UIView::addChild(UIView *view)
 {
   view->parent = this;
+  view->depht = depht + 1;
   view->ctx = ctx;
   childs.push_back(view);
   view->build();
+  return view;
 }
+
 bool UIView::isFocused()
 {
   if (this->parent == nullptr)
@@ -37,13 +55,18 @@ bool UIView::isFocused()
   }
   return this->parent->childs[this->parent->focusIndex] == this;
 }
+
+void UIView::setFocusIndex(uint16_t inx)
+{
+  focusIndex = constrain(inx, 0, childs.size() - 1);
+}
 void UIView::focusPrev()
 {
-  focusIndex = (focusIndex - 1 + childs.size()) % childs.size();
+  setFocusIndex((focusIndex - 1 + childs.size()) % childs.size());
 };
 void UIView::focusNext()
 {
-  focusIndex = (focusIndex + 1) % childs.size();
+  setFocusIndex((focusIndex + 1) % childs.size());
 };
 void UIView::focusOut()
 {
@@ -63,4 +86,17 @@ void UIView::focusIn()
     return;
   }
   ctx->controller->focusView = childs[focusIndex];
+}
+
+void UIView::layoutChilds()
+{
+  for (auto it : childs)
+  {
+    it->layout();
+  }
+};
+
+void UIView::layout()
+{
+  layoutChilds();
 }

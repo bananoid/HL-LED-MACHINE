@@ -10,25 +10,33 @@ using namespace std;
 
 class UIView
 {
+private:
 public:
+  uint16_t focusIndex = 0;
+  uint16_t depht = 0;
+
+  Point scroll = {0, 0};
+
   UIGFXContext *ctx = nullptr;
   Rect frame = {0, 0, 16, 16};
-  String label;
+  String label = "View";
   vector<UIView *> childs;
-  uint16_t focusIndex = 0;
   UIView *parent;
   UIView(){};
   virtual void show();
   virtual void build(){};
+  virtual void layout();
+  void layoutChilds();
   virtual void update(){};
   virtual void draw(){};
-  void addChild(UIView *view);
+  UIView *addChild(UIView *view);
 
   bool isFocused();
   // virtual void onKeyPress(uint16_t id) { parent->onKeyPress(id); };
   // virtual void onKeyRelease(uint16_t id) { parent->onKeyRelease(id); };
   // virtual void onWheelRotate(uint16_t id, float speed) { parent->onWheelRotate(id, speed); };
 
+  virtual void setFocusIndex(uint16_t inx);
   virtual void focusPrev();
   virtual void focusNext();
   virtual void focusIn();

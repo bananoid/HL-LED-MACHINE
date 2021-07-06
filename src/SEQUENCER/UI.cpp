@@ -18,12 +18,14 @@ void UI::init(Scheduler *runner, Tracker *tracker)
 
 UIView *UI::initRootView()
 {
-  auto pageView = new UIPageView({
-      new UIClockView(tracker),
-      new UIHarmonyView(tracker),
-      new UITracksView(tracker),
-  });
-  return pageView;
+  // auto pageView = new UIScrollView({
+  //     new UIClockView(tracker),
+  //     new UIHarmonyView(tracker),
+  //     new UITracksView(tracker),
+  // });
+  // return pageView;
+
+  return new UIRootView(tracker);
 }
 
 void UI::update()

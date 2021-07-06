@@ -11,10 +11,14 @@ void UIViewController::init(Scheduler *runner)
   ctx->controller = this;
   rootView = initRootView();
   rootView->ctx = ctx;
+
+  rootView->frame.x = 0;
+  rootView->frame.y = 0;
   rootView->frame.w = 128;
   rootView->frame.h = 128;
   focusView = rootView;
   rootView->build();
+  rootView->layout();
   updateTask.set(TASK_MILLISECOND * 16, TASK_FOREVER, [this]()
                  {
                    update();
@@ -107,6 +111,7 @@ void UIViewController::update()
 
 void UIViewController::draw()
 {
+  ctx->clippingBounds = rootView->frame;
   ctx->clear();
   rootView->show();
   ctx->commit();

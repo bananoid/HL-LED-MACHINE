@@ -8,8 +8,6 @@
 
 using namespace GFX;
 
-// #define  DEBUG_VIEW_TREE
-
 static const uint8_t ALIGN_LEFT = 0;
 static const uint8_t ALIGN_CENTER = 1;
 static const uint8_t ALIGN_RIGHT = 2;
@@ -39,13 +37,8 @@ class UIGFXContext : public Print
 public:
   Display *display;
   UIViewController *controller;
-  struct Offset
-  {
-    int x = 0;
-    int y = 0;
-  };
 
-  Offset offset = {0, 0};
+  Point offset = {0, 0};
 
 #ifdef DEBUG_VIEW_TREE
   int pushCount = 0;
@@ -59,42 +52,33 @@ public:
     setFont(Font5x7FixedMono);
   }
 
-  void pushOffset(Rect frame)
+  void pushOffset(const Point offset)
   {
-    offset.x += frame.x;
-    offset.y += frame.y;
-
-#ifdef DEBUG_VIEW_TREE
-    if (pushCount == 0)
-    {
-      Serial.println("");
-    }
-
-    for (int i = 0; i < pushCount; i++)
-    {
-      Serial.print("|   ");
-    }
-
-    Serial.printf("d:[x %i y %i] - o:[x %i y %i] \n", frame.x, frame.y, offset.x, offset.y);
-
-    pushCount++;
-#endif //DEBUG_VIEW_TREE
+    this->offset.x += offset.x;
+    this->offset.y += offset.y;
   }
 
-  void popOffset(Rect frame)
+  void pushOffset(Rect frame)
   {
-    offset.x -= frame.x;
-    offset.y -= frame.y;
+    pushOffset({frame.x, frame.y});
+  }
 
-#ifdef DEBUG_VIEW_TREE
-    pushCount--;
-#endif //DEBUG_VIEW_TREE
+  void popOffset(const Point offset)
+  {
+    this->offset.x -= offset.x;
+    this->offset.y -= offset.y;
+  }
+
+  void popOffset(const Rect frame)
+  {
+    popOffset({frame.x, frame.y});
   }
 
   void clear()
   {
-    display->fillScreen({0, 0, 0});
+    display->fillScreen({10, 50, 40});
   }
+
   void commit()
   {
     display->updateScreen();
@@ -152,5 +136,55 @@ public:
   void drawText(String str, int16_t x, int16_t y, uint8_t align = ALIGN_LEFT)
   {
     display->drawText(str.c_str(), offset.x + x, offset.y + y, align);
+  }
+
+  Rect clippingBounds = {0, 0, 0, 0};
+  void setClippingBounds(Rect bounds)
+  {
+    clippingBounds = {bounds.x,
+                      bounds.y,
+                      bounds.w,
+                      bounds.h};
+    display->setBounds({
+        clippingBounds.x,
+        clippingBounds.y,
+        clippingBounds.w,
+        clippingBounds.h,
+    });
+  }
+
+  // void resetBounds()
+  // {
+  //   display->resetBounds();
+  // }
+
+  Rect pushClippingBounds(const Rect bounds)
+  {
+    clippingBounds = clippingBounds.interserctWith(
+        {bounds.x + offset.x,
+         bounds.y + offset.y,
+         bounds.w,
+         bounds.h});
+
+    if (clippingBounds.w > 0 && clippingBounds.h > 0)
+    {
+      display->setBounds({clippingBounds.x,
+                          clippingBounds.y,
+                          clippingBounds.w,
+                          clippingBounds.h});
+
+      // Debuging Clipping Bounds
+      // display->drawRect(clippingBounds.x,
+      //                   clippingBounds.y,
+      //                   clippingBounds.w,
+      //                   clippingBounds.h, {0, 255, 0});
+    }
+
+    return clippingBounds;
+  }
+  void popClippingBounds(const Rect bounds)
+  {
+    clippingBounds = bounds;
+    display->setBounds({bounds.x, bounds.y, bounds.w, bounds.h});
   }
 };

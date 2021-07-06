@@ -19,12 +19,18 @@ namespace GFX
     uint8_t v;
   } HSV;
 
+  struct Point
+  {
+    int16_t x = 0;
+    int16_t y = 0;
+  };
+
   struct Rect
   {
-    int x = 0;
-    int y = 0;
-    int w = 32;
-    int h = 16;
+    int16_t x = 0;
+    int16_t y = 0;
+    int16_t w = 32;
+    int16_t h = 16;
 
     Rect(int x, int y, int w, int h)
     {
@@ -34,24 +40,63 @@ namespace GFX
       this->h = h;
     }
 
-    Rect operator+(Rect r)
+    // Rect operator+(const Rect r)
+    // {
+    //   return Rect(x + r.x, x + r.x, x + r.x, x + r.x);
+    // }
+
+    // Rect operator-(const Rect r)
+    // {
+    //   return Rect(x - r.x, x - r.x, x - r.x, x - r.x);
+    // }
+
+    // Rect operator*(const Rect r)
+    // {
+    //   return Rect(x * r.x, x * r.x, x * r.x, x * r.x);
+    // }
+
+    // Rect operator/(const Rect r)
+    // {
+    //   return Rect(x / r.x, x / r.x, x / r.x, x / r.x);
+    // }
+
+    // Rect operator+(Point p)
+    // {
+    //   return Rect(x + p.x, x + r.x, x + r.x, x + r.x);
+    // }
+
+    Rect operator+(const Point p)
     {
-      return Rect(x + r.x, x + r.x, x + r.x, x + r.x);
+      return Rect(x + p.x, y + p.y, w, h);
     }
 
-    Rect operator-(Rect r)
+    bool collideWith(const Rect rect)
     {
-      return Rect(x - r.x, x - r.x, x - r.x, x - r.x);
+      if (x + w < rect.x || x > rect.x + rect.w)
+        return false;
+      if (y + h < rect.y || y > rect.y + rect.w)
+        return false;
+
+      return true;
     }
 
-    Rect operator*(Rect r)
+    Rect interserctWith(Rect rect)
     {
-      return Rect(x * r.x, x * r.x, x * r.x, x * r.x);
-    }
+      auto xMinA = x;
+      auto xMaxA = x + w;
+      auto xMinB = rect.x;
+      auto xMaxB = rect.x + rect.w;
+      rect.x = max(xMinA, xMinB);
+      rect.w = min(xMaxA, xMaxB) - rect.x;
 
-    Rect operator/(Rect r)
-    {
-      return Rect(x / r.x, x / r.x, x / r.x, x / r.x);
+      auto yMinA = y;
+      auto yMaxA = y + h;
+      auto yMinB = rect.y;
+      auto yMaxB = rect.y + rect.h;
+      rect.y = max(yMinA, yMinB);
+      rect.h = min(yMaxA, yMaxB) - rect.y;
+
+      return rect;
     }
   };
 

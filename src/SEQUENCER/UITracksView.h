@@ -22,11 +22,11 @@ public:
     for (auto *track : tracker->tracks)
     {
       uint16_t activeKey = activeKeys[tInx % 4];
-      trackView = new UITrackCollView(track, activeKey); // todo asign button key to track
+      trackView = new UITrackCollView(track, activeKey);
       trackView->frame.x = tInx * 32;
       trackView->frame.w = 32;
-      trackView->frame.y = 16;
-      trackView->frame.h = frame.h - 16;
+      trackView->frame.y = 0;
+      trackView->frame.h = frame.h;
       addChild(trackView);
       tInx++;
     }

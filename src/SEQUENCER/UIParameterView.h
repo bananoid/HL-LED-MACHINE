@@ -40,13 +40,11 @@ public:
   {
     int barValW = param->scale(0, frame.w - 2);
 
-    ctx->drawRect({1, 1, frame.w - 2, frame.h - 2}, COLOR_RED_B, true);
-    ctx->drawRect({1, 1, barValW, 3}, COLOR_RED_F, true);
+    // ctx->drawRect({1, 1, frame.w - 2, frame.h - 2}, COLOR_RED_B, true);
+    // ctx->drawRect({1, 1, barValW, 3}, COLOR_RED_F, true);
     ctx->setTextSize(1);
     ctx->setTextColor(COLOR_WHITE_F);
     ctx->setCursor(0, 0);
-    // ctx->drawText(String(param->min) + "/" + String(param->max), frame.w / 2, frame.h - 16, ALIGN_CENTER);
-    // ctx->drawText(label, frame.w / 2, frame.h - 16, ALIGN_CENTER);
     ctx->drawText(label, 4, frame.h - 16, ALIGN_LEFT);
     ctx->drawText(String(*param), frame.w / 2, frame.h - 2, ALIGN_CENTER);
   }

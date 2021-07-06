@@ -17,6 +17,10 @@ public:
   }
   void update() override
   {
+    if (!isFocused())
+    {
+      return;
+    }
     float wheelSpeed = ctx->controller->wheelEncoders[WHEEL_ID_RIGHT]->speed;
     if (ctx->controller->buttonKeys[KEY_ID_WHEEL_RIGHT]->isPressed())
     {
@@ -30,7 +34,7 @@ public:
   }
   void draw() override
   {
-    // ctx->drawRect({1, 1, frame.w - 2, frame.h - 2}, COLOR_RED_B, true);
+    // ctx->drawRect({0, 0, frame.w, frame.h}, COLOR_RED_B, true);
     ctx->setTextColor(COLOR_WHITE_F);
     ctx->setCursor(0, 0);
     ctx->setTextSize(2);
