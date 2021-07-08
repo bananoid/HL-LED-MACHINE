@@ -5,6 +5,8 @@
 #define _TASK_STD_FUNCTION
 #define _TASK_MICRO_RES
 
+#define NUMBER_OF_SCREEN_KEYS 4
+
 #define KEY_ID_SCREEN_A 1
 #define KEY_ID_SCREEN_B 2
 #define KEY_ID_SCREEN_C 3

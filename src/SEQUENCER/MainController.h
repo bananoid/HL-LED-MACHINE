@@ -17,7 +17,7 @@ using namespace HLMusicMachine;
 
 #define NUM_OF_SCALES 0
 #define NUM_OF_CV_TRAKS 4
-#define NUM_OF_MIDI_TRAKS 0
+#define NUM_OF_MIDI_TRAKS 4
 
 #include "UI.h"
 

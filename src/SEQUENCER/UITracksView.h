@@ -1,29 +1,30 @@
 #pragma once
-#include "UIView.h"
+#include "UIScrollView.h"
 #include "UITrackCollView.h"
 #include <Tracker.h>
 
 using namespace HLMusicMachine;
 
-class UITracksView : public UIView
+class UITracksView : public UIScrollView
 {
 public:
   Tracker *tracker;
+  const uint16_t screenKeys[NUMBER_OF_SCREEN_KEYS] = {KEY_ID_SCREEN_A, KEY_ID_SCREEN_B, KEY_ID_SCREEN_C, KEY_ID_SCREEN_D};
   UITracksView(Tracker *tracker)
   {
     this->tracker = tracker;
+    layoutType = HORIZONTAL;
   }
   void build() override
   {
+
     UITrackCollView *trackView;
-    uint16_t activeKeys[] = {KEY_ID_SCREEN_A, KEY_ID_SCREEN_B, KEY_ID_SCREEN_C, KEY_ID_SCREEN_D};
 
     uint8_t tInx = 0;
     for (auto *track : tracker->tracks)
     {
-      uint16_t activeKey = activeKeys[tInx % 4];
-      trackView = new UITrackCollView(track, activeKey);
-      trackView->frame.x = tInx * 32;
+      trackView = new UITrackCollView(track);
+      trackView->label = "T" + String(tInx + 1);
       trackView->frame.w = 32;
       trackView->frame.y = 0;
       trackView->frame.h = frame.h;
@@ -31,6 +32,24 @@ public:
       tInx++;
     }
   }
+
+  void update()
+  {
+    for (int i = 0; i < NUMBER_OF_SCREEN_KEYS; i++)
+    {
+      auto keyId = screenKeys[i];
+      if (ctx->controller->buttonKeys[keyId]->pressed())
+      {
+        auto nTraks = tracker->tracks.size();
+        auto trackInx = i + constrain(focusIndex, 0, nTraks - NUMBER_OF_SCREEN_KEYS);
+        trackInx = constrain(trackInx, 0, nTraks - 1);
+        auto track = tracker->tracks[trackInx];
+
+        track->togglePlayStop();
+      }
+    }
+  }
+
   void draw() override
   {
   }
