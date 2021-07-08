@@ -16,6 +16,7 @@ public:
   uint16_t depht = 0;
 
   Point scroll = {0, 0};
+  Color focusColor = COLOR_RED_F;
 
   UIGFXContext *ctx = nullptr;
   Rect frame = {0, 0, 16, 16};

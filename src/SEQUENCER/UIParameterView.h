@@ -19,6 +19,7 @@ public:
   UIParameterView(Sequencer::Parameter<T> *param)
   {
     this->param = param;
+    focusColor = COLOR_GREEN_F;
   }
 
   void update() override

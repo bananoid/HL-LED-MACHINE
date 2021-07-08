@@ -21,6 +21,7 @@ public:
 
   void build() override
   {
+    trackView->label = label;
   }
 
   void update() override

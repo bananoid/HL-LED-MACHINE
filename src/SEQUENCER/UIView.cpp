@@ -20,7 +20,7 @@ void UIView::show()
 
   if (isFocused())
   {
-    ctx->drawRect({0, 0, frame.w, frame.h}, COLOR_RED_F);
+    ctx->drawRect({0, 0, frame.w, frame.h}, focusColor);
   }
 
   ctx->pushOffset(scroll);

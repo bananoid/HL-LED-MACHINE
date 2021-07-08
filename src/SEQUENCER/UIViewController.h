@@ -81,7 +81,7 @@ public:
   virtual void update();
   void draw();
 
-  void dispatchKeyPress(uint16_t id);
-  void dispatchKeyRelease(uint16_t id);
-  void dispatchWheelRotate(uint16_t id, float speed);
+  // void dispatchKeyPress(uint16_t id);
+  // void dispatchKeyRelease(uint16_t id);
+  // void dispatchWheelRotate(uint16_t id, float speed);
 };

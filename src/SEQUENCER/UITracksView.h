@@ -29,8 +29,6 @@ public:
       trackView = new UITrackCollView(track);
       trackView->label = "T" + String(tInx + 1);
       trackView->frame.w = 32;
-      trackView->frame.y = 0;
-      trackView->frame.h = frame.h;
       addChild(trackView);
       tInx++;
     }
