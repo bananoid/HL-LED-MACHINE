@@ -17,8 +17,10 @@ void UIViewController::init(Scheduler *runner)
   rootView->frame.w = 128;
   rootView->frame.h = 128;
   focusView = rootView;
+
   rootView->build();
   rootView->layout();
+
   updateTask.set(TASK_MILLISECOND * 16, TASK_FOREVER, [this]()
                  {
                    update();

@@ -75,9 +75,9 @@ namespace HLMusicMachine
         return *this;
       }
 
-      T scale(T a, T b)
+      float scale(float a, float b)
       {
-        return MathUtils::scale((T)value, min, max, a, b);
+        return MathUtils::scale((float)value, (float)min, (float)max, (float)a, (float)b);
       }
     };
 
@@ -98,12 +98,10 @@ namespace HLMusicMachine
       Parameter<bool> chord = {false, false, true};
 
       Parameter<int8_t> retrig = {0, -1, 7}; // 0 is disable -1 is auto with lfo
-      Parameter<float> retrigLFO = {32, 1, 8};
+      Parameter<uint8_t> retrigLFO = {1, 1, 8};
 
       Parameter<int8_t> velocity = {127, -1, 127}; // -1 enable lfo
-      Parameter<float> velocityLFO = {16, 30, 127};
-
-      Parameter<float> fillFactor = {1, 0, 1}; // 0 - 1 percentange of notes that are pick from sequence
+      Parameter<uint8_t> velocityLFO = {16, 30, 16};
     };
 
     Type type = MELODY;

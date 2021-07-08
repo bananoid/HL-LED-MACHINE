@@ -25,7 +25,6 @@ namespace HLMusicMachine
 
     void clockTick(int counter);
     void radomize();
-    void setFillFactor(float fillFactor);
 
     bool isPlaying = false;
     void play();

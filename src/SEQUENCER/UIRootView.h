@@ -5,6 +5,7 @@
 #include "UIClockView.h"
 #include "UIHarmonyView.h"
 #include "UITracksView.h"
+#include "UITrackView.h"
 
 class UIRootView : public UIScrollView
 {
@@ -22,19 +23,27 @@ public:
 
     UIView *cView;
     auto itemFrame = frame;
-    for (int i = 0; i < 3; i++)
-    {
-      cView = new UIHarmonyView(tracker);
-      cView->frame = itemFrame;
-      cView->label = String(i);
-      addChild(cView);
-    }
+    // for (int i = 0; i < 3; i++)
+    // {
+    //   cView = new UIHarmonyView(tracker);
+    //   cView->frame = itemFrame;
+    //   cView->label = String(i);
+    //   addChild(cView);
+    // }
 
-    cView = new UIClockView(tracker);
+    cView = new UITracksView(tracker);
     cView->frame = itemFrame;
     addChild(cView);
 
-    cView = new UITracksView(tracker);
+    cView = new UITrackView(tracker->tracks[0]);
+    cView->frame = itemFrame;
+    addChild(cView);
+
+    cView = new UIHarmonyView(tracker);
+    cView->frame = itemFrame;
+    addChild(cView);
+
+    cView = new UIClockView(tracker);
     cView->frame = itemFrame;
     addChild(cView);
   }

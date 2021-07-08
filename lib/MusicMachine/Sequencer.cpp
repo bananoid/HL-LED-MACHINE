@@ -88,14 +88,6 @@ namespace HLMusicMachine
 
     bool isOn = isEuclidean(stepInx);
 
-    if (parameters.fillFactor < 1)
-    {
-      int fillEvents = parameters.fillFactor * parameters.steps;
-      bool fillMask = isEuclidean(stepInx, parameters.steps, (int)fillEvents, parameters.offset);
-      Serial.printf("isOn:%i fillMask:%i fillEvents:%i/%i\n", isOn, fillMask, parameters.steps, (int)fillEvents);
-      isOn = isOn && fillMask;
-    }
-
     if (newStep)
     {
       lastStep.note = onCounter % parameters.events;

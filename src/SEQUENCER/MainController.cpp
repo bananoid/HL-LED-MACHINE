@@ -344,15 +344,15 @@ void MainController::loadGlobalSettings()
 
     // Overide Not assigned parameters
     // Todo: add controls
-    cvSequencers[i]->parameters.velocity = -1;
-    cvSequencers[i]->parameters.velocityLFO = 4;
-    cvSequencers[i]->parameters.velocityLFO.min = 0;
-    cvSequencers[i]->parameters.velocityLFO.max = 127;
+    // cvSequencers[i]->parameters.velocity = -1;
+    // cvSequencers[i]->parameters.velocityLFO = 4;
+    // cvSequencers[i]->parameters.velocityLFO.min = 0;
+    // cvSequencers[i]->parameters.velocityLFO.max = 127;
 
-    cvSequencers[i]->parameters.arpeggioType = Sequencer::ArpeggioType_LFO;
-    cvSequencers[i]->parameters.arpeggioLFO = 1;
+    // cvSequencers[i]->parameters.arpeggioType = Sequencer::ArpeggioType_LFO;
+    // cvSequencers[i]->parameters.arpeggioLFO = 1;
 
-    cvSequencers[i]->parameters.fillFactor = 1;
+    // cvSequencers[i]->parameters.fillFactor = 1;
   }
 
   globalSettingsUnsaved = false;
