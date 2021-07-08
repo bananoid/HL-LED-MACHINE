@@ -44,11 +44,20 @@ public:
     layoutChilds();
   }
 
-  void setFocusIndex(uint16_t inx) override
+  void setFocusIndex(int16_t inx) override
   {
+    inx = constrain(inx, 0, childs.size() - 1);
     UIView::setFocusIndex(inx);
     auto currentView = childs[(uint16_t)focusIndex];
     scroll.x = -currentView->frame.x;
     scroll.y = -currentView->frame.y;
+
+    auto lastChild = childs.back();
+
+    auto minScrollX = frame.w - lastChild->frame.x - lastChild->frame.w;
+    scroll.x = max(scroll.x, minScrollX);
+
+    auto minScrollY = frame.h - lastChild->frame.y - lastChild->frame.h;
+    scroll.y = max(scroll.y, minScrollY);
   };
 };

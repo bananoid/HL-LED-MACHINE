@@ -56,17 +56,31 @@ bool UIView::isFocused()
   return this->parent->childs[this->parent->focusIndex] == this;
 }
 
-void UIView::setFocusIndex(uint16_t inx)
+void UIView::setFocusIndex(int16_t inx)
 {
   focusIndex = constrain(inx, 0, childs.size() - 1);
 }
 void UIView::focusPrev()
 {
-  setFocusIndex((focusIndex - 1 + childs.size()) % childs.size());
+  if (loopFocusSelection)
+  {
+    setFocusIndex((focusIndex - 1 + childs.size()) % childs.size());
+  }
+  else
+  {
+    setFocusIndex(focusIndex - 1);
+  }
 };
 void UIView::focusNext()
 {
-  setFocusIndex((focusIndex + 1) % childs.size());
+  if (loopFocusSelection)
+  {
+    setFocusIndex((focusIndex + 1) % childs.size());
+  }
+  else
+  {
+    setFocusIndex(focusIndex + 1);
+  }
 };
 void UIView::focusOut()
 {

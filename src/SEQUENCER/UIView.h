@@ -22,6 +22,7 @@ public:
   String label = "View";
   vector<UIView *> childs;
   UIView *parent;
+  bool loopFocusSelection = false;
   UIView(){};
   virtual void show();
   virtual void build(){};
@@ -36,7 +37,7 @@ public:
   // virtual void onKeyRelease(uint16_t id) { parent->onKeyRelease(id); };
   // virtual void onWheelRotate(uint16_t id, float speed) { parent->onWheelRotate(id, speed); };
 
-  virtual void setFocusIndex(uint16_t inx);
+  virtual void setFocusIndex(int16_t inx);
   virtual void focusPrev();
   virtual void focusNext();
   virtual void focusIn();
