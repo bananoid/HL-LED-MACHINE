@@ -12,6 +12,8 @@ public:
   };
 
   Direction layoutType = VERTICAL;
+  uint16_t pageSize = 1;
+  uint16_t scrollIndex = 0;
 
   UIScrollView()
   {
@@ -48,7 +50,13 @@ public:
   {
     inx = constrain(inx, 0, childs.size() - 1);
     UIView::setFocusIndex(inx);
-    auto currentView = childs[(uint16_t)focusIndex];
+
+    inx /= pageSize;
+    inx *= pageSize;
+
+    scrollIndex = inx;
+
+    auto currentView = childs[(uint16_t)inx];
     scroll.x = -currentView->frame.x;
     scroll.y = -currentView->frame.y;
 

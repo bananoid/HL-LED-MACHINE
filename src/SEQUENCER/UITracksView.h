@@ -16,6 +16,7 @@ public:
   {
     this->tracker = tracker;
     layoutType = HORIZONTAL;
+    pageSize = 4;
   }
   void build() override
   {
@@ -43,7 +44,9 @@ public:
       if (ctx->controller->buttonKeys[keyId]->pressed())
       {
         auto nTraks = tracker->tracks.size();
-        auto trackInx = i + constrain(focusIndex, 0, nTraks - NUMBER_OF_SCREEN_KEYS);
+
+        auto trackInx = i + constrain(scrollIndex, 0, nTraks - NUMBER_OF_SCREEN_KEYS);
+
         trackInx = constrain(trackInx, 0, nTraks - 1);
         auto track = tracker->tracks[trackInx];
 
