@@ -42,4 +42,6 @@ public:
   virtual void focusNext();
   virtual void focusIn();
   virtual void focusOut();
+
+  virtual UIView *getSubView();
 };

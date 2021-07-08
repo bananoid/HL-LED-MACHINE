@@ -23,19 +23,8 @@ public:
 
     UIView *cView;
     auto itemFrame = frame;
-    // for (int i = 0; i < 3; i++)
-    // {
-    //   cView = new UIHarmonyView(tracker);
-    //   cView->frame = itemFrame;
-    //   cView->label = String(i);
-    //   addChild(cView);
-    // }
 
     cView = new UITracksView(tracker);
-    cView->frame = itemFrame;
-    addChild(cView);
-
-    cView = new UITrackView(tracker->tracks[0]);
     cView->frame = itemFrame;
     addChild(cView);
 

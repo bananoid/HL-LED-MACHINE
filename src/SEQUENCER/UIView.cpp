@@ -82,11 +82,21 @@ void UIView::focusNext()
     setFocusIndex(focusIndex + 1);
   }
 };
+
+UIView *UIView::getSubView()
+{
+  return nullptr;
+};
+
 void UIView::focusOut()
 {
   if (parent != nullptr)
   {
     ctx->controller->focusView = parent;
+  }
+  else
+  {
+    ctx->controller->popView();
   }
 }
 void UIView::focusIn()
@@ -95,10 +105,19 @@ void UIView::focusIn()
   {
     return;
   }
+
+  auto subView = childs[focusIndex]->getSubView();
+
+  if (subView != nullptr)
+  {
+    ctx->controller->pushView(subView);
+  }
+
   if (childs[focusIndex]->childs.size() == 0)
   {
     return;
   }
+
   ctx->controller->focusView = childs[focusIndex];
 }
 

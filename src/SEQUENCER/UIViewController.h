@@ -12,6 +12,12 @@
 #include <map>
 #include <memory>
 
+#include <GFXUtils.h>
+using namespace GFX;
+
+#include <vector>
+using namespace std;
+
 struct EncoderConfig
 {
   uint8_t a;
@@ -53,12 +59,16 @@ class UIView;
 class UIViewController
 {
 public:
+  Rect screenBounds = {0, 0, 128, 128};
   UIGFXContext *ctx;
   Task updateTask;
   UIView *rootView;
   UIView *focusView;
+  vector<UIView *> viewStack;
   virtual UIView *initRootView();
   virtual void init(Scheduler *runner);
+  void pushView(UIView *view);
+  void popView();
 
   std::map<uint16_t, Bounce2::Button *> buttonKeys;
   std::map<uint16_t, EncoderWrapper *> wheelEncoders;

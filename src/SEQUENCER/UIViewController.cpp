@@ -10,16 +10,9 @@ void UIViewController::init(Scheduler *runner)
   ctx = new UIGFXContext();
   ctx->controller = this;
   rootView = initRootView();
-  rootView->ctx = ctx;
 
-  rootView->frame.x = 0;
-  rootView->frame.y = 0;
-  rootView->frame.w = 128;
-  rootView->frame.h = 128;
-  focusView = rootView;
-
-  rootView->build();
-  rootView->layout();
+  // viewStack.clear();
+  pushView(rootView);
 
   updateTask.set(TASK_MILLISECOND * 16, TASK_FOREVER, [this]()
                  {
@@ -29,6 +22,31 @@ void UIViewController::init(Scheduler *runner)
   runner->addTask(updateTask);
   updateTask.enable();
 }
+
+void UIViewController::pushView(UIView *view)
+{
+  if (view->ctx == nullptr)
+  {
+    view->ctx = ctx;
+    view->frame = screenBounds;
+    view->build();
+    view->layout();
+  }
+
+  viewStack.push_back(view);
+
+  focusView = view;
+}
+void UIViewController::popView()
+{
+  if (viewStack.size() <= 1)
+  {
+    return;
+  }
+  viewStack.pop_back();
+  viewStack.back()->focusIn();
+};
+
 UIView *UIViewController::initRootView()
 {
   return new UIView();
@@ -113,8 +131,8 @@ void UIViewController::update()
 
 void UIViewController::draw()
 {
-  ctx->clippingBounds = rootView->frame;
+  ctx->clippingBounds = screenBounds;
   ctx->clear();
-  rootView->show();
+  viewStack.back()->show();
   ctx->commit();
 }

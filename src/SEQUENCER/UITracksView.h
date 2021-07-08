@@ -1,6 +1,7 @@
 #pragma once
 #include "UIScrollView.h"
 #include "UITrackCollView.h"
+#include "UITrackView.h"
 #include <Tracker.h>
 
 using namespace HLMusicMachine;
@@ -10,6 +11,7 @@ class UITracksView : public UIScrollView
 public:
   Tracker *tracker;
   const uint16_t screenKeys[NUMBER_OF_SCREEN_KEYS] = {KEY_ID_SCREEN_A, KEY_ID_SCREEN_B, KEY_ID_SCREEN_C, KEY_ID_SCREEN_D};
+
   UITracksView(Tracker *tracker)
   {
     this->tracker = tracker;

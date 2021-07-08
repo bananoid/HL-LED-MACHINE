@@ -3,49 +3,28 @@
 #include "UIParameterView.h"
 #include <Track.h>
 #include "UIDisplayConfig.h"
+#include "UITrackView.h"
 using namespace HLMusicMachine;
 
 class UITrackCollView : public UIView
 {
 public:
   Track *track;
+  UITrackView *trackView;
+
   UITrackCollView(Track *track)
   {
     this->track = track;
+
+    trackView = new UITrackView(track);
   }
+
   void build() override
   {
-    // UIParameterView<uint8_t> *paramView;
-
-    // paramView = new UIParameterView<uint8_t>(&track->sequencers[0]->parameters.stepLenght);
-    // paramView->label = "SLen";
-    // addChild(paramView);
-
-    // paramView = new UIParameterView<uint8_t>(&track->sequencers[0]->parameters.events);
-    // paramView->label = "Evts";
-    // addChild(paramView);
-
-    // paramView = new UIParameterView<uint8_t>(&track->sequencers[0]->parameters.offset);
-    // paramView->label = "Ofst";
-    // addChild(paramView);
-
-    // int itInx = 0;
-    // for (auto *item : childs)
-    // {
-    //   item->frame.h = 32;
-    //   item->frame.w = frame.w;
-    //   item->frame.x = 0;
-    //   item->frame.y = itInx * item->frame.h;
-    //   itInx++;
-    // }
   }
 
   void update() override
   {
-    // if (ctx->controller->buttonKeys[keyId]->pressed())
-    // {
-    //   track->togglePlayStop();
-    // }
   }
 
   void draw() override
@@ -55,7 +34,7 @@ public:
     auto textColor = COLOR_BLACK_B;
     if (track->isPlaying)
     {
-      ctx->drawRect(onOffBox, COLOR_CYAN_F, true);
+      ctx->drawRect(onOffBox, COLOR_YELLOW_F, true);
     }
     else
     {
@@ -68,4 +47,9 @@ public:
     ctx->setCursor(0, 0);
     ctx->drawText(label, frame.w / 2, onOffBox.y + 11, ALIGN_CENTER);
   }
+
+  UIView *getSubView() override
+  {
+    return trackView;
+  };
 };
