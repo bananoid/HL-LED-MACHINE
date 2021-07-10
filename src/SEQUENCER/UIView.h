@@ -22,7 +22,7 @@ public:
   Rect frame = {0, 0, 16, 16};
   String label = "View";
   vector<UIView *> childs;
-  UIView *parent;
+  UIView *parent = nullptr;
   bool loopFocusSelection = false;
   UIView(){};
   virtual void show();
