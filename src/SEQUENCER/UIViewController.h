@@ -60,10 +60,10 @@ class UIViewController
 {
 public:
   Rect screenBounds = {0, 0, 128, 128};
-  UIGFXContext *ctx;
+  UIGFXContext *ctx = nullptr;
   Task updateTask;
-  UIView *rootView;
-  UIView *focusView;
+  UIView *rootView = nullptr;
+  UIView *focusView = nullptr;
   vector<UIView *> viewStack;
   virtual UIView *initRootView();
   virtual void init(Scheduler *runner);
