@@ -111,6 +111,7 @@ void UIView::focusIn()
   if (subView != nullptr)
   {
     ctx->controller->pushView(subView);
+    return;
   }
 
   if (childs[focusIndex]->childs.size() == 0)
