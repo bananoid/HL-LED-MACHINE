@@ -1,6 +1,6 @@
 #include "Instrument.h"
 #include <Arduino.h>
-
+#include <Clock.h>
 namespace HLMusicMachine
 {
   Instrument::Instrument(Scheduler *runner, int voiceCount)
@@ -27,15 +27,27 @@ namespace HLMusicMachine
 
   void Instrument::trigNote(int note, int vel, int noteLenght)
   {
+
     if (note != lastNote)
     {
       voiceIndex++;
     }
     voiceIndex = voiceIndex % voices.size();
 
-    voices[voiceIndex]->noteOn(note, vel, noteLenght);
-
     lastNote = note;
+
+    auto startTick = masterClock->tickCounter;
+    eventsBuffer.push({startTick,
+                       noteLenght,
+                       note,
+                       vel,
+                       voiceIndex});
+
+    if (!isEnabled)
+    {
+      return;
+    }
+    voices[voiceIndex]->noteOn(note, vel, noteLenght);
   }
 
   void Instrument::noteOn(int note, int vel, uint8_t voiceIndex)

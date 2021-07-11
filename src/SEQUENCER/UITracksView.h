@@ -36,19 +36,27 @@ public:
 
   void update()
   {
+
     for (int i = 0; i < NUMBER_OF_SCREEN_KEYS; i++)
     {
       auto keyId = screenKeys[i];
       if (ctx->controller->buttonKeys[keyId]->pressed())
       {
-        auto nTraks = tracker->tracks.size();
+        if (ctx->controller->buttonKeys[KEY_ID_FRONT_RIGHT]->isPressed())
+        {
+          gotoPage(i);
+        }
+        else
+        {
+          auto nTraks = tracker->tracks.size();
 
-        auto trackInx = i + constrain(scrollIndex, 0, nTraks - NUMBER_OF_SCREEN_KEYS);
+          auto trackInx = i + constrain(scrollIndex, 0, nTraks - NUMBER_OF_SCREEN_KEYS);
 
-        trackInx = constrain(trackInx, 0, nTraks - 1);
-        auto track = tracker->tracks[trackInx];
+          trackInx = constrain(trackInx, 0, nTraks - 1);
+          auto track = tracker->tracks[trackInx];
 
-        track->togglePlayStop();
+          track->togglePlayStop();
+        }
       }
     }
   }

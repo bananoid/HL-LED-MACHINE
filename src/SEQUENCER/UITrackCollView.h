@@ -4,6 +4,8 @@
 #include <Track.h>
 #include "UIDisplayConfig.h"
 #include "UITrackView.h"
+#include "UITrackPlotter.h"
+
 using namespace HLMusicMachine;
 
 class UITrackCollView : public UIView
@@ -11,7 +13,7 @@ class UITrackCollView : public UIView
 public:
   Track *track;
   UITrackView *trackView;
-
+  UITrackPlotter *plotter;
   UITrackCollView(Track *track)
   {
     this->track = track;
@@ -22,6 +24,14 @@ public:
   void build() override
   {
     trackView->label = label;
+
+    plotter = new UITrackPlotter(track);
+    addChild(plotter);
+  }
+
+  void layout() override
+  {
+    plotter->frame = {1, 1, frame.w - 2, frame.h - 17};
   }
 
   void update() override

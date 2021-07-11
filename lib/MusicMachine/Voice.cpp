@@ -5,10 +5,12 @@ namespace HLMusicMachine
 {
   Voice::Voice(Scheduler *runner) // : Task(TASK_MILLISECOND * 100, TASK_FOREVER, runner, false)
   {
-    voiceTask.set(TASK_MILLISECOND * 100, TASK_FOREVER, [this]() {
-      noteOff(lastNote);
-      voiceTask.disable();
-    });
+
+    voiceTask.set(TASK_MILLISECOND * 100, TASK_FOREVER, [this]()
+                  {
+                    noteOff(lastNote);
+                    voiceTask.disable();
+                  });
     runner->addTask(voiceTask);
     voiceTask.disable();
   }
@@ -38,8 +40,6 @@ namespace HLMusicMachine
       }
 
       voiceTask.restartDelayed(noteTime);
-
-      // Serial.printf("noteLenght %i %i \n", noteLenght, noteTime);
     }
   }
   void Voice::noteOff(int note)

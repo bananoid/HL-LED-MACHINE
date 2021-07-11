@@ -68,4 +68,10 @@ public:
     auto minScrollY = frame.h - lastChild->frame.y - lastChild->frame.h;
     scroll.y = max(scroll.y, minScrollY);
   };
+
+  void gotoPage(uint16_t pageInx)
+  {
+    auto scrollInx = pageInx * pageSize;
+    setFocusIndex(scrollInx);
+  }
 };

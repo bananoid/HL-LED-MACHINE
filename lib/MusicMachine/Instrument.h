@@ -1,11 +1,12 @@
 #pragma once
 
 #include "config.h"
-// #define _TASK_TIMEOUT
 #include <TaskSchedulerDeclarations.h>
 
 #include <vector>
 #include "Voice.h"
+
+#include <CircularBuffer.h>
 
 namespace HLMusicMachine
 {
@@ -21,8 +22,19 @@ namespace HLMusicMachine
     int lastNote = -1;
 
   public:
+    struct NoteEvent
+    {
+      uint32_t startTick;
+      uint16_t noteLenght;
+      uint8_t note;
+      uint8_t vel;
+      uint8_t voiceIndex;
+    };
+
     Instrument(Scheduler *runner, int voiceCount = 1);
     InstrumentDelegate *delegate;
+
+    CircularBuffer<NoteEvent, 256> eventsBuffer;
 
     std::vector<Voice *> voices;
     int voiceIndex = 0;
