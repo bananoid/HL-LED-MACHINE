@@ -7,17 +7,16 @@
 namespace HLMusicMachine
 {
   void timerTick();
-  // Delegation: this is to allow clock tick to be called by main controller
   class ClockDelegate
   {
   public:
-    virtual void clockTick(); // virtual because it is not implemented in the class
+    virtual void clockTick(){};
+    virtual void clockStart(){};
+    virtual void clockStop(){};
   };
   class Clock
   {
   private:
-    /* data */
-
   public:
     Clock();
 
@@ -28,7 +27,7 @@ namespace HLMusicMachine
     bool externalClock = false;
     void tick();
 
-    ClockDelegate *delegate;
+    ClockDelegate *delegate = nullptr;
 
     // const int clockLedPort = 13; //31
     const int clockLedPort = 40; //31

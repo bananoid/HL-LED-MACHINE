@@ -45,7 +45,7 @@ MainController::MainController(Scheduler *runner)
     cvTracks[i] = track;
     sequencer->parameters = params;
     tracker->appendTrack(track);
-    track->play();
+    track->stop();
   }
 
   for (int i = 0; i < NUM_OF_MIDI_TRAKS; i++)
@@ -59,7 +59,7 @@ MainController::MainController(Scheduler *runner)
     sequencer->parameters = params;
     sequencer->parameters.chord = 3;
     tracker->appendTrack(track);
-    track->play();
+    track->stop();
   }
 
   tracker->clock->setBpm(120);

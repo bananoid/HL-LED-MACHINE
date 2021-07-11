@@ -11,34 +11,38 @@ class UITrackPlotter : public UIPlotter
 private:
 public:
   Track *track;
+  uint8_t scaleFactor;
   UITrackPlotter(Track *track)
   {
     this->track = track;
+    setScaleFactor(3);
   };
+  void update()
+  {
+    auto rightWheelSpeed = ctx->controller->wheelEncoders[WHEEL_ID_RIGHT]->speed;
+    if (rightWheelSpeed != 0)
+    {
+      setScaleFactor(scaleFactor + rightWheelSpeed);
+    }
+  }
+
+  void setScaleFactor(int16_t f)
+  {
+    scaleFactor = constrain(f, 0, 4);
+    scale = powf(2.0f, scaleFactor) / 4.0f;
+  }
 
   void draw() override
   {
-    // auto seq = track->sequencers[0];
-    // auto size = seq->parameters.steps;
-
-    // float stepSize = frame.h / (float)size;
-
-    // for (int i = 0; i < size; i++)
-    // {
-    //   bool isOn = seq->isEuclidean(i);
-    //   if (!isOn)
-    //   {
-    //     continue;
-    //   }
-    //   float pos = i * stepSize;
-    //   ctx->drawRect({0, (int)pos, frame.w, (int)stepSize}, COLOR_CYAN_F, true);
-    // }
-
     auto tick = masterClock->tickCounter;
     auto buffer = &track->instrument->eventsBuffer;
-    using index_t = decltype(track->instrument->eventsBuffer)::index_t;
 
-    for (index_t i = 0; i < buffer->size(); i++)
+    if (buffer->size() <= 0)
+    {
+      return;
+    }
+
+    for (int i = buffer->size() - 1; i >= 0; i--)
     {
       auto event = (*buffer)[i];
 
@@ -50,11 +54,13 @@ public:
       float vSize = event.vel / 128.f * (float)frame.w;
       vSize = max(vSize, 2);
       float vPos = frame.w / 2.0f - vSize / 2.0f;
-      // if (pos > frame.h)
-      // {
-      //   break;
-      // }
-      ctx->drawRect({vPos, frame.h - (int)pos, (int)vSize, (int)size}, COLOR_CYAN_F, true);
+
+      pos = frame.h - pos;
+      if (pos + size < 0)
+      {
+        break;
+      }
+      ctx->drawRect({vPos, (int)pos, (int)vSize, (int)size}, COLOR_CYAN_F, true);
     }
   }
 };

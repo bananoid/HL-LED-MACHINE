@@ -46,6 +46,18 @@ namespace HLMusicMachine
     }
   }
 
+  void Tracker::clockStart()
+  {
+    for (auto track : tracks)
+    {
+      track->instrument->eventsBuffer.clear();
+    }
+  }
+
+  void Tracker::clockStop()
+  {
+  }
+
   long Tracker::getClockTime()
   {
     return clock->clockInterval;

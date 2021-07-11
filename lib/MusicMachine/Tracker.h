@@ -37,6 +37,8 @@ namespace HLMusicMachine
 
     Clock *clock;
     void clockTick() override;
+    void clockStart() override;
+    void clockStop() override;
 
     void appendTrack(Track *track);
 

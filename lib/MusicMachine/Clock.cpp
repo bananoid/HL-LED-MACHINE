@@ -94,6 +94,11 @@ namespace HLMusicMachine
       setBpm(bpm);
       timer.begin(timerTick, clockInterval);
     }
+
+    if (delegate != nullptr)
+    {
+      delegate->clockStart();
+    }
   };
 
   void Clock::stop()
@@ -112,6 +117,10 @@ namespace HLMusicMachine
 #endif
 
     digitalWrite(clockLedPort, false);
+    if (delegate != nullptr)
+    {
+      delegate->clockStop();
+    }
   };
 
   void Clock::playStop()
