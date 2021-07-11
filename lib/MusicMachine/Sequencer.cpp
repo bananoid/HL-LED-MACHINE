@@ -129,7 +129,7 @@ namespace HLMusicMachine
           noteInx *= parameters.noteSpread;
         }
 
-        if (parameters.chord) // Arpeggio
+        if (!parameters.chord) // Arpeggio
         {
 
           Note note = tracker->getNote(noteInx + parameters.noteOffset, parameters.octave);
