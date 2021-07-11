@@ -36,6 +36,11 @@ public:
 
   void update() override
   {
+    auto rightWheelSpeed = ctx->controller->wheelEncoders[WHEEL_ID_RIGHT]->speed;
+    if (rightWheelSpeed != 0)
+    {
+      plotter->setScaleFactor(plotter->scaleFactor + rightWheelSpeed);
+    }
   }
 
   void draw() override

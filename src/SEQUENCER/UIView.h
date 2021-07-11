@@ -39,6 +39,8 @@ public:
   // virtual void onWheelRotate(uint16_t id, float speed) { parent->onWheelRotate(id, speed); };
 
   virtual void setFocusIndex(int16_t inx);
+  virtual void focusIn(int16_t inx);
+  virtual void setFocus();
   virtual void focusPrev();
   virtual void focusNext();
   virtual void focusIn();

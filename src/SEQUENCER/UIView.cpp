@@ -60,6 +60,13 @@ void UIView::setFocusIndex(int16_t inx)
 {
   focusIndex = constrain(inx, 0, childs.size() - 1);
 }
+
+void UIView::focusIn(int16_t inx)
+{
+  setFocusIndex(inx);
+  focusIn();
+}
+
 void UIView::focusPrev()
 {
   if (loopFocusSelection)
@@ -120,6 +127,11 @@ void UIView::focusIn()
   }
 
   ctx->controller->focusView = childs[focusIndex];
+}
+
+void UIView::setFocus()
+{
+  ctx->controller->focusView = this;
 }
 
 void UIView::layoutChilds()
