@@ -14,7 +14,7 @@ namespace HLMusicMachine
     const int maxTrigPWM = 255;
     int trigPWM = 255;
 
-    void noteOn(int note = 0, int vel = 127, uint8_t voiceIndex = 0) override;
-    void noteOff(int note, uint8_t voiceIndex = 0) override;
+    void noteOn(uint8_t note = 0, uint8_t vel = 127, uint8_t voiceIndex = 0) override;
+    void noteOff(uint8_t note, uint8_t voiceIndex = 0) override;
   };
 }

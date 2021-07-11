@@ -11,8 +11,8 @@ namespace HLMusicMachine
     int channel;
     MIDIInstrument(int channel, Scheduler *runner, int voiceCount = 4, int port = 1);
 
-    void noteOn(int note = 0, int vel = 127, uint8_t voiceIndex = 0) override;
-    void noteOff(int note, uint8_t voiceIndex = 0) override;
+    void noteOn(uint8_t note = 0, uint8_t vel = 127, uint8_t voiceIndex = 0) override;
+    void noteOff(uint8_t note, uint8_t voiceIndex = 0) override;
     void randomize() override;
     virtual void pitchBend(double val);
   };

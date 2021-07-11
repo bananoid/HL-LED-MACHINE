@@ -14,7 +14,7 @@ namespace HLMusicMachine
     }
   }
 
-  void PolyPinInstrumet::noteOn(int note, int vel, uint8_t voiceIndex)
+  void PolyPinInstrumet::noteOn(uint8_t note, uint8_t vel, uint8_t voiceIndex)
   {
     if (!isEnabled)
     {
@@ -26,7 +26,7 @@ namespace HLMusicMachine
     digitalWrite(pin, HIGH);
   }
 
-  void PolyPinInstrumet::noteOff(int note, uint8_t voiceIndex)
+  void PolyPinInstrumet::noteOff(uint8_t note, uint8_t voiceIndex)
   {
     int pin = pins[voiceIndex];
     digitalWrite(pin, LOW);

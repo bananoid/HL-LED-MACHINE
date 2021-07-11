@@ -25,7 +25,7 @@ namespace HLMusicMachine
     return delegate->getClockTime();
   }
 
-  void Instrument::trigNote(int note, int vel, int noteLenght)
+  void Instrument::trigNote(uint8_t note, uint8_t vel, uint16_t noteLenght)
   {
 
     if (note != lastNote)
@@ -50,11 +50,11 @@ namespace HLMusicMachine
     voices[voiceIndex]->noteOn(note, vel, noteLenght);
   }
 
-  void Instrument::noteOn(int note, int vel, uint8_t voiceIndex)
+  void Instrument::noteOn(uint8_t note, uint8_t vel, uint8_t voiceIndex)
   {
   }
 
-  void Instrument::noteOff(int note, uint8_t voiceIndex)
+  void Instrument::noteOff(uint8_t note, uint8_t voiceIndex)
   {
   }
 

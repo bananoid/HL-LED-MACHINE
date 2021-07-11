@@ -12,7 +12,7 @@ namespace HLMusicMachine
     this->port = port;
   }
 
-  void MIDIInstrument::noteOn(int note, int vel, uint8_t voiceIndex)
+  void MIDIInstrument::noteOn(uint8_t note, uint8_t vel, uint8_t voiceIndex)
   {
     if (!isEnabled)
     {
@@ -26,7 +26,7 @@ namespace HLMusicMachine
 #endif
   }
 
-  void MIDIInstrument::noteOff(int note = 0, uint8_t voiceIndex)
+  void MIDIInstrument::noteOff(uint8_t note = 0, uint8_t voiceIndex)
   {
     // if (!isEnabled)
     // {
