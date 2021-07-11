@@ -37,6 +37,19 @@ public:
       return;
     }
 
+    float eFS;
+    float vFS;
+    if (direction == HORIZONTAL)
+    {
+      eFS = frame.h;
+      vFS = frame.w;
+    }
+    else
+    {
+      eFS = frame.w;
+      vFS = frame.h;
+    }
+
     for (int i = buffer->size() - 1; i >= 0; i--)
     {
       auto event = (*buffer)[i];
@@ -46,16 +59,24 @@ public:
       float size = (event.noteLenght) * scale - 1;
       size = max(size, 1);
 
-      float vSize = event.vel / 128.f * (float)frame.w;
+      float vSize = event.vel / 128.f * (float)eFS;
       vSize = max(vSize, 2);
-      float vPos = frame.w / 2.0f - vSize / 2.0f;
+      float vPos = eFS / 2.0f - vSize / 2.0f;
 
-      pos = frame.h - pos;
+      pos = vFS - pos;
       if (pos + size < 0)
       {
         break;
       }
-      ctx->drawRect({vPos, (int)pos, (int)vSize, (int)size}, COLOR_CYAN_F, true);
+
+      if (direction == HORIZONTAL)
+      {
+        ctx->drawRect({(int)pos, (int)vPos, (int)size, (int)vSize}, COLOR_CYAN_F, true);
+      }
+      else
+      {
+        ctx->drawRect({(int)vPos, (int)pos, (int)vSize, (int)size}, COLOR_CYAN_F, true);
+      }
     }
   }
 };

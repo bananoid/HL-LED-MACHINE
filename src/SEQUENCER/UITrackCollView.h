@@ -26,6 +26,7 @@ public:
     trackView->label = label;
 
     plotter = new UITrackPlotter(track);
+    plotter->direction = UITrackPlotter::VERTICAL;
     addChild(plotter);
   }
 

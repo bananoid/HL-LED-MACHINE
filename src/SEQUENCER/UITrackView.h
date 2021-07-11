@@ -28,6 +28,7 @@ public:
     itemFrame.h -= itemFrame.y;
 
     plotter = new UITrackPlotter(track);
+    plotter->direction = UITrackPlotter::HORIZONTAL;
     plotter->frame = {0, 16, frame.w, frame.h - itemFrame.h - 16};
     addChild(plotter);
 
