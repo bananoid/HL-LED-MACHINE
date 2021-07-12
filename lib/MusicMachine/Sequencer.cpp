@@ -103,12 +103,12 @@ namespace HLMusicMachine
         noteLenght = min(stepLenght, retrigSize);
       }
 
-      int vel = parameters.velocity;
-      if (vel == -1)
+      int vel = parameters.velocityMax;
+      if (parameters.velocityLFOEnabled)
       {
-        float vLFO = sinf(counter / 24.0f * TWO_PI * (1.0 / parameters.velocityLFO));
+        float vLFO = sinf(counter / 24.0f * TWO_PI * (1.0 / parameters.velocityLFOSpeed));
         vLFO = asinf(vLFO) / HALF_PI;
-        vel = map(vLFO, -1.f, 1.f, parameters.velocityLFO.min, parameters.velocityLFO.max);
+        vel = map(vLFO, -1.f, 1.f, parameters.velocityMin, parameters.velocityMax);
       }
 
       if (type == MELODY)

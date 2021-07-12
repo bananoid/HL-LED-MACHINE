@@ -88,7 +88,7 @@ namespace HLMusicMachine
       Parameter<uint8_t> offset = {0, 0, 16};
       Parameter<uint8_t> stepLenght = {4, 9, 1};
 
-      Parameter<int8_t> octave = {3, -1, 4};
+      Parameter<int8_t> octave = {0, -1, 4};
       Parameter<uint8_t> noteCount = {4, 1, 7};
       Parameter<uint8_t> noteSpread = {2, 1, 5};
       Parameter<uint8_t> noteOffset = {0, 0, 6};
@@ -98,10 +98,12 @@ namespace HLMusicMachine
       Parameter<bool> chord = {false, false, true};
 
       Parameter<int8_t> retrig = {0, -1, 7}; // 0 is disable -1 is auto with lfo
-      Parameter<uint8_t> retrigLFO = {1, 1, 8};
+      Parameter<uint8_t> retrigLFO = {1, 1, 16};
 
-      Parameter<int8_t> velocity = {127, -1, 127}; // -1 enable lfo
-      Parameter<uint8_t> velocityLFO = {16, 30, 16};
+      Parameter<uint8_t> velocityMax = {127, 0, 127};
+      Parameter<uint8_t> velocityMin = {0, 0, 127};
+      Parameter<bool> velocityLFOEnabled = {false, false, true};
+      Parameter<float> velocityLFOSpeed = {1, 1, 10};
     };
 
     Type type = MELODY;
