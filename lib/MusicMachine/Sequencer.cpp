@@ -57,7 +57,8 @@ namespace HLMusicMachine
     if (counter == 0)
     {
       lastStepInx = 0;
-      onCounter = 0;
+      onCounter = 1;
+      lastStep.note = 0;
     }
 
     int retrigSize = parameters.retrig;
@@ -92,6 +93,7 @@ namespace HLMusicMachine
     {
       lastStep.note = onCounter % parameters.events;
       onCounter++;
+      onCounter = onCounter % parameters.steps;
     }
 
     // Serial.printf("isOn %i %i %i\n", isOn, retrigCount, stepInx);
@@ -134,7 +136,7 @@ namespace HLMusicMachine
 
           Note note = tracker->getNote(noteInx + parameters.noteOffset, parameters.octave);
           int midiNote = note.getMIDINoteNumber();
-          instrument->trigNote(midiNote, vel, noteLenght);
+          instrument->trigNote(midiNote, vel, noteLenght, noteInx);
 
           // Serial.printf("noteInx %i %f\n", noteInx);
         }
@@ -145,7 +147,7 @@ namespace HLMusicMachine
           {
             Note note = tracker->getNote(i * (2 * parameters.noteSpread) + noteInx + parameters.noteOffset, parameters.octave);
             int midiNote = note.getMIDINoteNumber();
-            instrument->trigNote(midiNote, vel, noteLenght);
+            instrument->trigNote(midiNote, vel, noteLenght, noteInx);
           }
         }
       }

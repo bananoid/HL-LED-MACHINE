@@ -86,11 +86,11 @@ public:
       {
         if (direction == VERTICAL)
         {
-          ctx->drawText(String(event.note), bar.x + bar.w / 2, bar.y + 9, ALIGN_CENTER);
+          ctx->drawText(String(event.noteInx), bar.x + bar.w / 2, bar.y + 9, ALIGN_CENTER);
         }
         else
         {
-          ctx->drawText(String(event.note), bar.x + 1, bar.y + bar.h / 2 + 3, ALIGN_LEFT);
+          ctx->drawText(String(event.noteInx), bar.x + 1, bar.y + bar.h / 2 + 3, ALIGN_LEFT);
         }
       }
     }

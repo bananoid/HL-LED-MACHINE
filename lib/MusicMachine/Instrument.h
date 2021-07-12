@@ -26,7 +26,8 @@ namespace HLMusicMachine
     {
       uint32_t startTick;
       uint16_t noteLenght;
-      uint8_t note;
+      uint8_t noteInx;
+      uint8_t midiNote;
       uint8_t vel;
       uint8_t voiceIndex;
     };
@@ -45,7 +46,7 @@ namespace HLMusicMachine
     bool isEnabled = false;
     void toggleEnabled();
 
-    void trigNote(uint8_t note = 0, uint8_t vel = 127, uint16_t noteLenght = 0);
+    void trigNote(uint8_t midiNote = 0, uint8_t vel = 127, uint16_t noteLenght = 0, uint8_t noteInx = 0);
 
     virtual void noteOn(uint8_t note = 0, uint8_t vel = 127, uint8_t voiceIndex = 0);
     virtual void noteOff(uint8_t note = 0, uint8_t voiceIndex = 0);

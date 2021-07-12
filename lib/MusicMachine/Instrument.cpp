@@ -25,21 +25,26 @@ namespace HLMusicMachine
     return delegate->getClockTime();
   }
 
-  void Instrument::trigNote(uint8_t note, uint8_t vel, uint16_t noteLenght)
+  void Instrument::trigNote(uint8_t midiNote = 0, uint8_t vel = 127, uint16_t noteLenght = 0, uint8_t noteInx = 0)
   {
+    // if (!isEnabled)
+    // {
+    //   return;
+    // }
 
-    if (note != lastNote)
+    if (midiNote != lastNote)
     {
       voiceIndex++;
     }
     voiceIndex = voiceIndex % voices.size();
 
-    lastNote = note;
+    lastNote = midiNote;
 
     auto startTick = masterClock->tickCounter;
     eventsBuffer.push({startTick,
                        noteLenght,
-                       note,
+                       noteInx,
+                       midiNote,
                        vel,
                        voiceIndex});
 
@@ -47,7 +52,7 @@ namespace HLMusicMachine
     {
       return;
     }
-    voices[voiceIndex]->noteOn(note, vel, noteLenght);
+    voices[voiceIndex]->noteOn(midiNote, vel, noteLenght);
   }
 
   void Instrument::noteOn(uint8_t note, uint8_t vel, uint8_t voiceIndex)
