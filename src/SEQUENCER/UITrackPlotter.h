@@ -50,6 +50,10 @@ public:
       vFS = frame.h;
     }
 
+    ctx->setTextSize(1);
+    ctx->setTextColor(COLOR_BLACK_F);
+    ctx->setCursor(0, 0);
+
     for (int i = buffer->size() - 1; i >= 0; i--)
     {
       auto event = (*buffer)[i];
@@ -69,13 +73,25 @@ public:
         break;
       }
 
+      Rect bar = {(int)vPos, (int)pos, (int)vSize, (int)size};
+
       if (direction == HORIZONTAL)
       {
-        ctx->drawRect({(int)pos, (int)vPos, (int)size, (int)vSize}, COLOR_CYAN_F, true);
+        bar = {(int)pos, (int)vPos, (int)size, (int)vSize};
       }
-      else
+
+      ctx->drawRect(bar, COLOR_CYAN_F, true);
+
+      if (bar.w > 14 && bar.h > 10)
       {
-        ctx->drawRect({(int)vPos, (int)pos, (int)vSize, (int)size}, COLOR_CYAN_F, true);
+        if (direction == VERTICAL)
+        {
+          ctx->drawText(String(event.note), bar.x + bar.w / 2, bar.y + 9, ALIGN_CENTER);
+        }
+        else
+        {
+          ctx->drawText(String(event.note), bar.x + 1, bar.y + bar.h / 2 + 3, ALIGN_LEFT);
+        }
       }
     }
   }
