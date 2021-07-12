@@ -18,13 +18,6 @@ void UI::init(Scheduler *runner, Tracker *tracker)
 
 UIView *UI::initRootView()
 {
-  // auto pageView = new UIScrollView({
-  //     new UIClockView(tracker),
-  //     new UIHarmonyView(tracker),
-  //     new UITracksView(tracker),
-  // });
-  // return pageView;
-
   return new UIRootView(tracker);
 }
 
@@ -34,7 +27,7 @@ void UI::update()
 
   if (buttonKeys[KEY_ID_FRONT_LEFT]->released())
   {
-    delegate->frontLeftButtonClick();
+    tracker->clock->playStop();
   }
 }
 

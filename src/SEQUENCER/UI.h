@@ -34,7 +34,7 @@ const MapIdToEncoderConfig encodersConfig = {
 class UIDelegate
 {
 public:
-  virtual void frontLeftButtonClick();
+  // virtual void frontLeftButtonClick();
 };
 
 class UI : public UIViewController

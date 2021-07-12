@@ -54,7 +54,4 @@ public:
     bool globalSettingsUnsaved = false;
     void saveGlobalSettings();
     void loadGlobalSettings();
-
-    //UI delegates
-    void frontLeftButtonClick() override;
 };
