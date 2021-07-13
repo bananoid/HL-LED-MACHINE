@@ -40,6 +40,9 @@
     "cinttypes": "cpp",
     "typeinfo": "cpp",
     "list": "cpp",
-    "*.tpp": "cpp"
+    "*.tpp": "cpp",
+    "atomic": "cpp",
+    "algorithm": "cpp",
+    "numeric": "cpp"
   }
 }

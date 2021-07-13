@@ -79,6 +79,8 @@ namespace HLMusicMachine
       return;
     }
 
+    // Serial.printf("counter %i - stepLenght %i - retrigSize %i\n", counter, stepLenght, retrigSize);
+
     int stepInx = counter / stepLenght;
     bool newStep = false;
     if (lastStepInx != stepInx)

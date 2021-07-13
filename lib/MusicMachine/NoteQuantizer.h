@@ -10,11 +10,12 @@ namespace HLMusicMachine
   private:
   public:
     uint16_t curretBinScale;
+    bool keys[12];
     std::vector<uint8_t> curretScale;
 
     NoteQuantizer()
     {
-      setCurrentScale(0);
+      setCurrentScale(0b111111111111);
     };
 
     void setCurrentScale(uint16_t scale)
@@ -30,8 +31,23 @@ namespace HLMusicMachine
         {
           curretScale.push_back(i);
         }
+        keys[i] = noteOn;
       }
     };
+
+    void setCurrentScale(bool keys[12])
+    {
+      curretScale.clear();
+
+      for (auto i = 0; i < 12; i++)
+      {
+        this->keys[i] = keys[i];
+        if (keys[i])
+        {
+          curretScale.push_back(i);
+        }
+      }
+    }
 
     int getMidiNote(int inx, int octave)
     {
@@ -52,5 +68,11 @@ namespace HLMusicMachine
       inx = inx % size;
       return constrain(curretScale[inx] + octave * 12, 0, 257);
     };
+
+    void toggleNoteInx(uint8_t inx)
+    {
+      keys[inx] = !keys[inx];
+      setCurrentScale(keys);
+    }
   };
 }

@@ -24,11 +24,11 @@ public:
     UIView *cView;
     auto itemFrame = frame;
 
-    cView = new UITracksView(tracker);
+    cView = new UIHarmonyView(tracker);
     cView->frame = itemFrame;
     addChild(cView);
 
-    cView = new UIHarmonyView(tracker);
+    cView = new UITracksView(tracker);
     cView->frame = itemFrame;
     addChild(cView);
 
