@@ -86,7 +86,7 @@ public:
       {
         if (direction == VERTICAL)
         {
-          ctx->drawText(String(event.noteInx), bar.x + bar.w / 2, bar.y + 9, ALIGN_CENTER);
+          ctx->drawText(String(event.noteInx) + " " + String(event.midiNote), bar.x + bar.w / 2, bar.y + 9, ALIGN_CENTER);
         }
         else
         {

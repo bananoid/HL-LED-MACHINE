@@ -134,8 +134,8 @@ namespace HLMusicMachine
         if (!parameters.chord) // Arpeggio
         {
 
-          Note note = tracker->getNote(noteInx + parameters.noteOffset, parameters.octave);
-          int midiNote = note.getMIDINoteNumber();
+          auto midiNote = tracker->getNote(noteInx + parameters.noteOffset, parameters.octave);
+          // int midiNote = note.getMIDINoteNumber();
           instrument->trigNote(midiNote, vel, noteLenght, noteInx);
 
           // Serial.printf("noteInx %i %f\n", noteInx);
@@ -145,8 +145,8 @@ namespace HLMusicMachine
           int chordCount = parameters.chord == 1 ? 3 : 4;
           for (int i = 0; i < chordCount; i++)
           {
-            Note note = tracker->getNote(i * (2 * parameters.noteSpread) + noteInx + parameters.noteOffset, parameters.octave);
-            int midiNote = note.getMIDINoteNumber();
+            auto midiNote = tracker->getNote(i * (2 * parameters.noteSpread) + noteInx + parameters.noteOffset, parameters.octave);
+            // int midiNote = note.getMIDINoteNumber();
             instrument->trigNote(midiNote, vel, noteLenght, noteInx);
           }
         }

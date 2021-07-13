@@ -88,10 +88,10 @@ namespace HLMusicMachine
       Parameter<uint8_t> offset = {0, 0, 16};
       Parameter<uint8_t> stepLenght = {4, 9, 1};
 
-      Parameter<int8_t> octave = {0, -1, 4};
+      Parameter<int8_t> octave = {0, 0, 10};
       Parameter<uint8_t> noteCount = {1, 1, 7};
       Parameter<uint8_t> noteSpread = {1, 1, 5};
-      Parameter<uint8_t> noteOffset = {0, 0, 6};
+      Parameter<uint8_t> noteOffset = {0, 0, 20};
       Parameter<ArpeggioType> arpeggioType = {ArpeggioType_Eucledian, ArpeggioType_Eucledian, ArpeggioType_LFO};
       Parameter<uint8_t> arpeggioLFO = {3, 1, 32};
 

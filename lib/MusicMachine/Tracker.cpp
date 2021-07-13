@@ -8,15 +8,10 @@ namespace HLMusicMachine
     clock = masterClock;
     clock->begin();
     clock->delegate = this;
-    // clock->play();
 
-    // pinMode(19, INPUT);
-
-    // randomSeed(analogRead(19));
+    quantizer = new NoteQuantizer();
 
     pickNextHarmony();
-    // currentScale = const_cast<Scale *>(&Scale::minor);
-    // currentKey = C;
   }
 
   void Tracker::appendTrack(Track *track)
@@ -52,6 +47,9 @@ namespace HLMusicMachine
     {
       track->instrument->eventsBuffer.clear();
     }
+
+    // quantizer->setCurrentScale(0b100100100101);
+    // quantizer->setCurrentScale(0b000010000001);
   }
 
   void Tracker::clockStop()
@@ -113,9 +111,9 @@ namespace HLMusicMachine
     harmonyCounter++;
   }
 
-  Note Tracker::getNote(int inx, int octave)
+  int Tracker::getNote(int inx, int octave)
   {
-    return currentScale->getNote(currentKey, inx, octave);
+    return quantizer->getMidiNote(inx, octave);
   }
 
   void Tracker::setScaleIndex(int i)

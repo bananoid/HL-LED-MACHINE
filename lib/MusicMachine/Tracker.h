@@ -8,7 +8,7 @@
 #include "Sequencer.h"
 #include "Scale.hpp"
 #include "Track.h"
-
+#include "NoteQuantizer.h"
 #include <vector>
 #include <iterator>
 using namespace std;
@@ -51,11 +51,13 @@ namespace HLMusicMachine
     int progressionInterval = 3;
     int progressionIntervalCounter = 0;
 
-    Note getNote(int inx, int octave);
+    int getNote(int inx, int octave);
     int scaleIndex = 0;
     void setScaleIndex(int i);
 
     int keyIndex = 0;
     void setKeyIndex(int i);
+
+    NoteQuantizer *quantizer;
   };
 }

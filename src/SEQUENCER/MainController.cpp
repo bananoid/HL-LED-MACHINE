@@ -176,12 +176,12 @@ void MainController::updateMIDI()
           }
           else if (data1 == startCC + 64) // c1 s4
           {
-            cvSequencers[i]->parameters.octave = MathUtils::scale((float)data2, 0.f, 127.f, -1.f, 4.f);
+            cvSequencers[i]->parameters.octave = MathUtils::scale((float)data2, 0.f, 127.f, 0.f, 7.f);
             // Serial.printf("octave %i \n", cvSequencers[i]->parameters.octave);
           }
           else if (data1 == startCC + 1) // c2 k1
           {
-            cvSequencers[i]->parameters.retrig = MathUtils::scale((float)data2, 0.f, 127.f, 0.f, 10.f);
+            cvSequencers[i]->parameters.retrig = MathUtils::scale((float)data2, 0.f, 127.f, 0.f, 16.f);
             // Serial.printf("retrig %i \n", cvSequencers[i]->parameters.retrig);
           }
           else if (data1 == startCC + 17) // c2 k2
@@ -196,7 +196,7 @@ void MainController::updateMIDI()
           }
           else if (data1 == startCC + 65) // c2 s4
           {
-            cvSequencers[i]->parameters.noteOffset = MathUtils::scale((float)data2, 0.f, 127.f, 0.f, 6.f);
+            cvSequencers[i]->parameters.noteOffset = MathUtils::scale((float)data2, 0.f, 127.f, 0.f, 14.f);
             // Serial.printf("noteOffset %i \n", cvSequencers[i]->parameters.noteOffset);
           }
         }
