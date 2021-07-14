@@ -54,6 +54,11 @@ namespace HLMusicMachine
     // float pbLFO = sinf(3 * counter / 24.0f * TWO_PI * (1.0 / parameters.velocityLFO));
     // instrument->pitchBend(pbLFO);
 
+    if (counter < 0)
+    {
+      return;
+    }
+
     if (counter == 0)
     {
       lastStepInx = 0;
