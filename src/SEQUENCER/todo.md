@@ -3,7 +3,7 @@
 
 # SOFTWARE
 [] Harmony
-  [] Scale note selection
+  [x] Scale note selection
   [] Global Tranposing
     [] Recording transposition
   [] Global to Track transposing link
@@ -21,4 +21,4 @@
   [] Legato/Glide effect for overllapping note in mono voice instriment
   [] Fix Retrig/Rolling 
 
-[] Track Plotter background grid
+[x] Track Plotter background grid
