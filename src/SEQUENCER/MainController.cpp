@@ -181,7 +181,7 @@ void MainController::updateMIDI()
           }
           else if (data1 == startCC + 1) // c2 k1
           {
-            cvSequencers[i]->parameters.retrig = MathUtils::scale((float)data2, 0.f, 127.f, 0.f, 16.f);
+            cvSequencers[i]->parameters.retrig = MathUtils::scale((float)data2, 0.f, 127.f, 0.f, 10.f);
             // Serial.printf("retrig %i \n", cvSequencers[i]->parameters.retrig);
           }
           else if (data1 == startCC + 17) // c2 k2

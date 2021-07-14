@@ -77,6 +77,14 @@ public:
                 "retrigLFO",
                 new UIParameterView<uint8_t>(&sequencer->parameters.retrigLFO),
             },
+            {
+                "retrig min",
+                new UIParameterView<uint8_t>(&sequencer->parameters.retrigMin),
+            },
+            {
+                "retrig max",
+                new UIParameterView<uint8_t>(&sequencer->parameters.retrigMax),
+            },
 
             {
                 "vel Max",

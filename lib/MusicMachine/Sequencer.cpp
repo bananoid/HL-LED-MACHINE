@@ -61,16 +61,19 @@ namespace HLMusicMachine
       lastStep.note = 0;
     }
 
-    int retrigSize = parameters.retrig;
-
     int stepLenght = Clock::getQuntizedTimePulses(parameters.stepLenght);
+    int retrigSize = parameters.retrig;
 
     if (parameters.retrig < 0)
     {
       // TODO: parametrize retrig LFO
       float rLFO = sinf(counter / 24.0f * TWO_PI * (1.0 / parameters.retrigLFO));
       rLFO = asinf(rLFO) / HALF_PI;
-      retrigSize = map(rLFO, -1.f, 1.f, parameters.retrigLFO.min, parameters.retrigLFO.max);
+      retrigSize = map(rLFO, -1.f, 1.f, parameters.retrigMin, parameters.retrigMax);
+    }
+
+    if (parameters.retrig > 0)
+    {
       retrigSize = Clock::getQuntizedTimePulses(retrigSize);
     }
 

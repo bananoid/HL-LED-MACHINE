@@ -99,6 +99,8 @@ namespace HLMusicMachine
 
       Parameter<int8_t> retrig = {0, -1, 10}; // 0 is disable -1 is auto with lfo
       Parameter<uint8_t> retrigLFO = {1, 1, 16};
+      Parameter<uint8_t> retrigMin = {3, 1, 10};
+      Parameter<uint8_t> retrigMax = {8, 1, 10};
 
       Parameter<uint8_t> velocityMax = {127, 0, 127};
       Parameter<uint8_t> velocityMin = {0, 0, 127};
