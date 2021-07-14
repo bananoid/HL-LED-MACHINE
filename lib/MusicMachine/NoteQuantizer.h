@@ -15,7 +15,7 @@ namespace HLMusicMachine
 
     NoteQuantizer()
     {
-      setCurrentScale(0b111111111111);
+      setCurrentScale(0b001001001001);
     };
 
     void setCurrentScale(uint16_t scale)
