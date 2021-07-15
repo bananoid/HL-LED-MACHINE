@@ -5,6 +5,8 @@
 #include <SD.h>
 #include <SerialFlash.h>
 
+#include <iostream>
+
 #include "config.h"
 #include <TaskSchedulerDeclarations.h>
 
@@ -13,6 +15,10 @@
 #define SDCARD_SCK_PIN 13  // not actually used
 
 #define DATA_FILE_NAME "SEQDATA.bin"
+
+#include "GlobalSettings.h";
+
+#include <Parameter.h>
 
 class Storage
 {
@@ -92,6 +98,15 @@ public:
   // {
   //   autoSaveTime = millis();
   // }
+
+  void save(GlobalSettings *gs, String fileName)
+  {
+    if (!checkSDCard())
+    {
+      return;
+    }
+    frec = SD.open(DATA_FILE_NAME, FILE_WRITE);
+  }
 };
 
 extern Storage *storage;

@@ -2,7 +2,6 @@
 
 #include "SerialMIDI.h"
 #include "Storage.h"
-
 #include <USBHost_t36.h> // access to USB MIDI devices (plugged into 2nd USB port)
 USBHost myusb;
 USBHub hub1(myusb);
@@ -29,9 +28,9 @@ MainController::MainController(Scheduler *runner)
   Track *track;
   Sequencer *sequencer;
 
-  Sequencer::Parameters params;
-  params.arpeggioType = Sequencer::ArpeggioType_Eucledian;
-  // params.arpeggioType = Sequencer::ArpeggioType_LFO;
+  Parameters params;
+  params.arpeggioType = ArpeggioType_Eucledian;
+  // params.arpeggioType = ArpeggioType_LFO;
   params.arpeggioLFO = 3;
 
   for (int i = 0; i < NUM_OF_CV_TRAKS; i++)
@@ -320,7 +319,7 @@ void MainController::saveGlobalSettings()
 {
   for (int i = 0; i < NUM_OF_CV_TRAKS; i++)
   {
-    memcpy(&globalSettings.trackParams[i], &cvSequencers[i]->parameters, sizeof(Sequencer::Parameters));
+    memcpy(&globalSettings.trackParams[i], &cvSequencers[i]->parameters, sizeof(Parameters));
     globalSettings.tracksEnabled[i] = cvTracks[i]->isPlaying;
   }
   Serial.printf("all params size = %i \n", sizeof(cvSequencers[0]->parameters));
@@ -337,7 +336,7 @@ void MainController::loadGlobalSettings()
 
   for (int i = 0; i < NUM_OF_CV_TRAKS; i++)
   {
-    memcpy(&cvSequencers[i]->parameters, &globalSettings.trackParams[i], sizeof(Sequencer::Parameters));
+    memcpy(&cvSequencers[i]->parameters, &globalSettings.trackParams[i], sizeof(Parameters));
     globalSettings.tracksEnabled[i] ? cvTracks[i]->play() : cvTracks[i]->stop();
 
     // Overide Not assigned parameters
@@ -347,7 +346,7 @@ void MainController::loadGlobalSettings()
     // cvSequencers[i]->parameters.velocityLFO.min = 0;
     // cvSequencers[i]->parameters.velocityLFO.max = 127;
 
-    // cvSequencers[i]->parameters.arpeggioType = Sequencer::ArpeggioType_LFO;
+    // cvSequencers[i]->parameters.arpeggioType = ArpeggioType_LFO;
     // cvSequencers[i]->parameters.arpeggioLFO = 1;
 
     // cvSequencers[i]->parameters.fillFactor = 1;

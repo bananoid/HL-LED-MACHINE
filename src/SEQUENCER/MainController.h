@@ -11,21 +11,13 @@
 #include <MIDIInstrument.h>
 #include <PinInstrument.h>
 #include <Sequencer.h>
+
 #include <Track.h>
+#include "GlobalSettings.h"
 
 using namespace HLMusicMachine;
 
-#define NUM_OF_SCALES 0
-#define NUM_OF_CV_TRAKS 8
-#define NUM_OF_MIDI_TRAKS 0
-
 #include "UI.h"
-
-struct GlobalSettings
-{
-    Sequencer::Parameters trackParams[NUM_OF_CV_TRAKS];
-    bool tracksEnabled[NUM_OF_CV_TRAKS];
-};
 
 class MainController : UIDelegate
 {

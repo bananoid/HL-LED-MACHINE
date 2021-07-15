@@ -2,6 +2,7 @@
 
 #include "UIScrollView.h"
 #include <Sequencer.h>
+#include <SequencerParameters.h>
 #include "UIParameterView.h"
 
 #include <stddef.h>
@@ -63,7 +64,7 @@ public:
 
             {
                 "arpeggioType",
-                new UIParameterView<Sequencer::ArpeggioType>(&sequencer->parameters.arpeggioType),
+                new UIParameterView<ArpeggioType>(&sequencer->parameters.arpeggioType),
             },
             {
                 "chord",

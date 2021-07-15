@@ -3,6 +3,7 @@
 #include "UIView.h"
 #include "GFX_fonts/Font5x7FixedMono.h"
 // #include <Sequencer.h>
+#include <SequencerParameters.h>
 #include <Parameter.h>
 #include <ssd1351.h>
 #include <MathUtils.h>
@@ -71,7 +72,7 @@ public:
     *param += wheelSpeed;
   }
 
-  void updateParam(Parameter<Sequencer::ArpeggioType> *param, float wheelSpeed)
+  void updateParam(Parameter<ArpeggioType> *param, float wheelSpeed)
   {
     *param += wheelSpeed;
   }
