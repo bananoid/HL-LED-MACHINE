@@ -41,12 +41,28 @@ namespace HLMusicMachine
     lastNote = midiNote;
 
     auto startTick = masterClock->tickCounter;
-    eventsBuffer.push({startTick,
-                       noteLenght,
-                       noteInx,
-                       midiNote,
-                       vel,
-                       voiceIndex});
+
+    // Clean previews Events
+    if (eventsBuffer.size() > 1)
+    {
+      auto prevNote = eventsBuffer.last();
+      uint32_t prevNoteEnd = prevNote->startTick + prevNote->noteLenght;
+      if (prevNoteEnd >= startTick)
+      {
+        // prevNote->noteLenght = prevNote->startTick - startTick - 1;
+        int newLenght = startTick - prevNote->startTick;
+        prevNote->noteLenght = max(newLenght, 1);
+      }
+    }
+    NoteEvent *newEvent = new NoteEvent();
+    newEvent->startTick = startTick;
+    newEvent->noteLenght = noteLenght;
+    newEvent->noteInx = noteInx;
+    newEvent->midiNote = midiNote;
+    newEvent->vel = vel;
+    newEvent->voiceIndex = voiceIndex;
+
+    eventsBuffer.push(newEvent);
 
     if (!isEnabled)
     {

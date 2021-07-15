@@ -22,8 +22,9 @@ namespace HLMusicMachine
     int lastNote = -1;
 
   public:
-    struct NoteEvent
+    class NoteEvent
     {
+    public:
       uint32_t startTick;
       uint16_t noteLenght;
       uint8_t noteInx;
@@ -35,7 +36,7 @@ namespace HLMusicMachine
     Instrument(Scheduler *runner, int voiceCount = 1);
     InstrumentDelegate *delegate;
 
-    CircularBuffer<NoteEvent, 256> eventsBuffer;
+    CircularBuffer<NoteEvent *, 256> eventsBuffer;
 
     std::vector<Voice *> voices;
     uint8_t voiceIndex = 0;

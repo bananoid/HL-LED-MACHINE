@@ -61,12 +61,12 @@ public:
       {
         auto event = (*buffer)[i];
 
-        float pos = (tick - event.startTick) * scale;
+        float pos = (tick - event->startTick) * scale;
 
-        float size = (event.noteLenght) * scale - 1;
+        float size = (event->noteLenght) * scale - 1;
         size = max(size, 1);
 
-        float vSize = event.vel / 128.f * (float)eFS;
+        float vSize = event->vel / 128.f * (float)eFS;
         vSize = max(vSize, 2);
         float vPos = eFS / 2.0f - vSize / 2.0f;
 
@@ -89,11 +89,11 @@ public:
         {
           if (direction == VERTICAL)
           {
-            ctx->drawText(String(event.noteInx) + " " + String(event.midiNote), bar.x + bar.w / 2, bar.y + 9, ALIGN_CENTER);
+            ctx->drawText(String(event->noteInx) + " " + String(event->midiNote), bar.x + bar.w / 2, bar.y + 9, ALIGN_CENTER);
           }
           else
           {
-            ctx->drawText(String(event.noteInx), bar.x + 1, bar.y + bar.h / 2 + 3, ALIGN_LEFT);
+            ctx->drawText(String(event->noteInx), bar.x + 1, bar.y + bar.h / 2 + 3, ALIGN_LEFT);
           }
         }
       }
