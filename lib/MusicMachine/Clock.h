@@ -55,8 +55,14 @@ namespace HLMusicMachine
 
     static int getQuntizedTimePulses(int timeInx)
     {
+      if (timeInx <= 0)
+      {
+        return 1;
+      }
+
+      timeInx = timeInx - 1;
       int triplet = (timeInx) % 2 == 0 ? 2 : 3;
-      return triplet * powf(2, (timeInx) / 2);
+      return triplet * powf(2, timeInx / 2);
     }
 
     void syncTo(unsigned long syncTickCounter, float bpm);
