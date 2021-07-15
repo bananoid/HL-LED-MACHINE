@@ -1,7 +1,7 @@
 #pragma once
 
 #include <MathUtils.h>
-#include <iostream>
+// #include <iostream>
 
 namespace HLMusicMachine
 {
@@ -56,25 +56,18 @@ namespace HLMusicMachine
       value = MathUtils::scale((float)v, (float)from, (float)to, (float)min, (float)max);
     }
 
-    std::ostream &operator<<(std::ostream &os)
-    {
-      // T v = (T)value;
-      return os << value;
-    }
-
-    // std::istream &operator>>(std::istream &os)
+    // std::ostream &operator<<(std::ostream &os)
     // {
-    //   os >> value;
-
-    //   return os;
+    //   // T v = (T)value;
+    //   return os << value;
     // }
   };
 
-  template <typename T>
-  std::istream &operator>>(std::istream &os, const Parameter<T> p)
-  {
-    os >> p;
+  // template <typename T>
+  // std::istream &operator>>(std::istream &os, const Parameter<T> p)
+  // {
+  //   os >> p;
 
-    return os;
-  }
+  //   return os;
+  // }
 }

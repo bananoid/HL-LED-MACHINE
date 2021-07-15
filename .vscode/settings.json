@@ -43,7 +43,6 @@
     "*.tpp": "cpp",
     "atomic": "cpp",
     "algorithm": "cpp",
-    "numeric": "cpp",
-    "iostream": "cpp"
+    "numeric": "cpp"
   }
 }

@@ -5,8 +5,6 @@
 #include <SD.h>
 #include <SerialFlash.h>
 
-#include <iostream>
-
 #include "config.h"
 #include <TaskSchedulerDeclarations.h>
 

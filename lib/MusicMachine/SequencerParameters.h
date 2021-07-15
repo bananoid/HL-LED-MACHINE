@@ -1,6 +1,7 @@
 #pragma once
 #include "Parameter.h"
-#include <iostream>
+#include <Arduino.h>
+// #include <iostream>
 
 namespace HLMusicMachine
 {
@@ -37,6 +38,6 @@ namespace HLMusicMachine
     Parameter<uint8_t> velocityLFOSpeed = {1, 1, 16};
   };
 
-  std::ostream &operator<<(std::ostream &os, const Parameters p);
-  std::istream &operator>>(std::istream &os, const Parameters p);
+  // std::ostream &operator<<(std::ostream &os, const Parameters p);
+  // std::istream &operator>>(std::istream &os, const Parameters p);
 }

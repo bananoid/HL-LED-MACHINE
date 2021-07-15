@@ -9,7 +9,6 @@
 
 using namespace MusicTheory;
 #include <MathUtils.h>
-#include <iostream>
 #include "SequencerParameters.h"
 
 namespace HLMusicMachine
