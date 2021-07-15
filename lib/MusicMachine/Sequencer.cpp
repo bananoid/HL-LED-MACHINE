@@ -88,7 +88,6 @@ namespace HLMusicMachine
     {
       if (counter % stepLenght != 0)
       {
-        Serial.println();
         return;
       }
     }
@@ -108,7 +107,6 @@ namespace HLMusicMachine
     {
       if (trigCounter % retrigSize != 0)
       {
-        Serial.println();
         return;
       }
     }

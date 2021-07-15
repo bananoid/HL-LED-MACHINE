@@ -105,7 +105,7 @@ namespace HLMusicMachine
       Parameter<uint8_t> velocityMax = {127, 0, 127};
       Parameter<uint8_t> velocityMin = {0, 0, 127};
       Parameter<bool> velocityLFOEnabled = {false, false, true};
-      Parameter<uint8_t> velocityLFOSpeed = {1, 1, 10};
+      Parameter<uint8_t> velocityLFOSpeed = {1, 1, 16};
     };
 
     Type type = MELODY;
