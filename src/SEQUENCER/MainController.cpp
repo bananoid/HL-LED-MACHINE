@@ -62,7 +62,7 @@ MainController::MainController(Scheduler *runner)
     track->stop();
   }
 
-  tracker->clock->setBpm(120);
+  tracker->clock->setBpm(100);
   // tracker->clock->play();
 
   myusb.begin();
@@ -98,7 +98,7 @@ void MainController::updateMIDI()
     uint8_t data2 = midi1.getData2();
     uint8_t channel = midi1.getChannel();
 
-    Serial.printf("type:%i - data1:%i - data2:%i - channel:%i  \n", type, data1, data2, channel);
+    // Serial.printf("type:%i - data1:%i - data2:%i - channel:%i  \n", type, data1, data2, channel);
     if (channel == 1)
     {
       if (type == MIDIDevice::ControlChange)
@@ -107,7 +107,7 @@ void MainController::updateMIDI()
         {
           float bpm = MathUtils::scale((float)data2, 0.f, 127.f, 30.f, 300.f);
           tracker->clock->setBpm(bpm);
-          Serial.println(bpm);
+          // Serial.println(bpm);
         }
       }
     }
@@ -161,7 +161,7 @@ void MainController::updateMIDI()
           // Control Track 1
           if (data1 == startCC) // c1 k1
           {
-            cvSequencers[i]->parameters.stepLenght = MathUtils::scale((float)data2, 0.f, 127.f, 9.f, 1.f);
+            cvSequencers[i]->parameters.stepLenght = MathUtils::scale((float)data2, 0.f, 127.f, 12.f, 0.f);
             // Serial.printf("stepLenght %i \n", cvSequencers[i]->parameters.stepLenght);
           }
           else if (data1 == startCC + 16) // c1 k2
@@ -226,43 +226,43 @@ void MainController::updateMIDI()
           // Control Track 1
           if (data1 == startCC) // c1 k1
           {
-            midiSequencers[i]->parameters.stepLenght = MathUtils::scale((float)data2, 0.f, 127.f, 9.f, 1.f);
-            Serial.printf("stepLenght %i \n", midiSequencers[i]->parameters.stepLenght);
+            midiSequencers[i]->parameters.stepLenght = MathUtils::scale((float)data2, 0.f, 127.f, 11.f, 0.f);
+            // Serial.printf("stepLenght %i \n", midiSequencers[i]->parameters.stepLenght);
           }
           else if (data1 == startCC + 16) // c1 k2
           {
             midiSequencers[i]->parameters.events = MathUtils::scale((float)data2, 0.f, 127.f, 1.f, 16.f);
-            Serial.printf("events %i \n", midiSequencers[i]->parameters.events);
+            // Serial.printf("events %i \n", midiSequencers[i]->parameters.events);
           }
           else if (data1 == startCC + 36) // c1 k3
           {
             midiSequencers[i]->parameters.offset = MathUtils::scale((float)data2, 0.f, 127.f, 0.f, 16.f);
-            Serial.printf("offset %i \n", midiSequencers[i]->parameters.offset);
+            // Serial.printf("offset %i \n", midiSequencers[i]->parameters.offset);
           }
           else if (data1 == startCC + 64) // c1 s4
           {
             midiSequencers[i]->parameters.octave = MathUtils::scale((float)data2, 0.f, 127.f, -1.f, 4.f);
-            Serial.printf("octave %i \n", midiSequencers[i]->parameters.octave);
+            // Serial.printf("octave %i \n", midiSequencers[i]->parameters.octave);
           }
           else if (data1 == startCC + 1) // c2 k1
           {
             midiSequencers[i]->parameters.retrig = MathUtils::scale((float)data2, 0.f, 127.f, 0.f, 7.f);
-            Serial.printf("retrig %i \n", midiSequencers[i]->parameters.retrig);
+            // Serial.printf("retrig %i \n", midiSequencers[i]->parameters.retrig);
           }
           else if (data1 == startCC + 17) // c2 k2
           {
             midiSequencers[i]->parameters.noteSpread = MathUtils::scale((float)data2, 0.f, 127.f, 1.f, 5.f);
-            Serial.printf("noteSpread %i \n", midiSequencers[i]->parameters.noteSpread);
+            // Serial.printf("noteSpread %i \n", midiSequencers[i]->parameters.noteSpread);
           }
           else if (data1 == startCC + 37) // c2 k3
           {
             midiSequencers[i]->parameters.noteCount = MathUtils::scale((float)data2, 0.f, 127.f, 1.f, 7.f);
-            Serial.printf("noteCount %i \n", midiSequencers[i]->parameters.noteCount);
+            // Serial.printf("noteCount %i \n", midiSequencers[i]->parameters.noteCount);
           }
           else if (data1 == startCC + 65) // c2 s4
           {
             midiSequencers[i]->parameters.noteOffset = MathUtils::scale((float)data2, 0.f, 127.f, 0.f, 6.f);
-            Serial.printf("noteOffset %i \n", midiSequencers[i]->parameters.noteOffset);
+            // Serial.printf("noteOffset %i \n", midiSequencers[i]->parameters.noteOffset);
           }
         }
 

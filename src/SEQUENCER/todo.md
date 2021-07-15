@@ -17,8 +17,8 @@
   [] Save/Load Scale 
 
 [] Sequencer 
+  [x] Fix Retrig/Rolling 
   [] Second sequencer enable/disable
   [] Legato/Glide effect for overllapping note in mono voice instriment
-  [] Fix Retrig/Rolling 
 
 [x] Track Plotter background grid

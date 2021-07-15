@@ -86,9 +86,9 @@ namespace HLMusicMachine
       Parameter<uint8_t> steps = {16, 1, 16};
       Parameter<uint8_t> events = {4, 1, 16};
       Parameter<uint8_t> offset = {0, 0, 16};
-      Parameter<uint8_t> stepLenght = {4, 9, 1};
+      Parameter<uint8_t> stepLenght = {4, 12, 0};
 
-      Parameter<int8_t> octave = {0, 0, 10};
+      Parameter<int8_t> octave = {1, 0, 10};
       Parameter<uint8_t> noteCount = {1, 1, 7};
       Parameter<uint8_t> noteSpread = {1, 1, 5};
       Parameter<uint8_t> noteOffset = {0, 0, 20};
@@ -105,7 +105,7 @@ namespace HLMusicMachine
       Parameter<uint8_t> velocityMax = {127, 0, 127};
       Parameter<uint8_t> velocityMin = {0, 0, 127};
       Parameter<bool> velocityLFOEnabled = {false, false, true};
-      Parameter<float> velocityLFOSpeed = {1, 1, 10};
+      Parameter<uint8_t> velocityLFOSpeed = {1, 1, 10};
     };
 
     Type type = MELODY;
@@ -126,6 +126,7 @@ namespace HLMusicMachine
     static bool isEuclidean(int inx, int steps, int events, int offset);
 
     void clockTick(int counter);
+    uint32_t lastTrigTime = 0;
 
   private:
     int lastStepInx = 0;

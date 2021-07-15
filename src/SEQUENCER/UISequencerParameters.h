@@ -100,7 +100,7 @@ public:
             },
             {
                 "vel LFO Speed",
-                new UIParameterView<float>(&sequencer->parameters.velocityLFOSpeed),
+                new UIParameterView<uint8_t>(&sequencer->parameters.velocityLFOSpeed),
             },
         };
 

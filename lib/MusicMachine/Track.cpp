@@ -43,6 +43,12 @@ namespace HLMusicMachine
 
   void Track::clockTick(int counter)
   {
+    // Disable Sequencer when not palay
+    // if (!isPlaying)
+    // {
+    //   return;
+    // }
+
     for (Sequencer *seq : sequencers)
     {
       seq->clockTick(counter);
