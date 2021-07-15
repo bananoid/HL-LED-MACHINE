@@ -6,6 +6,7 @@
 #include <TaskSchedulerDeclarations.h>
 #include "Clock.h"
 #include "Sequencer.h"
+#include "Parameter.h"
 #include "Scale.hpp"
 #include "Track.h"
 #include "NoteQuantizer.h"
@@ -59,5 +60,7 @@ namespace HLMusicMachine
     void setKeyIndex(int i);
 
     NoteQuantizer *quantizer;
+
+    Parameter<uint8_t> noteOffset = {0, 0, 20};
   };
 }

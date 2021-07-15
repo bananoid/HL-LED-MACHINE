@@ -49,5 +49,10 @@ namespace HLMusicMachine
     {
       return MathUtils::scale((float)value, (float)min, (float)max, (float)a, (float)b);
     }
+
+    void setValue(float v, float from, float to)
+    {
+      value = MathUtils::scale((float)v, (float)from, (float)to, (float)min, (float)max);
+    }
   };
 }
