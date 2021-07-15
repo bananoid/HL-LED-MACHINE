@@ -2,7 +2,8 @@
 #include <Arduino.h>
 #include "UIView.h"
 #include "GFX_fonts/Font5x7FixedMono.h"
-#include <Sequencer.h>
+// #include <Sequencer.h>
+#include <Parameter.h>
 #include <ssd1351.h>
 #include <MathUtils.h>
 #include "config.h"
@@ -15,8 +16,8 @@ class UIParameterView : public UIView
 {
 private:
 public:
-  Sequencer::Parameter<T> *param;
-  UIParameterView(Sequencer::Parameter<T> *param)
+  Parameter<T> *param;
+  UIParameterView(Parameter<T> *param)
   {
     this->param = param;
     focusColor = COLOR_GREEN_F;
@@ -46,22 +47,22 @@ public:
     }
   }
 
-  void updateParam(Sequencer::Parameter<bool> *param, float wheelSpeed)
+  void updateParam(Parameter<bool> *param, float wheelSpeed)
   {
     *param = !*param;
   }
 
-  void updateParam(Sequencer::Parameter<uint8_t> *param, float wheelSpeed)
+  void updateParam(Parameter<uint8_t> *param, float wheelSpeed)
   {
     *param += wheelSpeed;
   }
 
-  void updateParam(Sequencer::Parameter<int8_t> *param, float wheelSpeed)
+  void updateParam(Parameter<int8_t> *param, float wheelSpeed)
   {
     *param += wheelSpeed;
   }
 
-  void updateParam(Sequencer::Parameter<float> *param, float wheelSpeed)
+  void updateParam(Parameter<float> *param, float wheelSpeed)
   {
     float delta = abs(param->max - param->min);
 
@@ -70,7 +71,7 @@ public:
     *param += wheelSpeed;
   }
 
-  void updateParam(Sequencer::Parameter<Sequencer::ArpeggioType> *param, float wheelSpeed)
+  void updateParam(Parameter<Sequencer::ArpeggioType> *param, float wheelSpeed)
   {
     *param += wheelSpeed;
   }

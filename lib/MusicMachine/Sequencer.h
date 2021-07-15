@@ -5,6 +5,7 @@
 
 #include "Instrument.h"
 #include "Tracker.h"
+#include "Parameter.h"
 
 using namespace MusicTheory;
 #include <MathUtils.h>
@@ -32,53 +33,6 @@ namespace HLMusicMachine
     {
       int note = 1;
       int velocity = 127;
-    };
-
-    template <typename T>
-    struct Parameter
-    {
-    private:
-      float value;
-
-    public:
-      T min;
-      T max;
-
-      Parameter(T value, T min, T max)
-      {
-        this->value = value;
-        this->min = min;
-        this->max = max;
-      }
-
-      inline Parameter operator=(T v)
-      {
-        value = v;
-        return *this;
-      }
-
-      inline operator T() const
-      {
-        return (T)value;
-      }
-
-      Parameter &operator+=(const float inc)
-      {
-        if (min < max)
-        {
-          value = constrain(value + inc, (float)min, (float)max);
-        }
-        else
-        {
-          value = constrain(value + inc, (float)max, (float)min);
-        }
-        return *this;
-      }
-
-      float scale(float a, float b)
-      {
-        return MathUtils::scale((float)value, (float)min, (float)max, (float)a, (float)b);
-      }
     };
 
     struct Parameters
