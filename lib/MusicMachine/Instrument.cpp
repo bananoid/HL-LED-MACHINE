@@ -42,8 +42,9 @@ namespace HLMusicMachine
 
     auto startTick = masterClock->tickCounter;
 
+    // TODO: Move event buffer to voice
     // Clean previews Events
-    if (eventsBuffer.size() > 1)
+    if (voices.size() == 1 && eventsBuffer.size() > 1)
     {
       auto prevNote = eventsBuffer.last();
       uint32_t prevNoteEnd = prevNote->startTick + prevNote->noteLenght;
@@ -54,6 +55,7 @@ namespace HLMusicMachine
         prevNote->noteLenght = max(newLenght, 1);
       }
     }
+
     NoteEvent *newEvent = new NoteEvent();
     newEvent->startTick = startTick;
     newEvent->noteLenght = noteLenght;
