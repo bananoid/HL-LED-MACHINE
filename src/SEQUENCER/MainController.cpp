@@ -105,7 +105,7 @@ void MainController::updateMIDI()
       {
         if (data1 == 50) // c1 s4
         {
-          tracker->noteOffset.setValue((float)data2, 0.f, 127.f);
+          tracker->quantizer->noteOffset.setValue((float)data2, 0.f, 127.f);
         }
       }
     }

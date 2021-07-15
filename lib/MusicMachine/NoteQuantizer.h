@@ -1,6 +1,7 @@
 #pragma once
 #include <Arduino.h>
 #include <vector>
+#include "Parameter.h"
 
 namespace HLMusicMachine
 {
@@ -12,6 +13,8 @@ namespace HLMusicMachine
     uint16_t curretBinScale;
     bool keys[12];
     std::vector<uint8_t> curretScale;
+
+    Parameter<uint8_t> noteOffset = {0, 0, 20};
 
     NoteQuantizer()
     {
@@ -51,18 +54,13 @@ namespace HLMusicMachine
 
     int getMidiNote(int inx, int octave)
     {
-      // Serial.print("curScale = ");
-      // for (auto n : curretScale)
-      // {
-      //   Serial.printf("[%i] ", n);
-      // }
-      // Serial.println("");
-
       auto size = curretScale.size();
       if (size == 0)
       {
         return 0;
       }
+
+      inx += noteOffset;
 
       octave += inx / size;
       inx = inx % size;
