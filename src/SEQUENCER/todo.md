@@ -20,5 +20,9 @@
   [x] Fix Retrig/Rolling 
   [] Second sequencer enable/disable
   [] Legato/Glide effect for overllapping note in mono voice instriment
+  [] LFO phase + shape (vel, arpegio, retrig)
+  [] Note lenght parameter
+  [] retrig lfo enable parameter
+  [] retrig lfo reset from eucledian trig
 
 [x] Track Plotter background grid

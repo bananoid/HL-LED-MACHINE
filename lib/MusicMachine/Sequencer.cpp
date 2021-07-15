@@ -69,21 +69,6 @@ namespace HLMusicMachine
     bool retrigActive = retrigSize != 0;
     bool retrigLFOActive = retrigSize < 0;
 
-    if (retrigLFOActive)
-    {
-      int rLFOVal = parameters.retrigLFO;
-      auto rLFOlen = Clock::getQuntizedTimePulses(rLFOVal);
-      float phase = (float)counter / (float)rLFOlen * TWO_PI;
-      float rLFO = cosf(phase);
-      rLFO = asinf(rLFO) / HALF_PI;
-      retrigSize = map(rLFO, -1.f, 1.f, parameters.retrigMin, parameters.retrigMax);
-
-      // Serial.printf("c:%i l:%i v:%i",
-      //               counter, Clock::getQuntizedTimePulses(retrigSize), retrigSize);
-    }
-
-    retrigSize = Clock::getQuntizedTimePulses(retrigSize);
-
     if (!retrigActive)
     {
       if (counter % stepLenght != 0)
@@ -98,10 +83,47 @@ namespace HLMusicMachine
     {
       newStep = true;
       lastStepInx = stepInx;
+    }
+
+    bool isOn = isEuclidean(stepInx);
+
+    if (isOn && newStep)
+    {
+      lastStep.note = onCounter % parameters.events;
+      onCounter++;
+      onCounter = onCounter % parameters.steps;
+      lastEuqTrigTime = counter;
       lastTrigTime = counter;
     }
 
+    // Retrig LFO
+
     uint32_t trigCounter = counter - lastTrigTime;
+    // uint32_t eucTrigCounter = counter - lastEuqTrigTime;
+
+    if (retrigLFOActive)
+    {
+      int rLFOVal = parameters.retrigLFO;
+      auto rLFOlen = Clock::getQuntizedTimePulses(rLFOVal);
+
+      float phase = (float)counter / (float)rLFOlen * TWO_PI;
+      // float phase = (float)eucTrigCounter / (float)rLFOlen * TWO_PI;
+
+      float rLFO = cosf(phase);
+
+      // rLFO = asinf(rLFO) / HALF_PI; //Linear Modulation
+
+      // float rLenMin = Clock::getQuntizedTimePulses(parameters.retrigMin);
+      // float rLenMax = Clock::getQuntizedTimePulses(parameters.retrigMax);
+      // retrigSize = map(rLFO, -1.f, 1.f, rLenMin, rLenMax);
+
+      retrigSize = map(rLFO, -1.f, 1.f, (float)parameters.retrigMin, (float)parameters.retrigMax);
+      retrigSize = Clock::getQuntizedTimePulses(retrigSize);
+    }
+    else
+    {
+      retrigSize = Clock::getQuntizedTimePulses(retrigSize);
+    }
 
     if (retrigActive)
     {
@@ -110,22 +132,12 @@ namespace HLMusicMachine
         return;
       }
     }
-
-    lastTrigTime = counter;
-
-    // Serial.printf("\tTrig\n");
-
-    bool isOn = isEuclidean(stepInx);
-
-    if (newStep)
-    {
-      lastStep.note = onCounter % parameters.events;
-      onCounter++;
-      onCounter = onCounter % parameters.steps;
-    }
+    ///////////////////////////////////////////
 
     if (isOn)
     {
+      lastTrigTime = counter;
+
       int noteLenght = stepLenght;
       if (retrigActive)
       {
@@ -141,7 +153,9 @@ namespace HLMusicMachine
         int velLen = Clock::getQuntizedTimePulses(velSpeed);
         float phase = (float)counter / (float)velLen * TWO_PI;
         float vLFO = cosf(phase);
-        vLFO = asinf(vLFO) / HALF_PI;
+
+        // vLFO = asinf(vLFO) / HALF_PI; //Linear Modulation
+
         vel = map(vLFO, -1.f, 1.f, parameters.velocityMin, parameters.velocityMax);
       }
 
@@ -167,10 +181,7 @@ namespace HLMusicMachine
         {
 
           auto midiNote = tracker->getNote(noteInx + parameters.noteOffset, parameters.octave);
-          // int midiNote = note.getMIDINoteNumber();
           instrument->trigNote(midiNote, vel, noteLenght, noteInx);
-
-          // Serial.printf("noteInx %i %f\n", noteInx);
         }
         else
         {
@@ -178,7 +189,6 @@ namespace HLMusicMachine
           for (int i = 0; i < chordCount; i++)
           {
             auto midiNote = tracker->getNote(i * (2 * parameters.noteSpread) + noteInx + parameters.noteOffset, parameters.octave);
-            // int midiNote = note.getMIDINoteNumber();
             instrument->trigNote(midiNote, vel, noteLenght, noteInx);
           }
         }

@@ -27,11 +27,6 @@ namespace HLMusicMachine
 
   void Instrument::trigNote(uint8_t midiNote = 0, uint8_t vel = 127, uint16_t noteLenght = 0, uint8_t noteInx = 0)
   {
-    // if (!isEnabled)
-    // {
-    //   return;
-    // }
-
     if (midiNote != lastNote)
     {
       voiceIndex++;
