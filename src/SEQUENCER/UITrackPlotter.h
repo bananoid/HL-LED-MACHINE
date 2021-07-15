@@ -100,7 +100,7 @@ public:
     }
 
     int stepSize = masterClock->clockDivider * scale;
-    int numOfBars = frame.h / stepSize + 1;
+    int numOfBars = (direction == VERTICAL ? frame.h : frame.w) / stepSize + 1;
     int pos;
     for (int i = 0; i < numOfBars; i++)
     {
@@ -111,6 +111,10 @@ public:
       if (direction == VERTICAL)
       {
         ctx->drawRect({0, (int)(frame.h - pos), frame.w, 1}, COLOR_RED_F);
+      }
+      else
+      {
+        ctx->drawRect({(int)(frame.w - pos), 0, 1, frame.h}, COLOR_RED_F);
       }
     }
   }
