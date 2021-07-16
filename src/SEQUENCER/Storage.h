@@ -17,7 +17,7 @@
 #define TRACKS_PATH "TRACKS"
 #define TRACKS_PREFIX "TRACK_"
 
-#include "GlobalSettings.h"
+#include "FilesStoreStructures.h"
 
 #include <Parameter.h>
 #include "StorageBanck.h"

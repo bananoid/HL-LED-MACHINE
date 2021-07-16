@@ -13,7 +13,6 @@
 #include <Sequencer.h>
 
 #include <Track.h>
-#include "GlobalSettings.h"
 
 using namespace HLMusicMachine;
 
@@ -41,9 +40,4 @@ public:
     Task midiUIDrawTask;
 
     Task uiTask;
-
-    GlobalSettings globalSettings;
-    bool globalSettingsUnsaved = false;
-    void saveGlobalSettings();
-    void loadGlobalSettings();
 };

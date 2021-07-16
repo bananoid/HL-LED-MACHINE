@@ -31,4 +31,37 @@ void UI::update()
   }
 }
 
+void UI::saveProject()
+{
+  ProjectStore projectStore;
+
+  int i = 0;
+  for (auto track : tracker->tracks)
+  {
+    memcpy(&projectStore.trackParams[i], &track->sequencers[0]->parameters, sizeof(Parameters));
+    projectStore.tracksEnabled[i] = track->isPlaying;
+
+    i++;
+  }
+
+  storage->projectsBank->saveSlot((uint8_t *)&projectStore, sizeof(ProjectStore));
+}
+
+void UI::loadProject()
+{
+  ProjectStore projectStore;
+  storage->projectsBank->loadSlot((uint8_t *)&projectStore, sizeof(ProjectStore));
+
+  int i = 0;
+  for (auto track : tracker->tracks)
+  {
+    memcpy(&track->sequencers[0]->parameters, &projectStore.trackParams[i], sizeof(Parameters));
+
+    // Load track enabled/disabled
+    // projectStore.tracksEnabled[i] ? track->play() : track->stop();
+
+    i++;
+  }
+}
+
 UI *ui = new UI();

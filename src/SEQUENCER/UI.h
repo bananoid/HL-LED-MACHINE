@@ -15,6 +15,8 @@ using namespace HLMusicMachine;
 
 #include "config.h"
 
+#include "FilesStoreStructures.h"
+
 const MapIdToButtonConfig buttonsConfig = {
     {KEY_ID_SCREEN_A, {23, INPUT_PULLUP, true}},
     {KEY_ID_SCREEN_B, {22, INPUT_PULLUP, true}},
@@ -47,6 +49,9 @@ public:
   void init(Scheduler *runner, Tracker *tracker);
   void update() override;
   UIView *initRootView() override;
+
+  void saveProject();
+  void loadProject();
 };
 
 extern UI *ui;

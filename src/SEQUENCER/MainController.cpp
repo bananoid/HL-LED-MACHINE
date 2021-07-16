@@ -90,14 +90,13 @@ void MainController::updateMIDI()
     }
 
     midiUIInvalid = true;
-    globalSettingsUnsaved = true;
 
     uint8_t type = midi1.getType();
     uint8_t data1 = midi1.getData1();
     uint8_t data2 = midi1.getData2();
     uint8_t channel = midi1.getChannel();
 
-    // Serial.printf("type:%i - data1:%i - data2:%i - channel:%i  \n", type, data1, data2, channel);
+    Serial.printf("type:%i - data1:%i - data2:%i - channel:%i  \n", type, data1, data2, channel);
     if (channel == 1)
     {
       if (type == MIDIDevice::ControlChange)
@@ -112,13 +111,27 @@ void MainController::updateMIDI()
     // load
     if (data1 == 106 && type == MIDIDevice::NoteOn)
     {
-      loadGlobalSettings();
+      ui->loadProject();
     }
 
     // Save
     if (data1 == 107 && type == MIDIDevice::NoteOn)
     {
-      saveGlobalSettings();
+      ui->saveProject();
+    }
+
+    // Track Selection next button
+    // Next project Slot
+    if (data2 == 0 && data1 == 107 && type == MIDIDevice::ControlChange)
+    {
+      storage->projectsBank->currentSlot += 1;
+    }
+
+    // Track Selection prev button
+    // Prev project Slot
+    if (data2 == 0 && data1 == 106 && type == MIDIDevice::ControlChange)
+    {
+      storage->projectsBank->currentSlot -= 1;
     }
 
     // Start Stop
@@ -307,38 +320,6 @@ void MainController::drawMidiInterface()
     midi1.sendNoteOn(41 + i, tracker->keyIndex == i ? 127 : 0, 3);
   }
 
-  midi1.sendNoteOn(107, globalSettingsUnsaved ? 127 : 0, 1);
-  midi1.sendNoteOn(107, globalSettingsUnsaved ? 127 : 0, 2);
-  midi1.sendNoteOn(107, globalSettingsUnsaved ? 127 : 0, 3);
-
   // Serial.println("midi ui redraw");
   // saveGlobalSettings();
-}
-
-void MainController::saveGlobalSettings()
-{
-  for (int i = 0; i < NUM_OF_CV_TRAKS; i++)
-  {
-    memcpy(&globalSettings.trackParams[i], &cvSequencers[i]->parameters, sizeof(Parameters));
-    globalSettings.tracksEnabled[i] = cvTracks[i]->isPlaying;
-  }
-  Serial.printf("all params size = %i \n", sizeof(cvSequencers[0]->parameters));
-  Serial.printf("steps param size = %i \n", sizeof(cvSequencers[0]->parameters.steps));
-
-  storage->projectsBank->saveSlot((uint8_t *)&globalSettings, sizeof(GlobalSettings));
-
-  globalSettingsUnsaved = false;
-}
-
-void MainController::loadGlobalSettings()
-{
-  storage->projectsBank->saveSlot((uint8_t *)&globalSettings, sizeof(GlobalSettings));
-
-  for (int i = 0; i < NUM_OF_CV_TRAKS; i++)
-  {
-    memcpy(&cvSequencers[i]->parameters, &globalSettings.trackParams[i], sizeof(Parameters));
-    globalSettings.tracksEnabled[i] ? cvTracks[i]->play() : cvTracks[i]->stop();
-  }
-
-  globalSettingsUnsaved = false;
 }
