@@ -46,6 +46,12 @@ namespace HLMusicMachine
       return *this;
     }
 
+    Parameter &operator-=(const float dec)
+    {
+      operator+=(dec * -1);
+      return *this;
+    }
+
     float scale(float a, float b)
     {
       return MathUtils::scale((float)value, (float)min, (float)max, (float)a, (float)b);
