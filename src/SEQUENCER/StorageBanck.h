@@ -19,6 +19,7 @@ public:
   std::map<uint16_t, FileEntry> entries;
 
   Parameter<uint16_t> currentSlot = {0, 0, 16};
+  int lastSlot = 0;
 
   SortageBank(String dirPath, String filePrefix)
   {
@@ -47,7 +48,9 @@ public:
     String filePath = getFilePahtForSlot(slotNumber);
     FileTools::save(data, size, filePath.c_str());
 
-    readSlots();
+    lastSlot = slotNumber;
+
+    // readSlots();
   }
 
   void saveSlot(uint8_t *data, int size)
@@ -59,6 +62,8 @@ public:
   {
     String filePath = getFilePahtForSlot(slotNumber);
     FileTools::load(data, size, filePath.c_str());
+
+    lastSlot = slotNumber;
   }
 
   void loadSlot(uint8_t *data, int size)

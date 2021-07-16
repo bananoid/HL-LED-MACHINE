@@ -10,15 +10,11 @@ void UIFileManagerView::update()
     // Save Project
     if (ctx->controller->buttonKeys[KEY_ID_SCREEN_A]->released())
     {
-      currentLoadedProjectSlot = storage->projectsBank->currentSlot;
-      Serial.printf("Save Project %i\n", currentLoadedProjectSlot);
       ui->saveProject();
     }
     // Load Project
     else if (ctx->controller->buttonKeys[KEY_ID_SCREEN_D]->released())
     {
-      currentLoadedProjectSlot = storage->projectsBank->currentSlot;
-      Serial.printf("Load Project %i\n", currentLoadedProjectSlot);
       ui->loadProject();
     }
   }

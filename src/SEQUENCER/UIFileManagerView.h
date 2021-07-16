@@ -13,7 +13,6 @@ class UIFileManagerView : public UIView
 private:
 public:
   Parameter<uint8_t> selectedTrack = {1, 1, NUM_OF_CV_TRAKS + NUM_OF_MIDI_TRAKS};
-  int currentLoadedProjectSlot = 0;
 
   enum FocusMode
   {
@@ -80,7 +79,7 @@ public:
 
     ctx->setTextSize(2);
     ctx->setTextColor(COLOR_WHITE_F);
-    ctx->drawText(String(currentLoadedProjectSlot), frame.w - 16, 32 + 7, ALIGN_CENTER);
+    ctx->drawText(String(storage->projectsBank->lastSlot), frame.w - 16, 32 + 7, ALIGN_CENTER);
 
     // Save Load Buttons
     if (focusMode != NONE)

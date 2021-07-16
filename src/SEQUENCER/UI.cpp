@@ -58,7 +58,7 @@ void UI::loadProject()
     memcpy(&track->sequencers[0]->parameters, &projectStore.trackParams[i], sizeof(Parameters));
 
     // Load track enabled/disabled
-    // projectStore.tracksEnabled[i] ? track->play() : track->stop();
+    projectStore.tracksEnabled[i] ? track->play() : track->stop();
 
     i++;
   }
