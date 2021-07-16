@@ -24,12 +24,6 @@ namespace HLMusicMachine
       PERCUSSION
     };
 
-    // enum ArpeggioType
-    // {
-    //   ArpeggioType_Eucledian,
-    //   ArpeggioType_LFO
-    // };
-
     struct Step
     {
       int note = 1;
