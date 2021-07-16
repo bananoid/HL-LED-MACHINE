@@ -4,6 +4,7 @@
 #include "UISequencerParameters.h"
 #include <Track.h>
 #include "UITrackPlotter.h"
+#include "Storage.h"
 
 using namespace HLMusicMachine;
 
@@ -15,6 +16,9 @@ public:
   UITrackPlotter *plotter;
   UISequencerParameters *seqA;
   UISequencerParameters *seqB;
+
+  UIParameterView<uint16_t> *storeSlot;
+
   UITrackView(Track *track)
   {
     this->track = track;
@@ -23,7 +27,7 @@ public:
   void build() override
   {
     auto itemFrame = frame;
-    itemFrame.w /= 2;
+    // itemFrame.w /= 2;
     itemFrame.y = 96;
     itemFrame.h -= itemFrame.y;
 
@@ -33,50 +37,26 @@ public:
     addChild(plotter);
 
     itemFrame.x = 0;
+    itemFrame.w = 96;
     seqA = new UISequencerParameters(track->sequencers[0]);
     seqA->frame = itemFrame;
     seqA->focusColor = COLOR_YELLOW_F;
     addChild(seqA);
 
-    itemFrame.x = frame.w / 2;
-    seqB = new UISequencerParameters(track->sequencers[0]);
-    seqB->frame = itemFrame;
-    seqB->focusColor = COLOR_YELLOW_F;
-    addChild(seqB);
+    // seqB = new UISequencerParameters(track->sequencers[0]);
+    // seqB->frame = itemFrame;
+    // seqB->focusColor = COLOR_YELLOW_F;
+    // addChild(seqB);
+
+    itemFrame.x = itemFrame.w;
+    itemFrame.w = 32;
+    storeSlot = new UIParameterView<uint16_t>(&storage->tracksBank->currentSlot);
+    storeSlot->frame = itemFrame;
+    storeSlot->label = "Slot";
+    addChild(storeSlot);
   }
 
-  void update()
-  {
-    if (ctx->controller->buttonKeys[KEY_ID_SCREEN_A]->pressed())
-    {
-      track->togglePlayStop();
-    }
-
-    if (ctx->controller->buttonKeys[KEY_ID_SCREEN_B]->pressed())
-    {
-      focusIn(1);
-    }
-
-    if (ctx->controller->buttonKeys[KEY_ID_SCREEN_C]->pressed())
-    {
-      focusIn(2);
-    }
-
-    if (ctx->controller->buttonKeys[KEY_ID_SCREEN_D]->pressed())
-    {
-      setFocusIndex(0);
-      setFocus();
-    }
-
-    if (plotter->isFocused())
-    {
-      auto rightWheelSpeed = ctx->controller->wheelEncoders[WHEEL_ID_RIGHT]->speed;
-      if (rightWheelSpeed != 0)
-      {
-        plotter->setScaleFactor(plotter->scaleFactor + rightWheelSpeed);
-      }
-    }
-  }
+  void update() override;
 
   void draw() override
   {

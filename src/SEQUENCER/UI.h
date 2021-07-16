@@ -53,7 +53,10 @@ public:
   void saveProject();
   void loadProject();
 
+  void saveTrackToSlot(Track *track, uint16_t slot);
   void saveTrackToSlot(uint8_t trackInx, uint16_t slot);
+
+  void loadTrackFromSlot(Track *track, uint16_t slot);
   void loadTrackFromSlot(uint8_t trackInx, uint16_t slot);
 };
 

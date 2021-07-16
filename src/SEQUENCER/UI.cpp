@@ -67,6 +67,14 @@ void UI::loadProject()
   }
 }
 
+void UI::saveTrackToSlot(Track *track, uint16_t slot)
+{
+  Parameters params;
+  memcpy(&params, &track->sequencers[0]->parameters, sizeof(Parameters));
+  storage->tracksBank->saveSlot((uint8_t *)&params, sizeof(Parameters), slot);
+  // Serial.printf("save to Track inx %i\n", trackInx);
+};
+
 void UI::saveTrackToSlot(uint8_t trackInx, uint16_t slot)
 {
   if (trackInx >= tracker->tracks.size())
@@ -74,29 +82,25 @@ void UI::saveTrackToSlot(uint8_t trackInx, uint16_t slot)
     return;
   }
   auto track = tracker->tracks[trackInx];
+  saveTrackToSlot(track, slot);
+}
 
+void UI::loadTrackFromSlot(Track *track, uint16_t slot)
+{
   Parameters params;
-
-  memcpy(&params, &track->sequencers[0]->parameters, sizeof(Parameters));
-
-  storage->tracksBank->saveSlot((uint8_t *)&params, sizeof(Parameters), slot);
-  // Serial.printf("save to Track inx %i\n", trackInx);
+  storage->tracksBank->loadSlot((uint8_t *)&params, sizeof(Parameters), slot);
+  memcpy(&track->sequencers[0]->parameters, &params, sizeof(Parameters));
+  // Serial.printf("load to Track inx %i\n", trackInx);
 };
+
 void UI::loadTrackFromSlot(uint8_t trackInx, uint16_t slot)
 {
-
   if (trackInx >= tracker->tracks.size())
   {
     return;
   }
-  Parameters params;
-
   auto track = tracker->tracks[trackInx];
-  storage->tracksBank->loadSlot((uint8_t *)&params, sizeof(Parameters), slot);
-
-  memcpy(&track->sequencers[0]->parameters, &params, sizeof(Parameters));
-
-  // Serial.printf("load to Track inx %i\n", trackInx);
-};
+  loadTrackFromSlot(track, slot);
+}
 
 UI *ui = new UI();
