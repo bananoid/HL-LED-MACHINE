@@ -36,7 +36,7 @@ namespace HLMusicMachine
     Instrument(Scheduler *runner, int voiceCount = 1);
     InstrumentDelegate *delegate;
 
-    CircularBuffer<NoteEvent *, 256> eventsBuffer;
+    CircularBuffer<NoteEvent *, 32> eventsBuffer;
 
     std::vector<Voice *> voices;
     uint8_t voiceIndex = 0;
