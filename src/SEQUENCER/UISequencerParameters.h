@@ -67,6 +67,10 @@ public:
                 new UIParameterView<ArpeggioType>(&sequencer->parameters.arpeggioType),
             },
             {
+                "arpeggioLFO",
+                new UIParameterView<uint8_t>(&sequencer->parameters.arpeggioLFO),
+            },
+            {
                 "chord",
                 new UIParameterView<bool>(&sequencer->parameters.chord),
             },

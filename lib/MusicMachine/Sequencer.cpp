@@ -89,9 +89,19 @@ namespace HLMusicMachine
 
     if (isOn && newStep)
     {
-      lastStep.note = onCounter % parameters.events;
-      onCounter++;
-      onCounter = onCounter % parameters.steps;
+
+      if (parameters.arpeggioType != ArpeggioType_RetrigFollow)
+      {
+        lastStep.note = onCounter % parameters.events;
+        onCounter++;
+        onCounter = onCounter % parameters.steps;
+      }
+      else
+      {
+        lastStep.note = onCounter;
+        onCounter++;
+      }
+
       lastEuqTrigTime = counter;
       lastTrigTime = counter;
     }
@@ -139,6 +149,12 @@ namespace HLMusicMachine
     {
       lastTrigTime = counter;
 
+      if (parameters.arpeggioType == ArpeggioType_RetrigFollow)
+      {
+        lastStep.note = onCounter;
+        onCounter++;
+      }
+
       int noteLenght = stepLenght;
       if (retrigActive)
       {
@@ -164,15 +180,19 @@ namespace HLMusicMachine
       {
         int noteInx = 0;
 
-        if (parameters.arpeggioType == ArpeggioType_Eucledian)
+        if (parameters.arpeggioType == ArpeggioType_Eucledian || parameters.arpeggioType == ArpeggioType_RetrigFollow)
         {
-          noteInx = (lastStep.note % parameters.noteCount) * parameters.noteSpread;
+          noteInx = ((lastStep.note * parameters.noteSpread) % parameters.noteCount) * parameters.noteSpread;
         }
         else if (parameters.arpeggioType == ArpeggioType_LFO)
         {
-          float phase = counter / 24.0f * (1.0 / parameters.arpeggioLFO);
-          float aLFO = sinf(phase * TWO_PI);
-          aLFO = asinf(aLFO) / HALF_PI;
+          int lfoLen = Clock::getQuntizedTimePulses(parameters.arpeggioLFO);
+          float phase = (float)counter / (float)lfoLen * TWO_PI;
+
+          float aLFO = cosf(phase * TWO_PI);
+
+          // aLFO = asinf(aLFO) / HALF_PI;
+
           aLFO = map(aLFO, -1.f, 1.f, 0, parameters.noteCount);
           noteInx = round(aLFO);
           noteInx *= parameters.noteSpread;
