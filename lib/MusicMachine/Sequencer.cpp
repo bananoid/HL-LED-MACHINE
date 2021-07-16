@@ -194,13 +194,15 @@ namespace HLMusicMachine
         else if (parameters.arpeggioType == ArpeggioType_LFO)
         {
           int lfoLen = Clock::getQuntizedTimePulses(parameters.arpeggioLFO);
-          float phase = (float)counter / (float)lfoLen * TWO_PI;
 
-          float aLFO = cosf(phase * TWO_PI);
-
+          // float phase = (float)counter / (float)lfoLen * TWO_PI;
+          // float aLFO = cosf(phase * TWO_PI);
           // aLFO = asinf(aLFO) / HALF_PI;
 
-          aLFO = map(aLFO, -1.f, 1.f, 0, parameters.noteCount);
+          float phase = (float)counter / (float)lfoLen + parameters.arpeggioLFOPhase;
+          float aLFO = GFXUtils::wave(phase, parameters.arpeggioLFOQue, parameters.arpeggioLFOSym);
+
+          aLFO = map(aLFO, 0.f, 1.f, 0, parameters.noteCount);
           noteInx = round(aLFO);
           noteInx *= parameters.noteSpread;
         }

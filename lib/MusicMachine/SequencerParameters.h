@@ -24,6 +24,9 @@ namespace HLMusicMachine
     Parameter<uint8_t> noteOffset = {0, 0, 20};
     Parameter<ArpeggioType> arpeggioType = {ArpeggioType_Eucledian, ArpeggioType_Eucledian, ArpeggioType_LFO};
     Parameter<uint8_t> arpeggioLFO = {3, 1, 22};
+    Parameter<float> arpeggioLFOPhase = {0, 0, 1};
+    Parameter<float> arpeggioLFOQue = {0.5, 0.0, 3};
+    Parameter<float> arpeggioLFOSym = {0.5, 0, 1};
 
     Parameter<bool> chord = {false, false, true};
 
@@ -34,10 +37,10 @@ namespace HLMusicMachine
     Parameter<uint8_t> retrigMax = {8, 0, 16};
 
     Parameter<uint8_t> velocityMax = {127, 0, 127};
-    Parameter<uint8_t> velocityMin = {0, 0, 127};
+    Parameter<uint8_t> velocityMin = {10, 0, 127};
     Parameter<uint8_t> velocityLFOSpeed = {0, 0, 16};
     Parameter<float> velocityLFOPhase = {0, 0, 1};
-    Parameter<float> velocityLFOQue = {0.5, 0.001, 3};
+    Parameter<float> velocityLFOQue = {0.5, 0.0, 3};
     Parameter<float> velocityLFOSym = {0.5, 0, 1};
   };
 }

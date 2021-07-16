@@ -71,6 +71,18 @@ public:
                 new UIParameterView<uint8_t>(&sequencer->parameters.arpeggioLFO),
             },
             {
+                "arpeggioLFOPhase",
+                new UIParameterView<float>(&sequencer->parameters.arpeggioLFOPhase),
+            },
+            {
+                "arpeggioLFOQue",
+                new UIParameterView<float>(&sequencer->parameters.arpeggioLFOQue),
+            },
+            {
+                "arpeggioLFOSym",
+                new UIParameterView<float>(&sequencer->parameters.arpeggioLFOSym),
+            },
+            {
                 "chord",
                 new UIParameterView<bool>(&sequencer->parameters.chord),
             },
