@@ -52,6 +52,9 @@ public:
 
   void saveProject();
   void loadProject();
+
+  void saveTrackToSlot(uint8_t trackInx, uint16_t slot);
+  void loadTrackFromSlot(uint8_t trackInx, uint16_t slot);
 };
 
 extern UI *ui;

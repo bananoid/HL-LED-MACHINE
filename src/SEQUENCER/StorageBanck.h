@@ -37,10 +37,10 @@ public:
     entries.clear();
     FileTools::readSlots(&entries, this->dirPath, this->filePrefix);
 
-    // for (auto const &e : entries)
-    // {
-    //   Serial.printf("Slot %i\t\t%s\n", e.first, e.second.name.c_str());
-    // }
+    for (auto const &e : entries)
+    {
+      Serial.printf("Slot %i\t\t%s\n", e.first, e.second.name.c_str());
+    }
   }
 
   void saveSlot(uint8_t *data, int size, uint16_t slotNumber)
@@ -49,6 +49,8 @@ public:
     FileTools::save(data, size, filePath.c_str());
 
     lastSlot = slotNumber;
+
+    Serial.printf("Save Slot %s\n", filePath.c_str());
 
     // readSlots();
   }
@@ -64,6 +66,8 @@ public:
     FileTools::load(data, size, filePath.c_str());
 
     lastSlot = slotNumber;
+
+    Serial.printf("Load Slot %s\n", filePath.c_str());
   }
 
   void loadSlot(uint8_t *data, int size)

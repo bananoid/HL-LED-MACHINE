@@ -28,12 +28,14 @@ void UIFileManagerView::update()
     // Save Track
     if (ctx->controller->buttonKeys[KEY_ID_SCREEN_A]->released())
     {
-      Serial.printf("Save Track %i to slot %i\n", trackSlot, trackInx);
+      // Serial.printf("Save Track %i to slot %i\n", trackSlot, trackInx);
+      ui->saveTrackToSlot(trackInx, trackSlot);
     }
     // Load Track
     else if (ctx->controller->buttonKeys[KEY_ID_SCREEN_D]->released())
     {
-      Serial.printf("Load Track %i from slot %i\n", trackSlot, trackInx);
+      // Serial.printf("Load Track %i from slot %i\n", trackSlot, trackInx);
+      ui->loadTrackFromSlot(trackInx, trackSlot);
     }
   }
   else

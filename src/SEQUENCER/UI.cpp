@@ -2,6 +2,9 @@
 
 #include <Arduino.h>
 #include <SPI.h>
+#include <SequencerParameters.h>
+
+using namespace HLMusicMachine;
 
 void UI::init(Scheduler *runner, Tracker *tracker)
 {
@@ -63,5 +66,37 @@ void UI::loadProject()
     i++;
   }
 }
+
+void UI::saveTrackToSlot(uint8_t trackInx, uint16_t slot)
+{
+  if (trackInx >= tracker->tracks.size())
+  {
+    return;
+  }
+  auto track = tracker->tracks[trackInx];
+
+  Parameters params;
+
+  memcpy(&params, &track->sequencers[0]->parameters, sizeof(Parameters));
+
+  storage->tracksBank->saveSlot((uint8_t *)&params, sizeof(Parameters), slot);
+  // Serial.printf("save to Track inx %i\n", trackInx);
+};
+void UI::loadTrackFromSlot(uint8_t trackInx, uint16_t slot)
+{
+
+  if (trackInx >= tracker->tracks.size())
+  {
+    return;
+  }
+  Parameters params;
+
+  auto track = tracker->tracks[trackInx];
+  storage->tracksBank->loadSlot((uint8_t *)&params, sizeof(Parameters), slot);
+
+  memcpy(&track->sequencers[0]->parameters, &params, sizeof(Parameters));
+
+  // Serial.printf("load to Track inx %i\n", trackInx);
+};
 
 UI *ui = new UI();

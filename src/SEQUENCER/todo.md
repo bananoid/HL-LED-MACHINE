@@ -26,3 +26,4 @@
   [] Legato/Glide effect for overllapping note in mono voice instriment
 
 [x] Track Plotter background grid
+[] Auto save
