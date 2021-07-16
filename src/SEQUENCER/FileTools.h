@@ -4,6 +4,13 @@
 #include <SPI.h>
 #include <SD.h>
 #include <SerialFlash.h>
+#include <map>
+
+struct FileEntry
+{
+  uint16_t slot;
+  String name;
+};
 
 class FileTools
 {
@@ -52,7 +59,7 @@ public:
       return;
     }
 
-    unsigned long curTime = micros();
+    // unsigned long curTime = micros();
 
     if (SD.exists(filePath))
     {
@@ -69,28 +76,40 @@ public:
     // Serial.printf("Save in %ius size:%i\n", deltaTime, size);
   }
 
-  void readStorage()
+  static uint16_t slotFromFilePath(String name, String prefix)
+  {
+    auto nInx = prefix.length();
+    auto nStr = name.substring(nInx);
+    auto slot = nStr.toInt();
+
+    // Serial.printf("%s\tnInx:%i\tnStr:%s\t%i\n", name.c_str(), nInx, nStr.c_str(), slot);
+    return slot;
+  }
+
+  static void readSlots(std::map<uint16_t, FileEntry> *entries, String dirPath, String prefix)
   {
     if (!checkSDCard())
     {
       return;
     }
 
-    File root = SD.open("/");
+    File root = SD.open(dirPath.c_str());
     root.rewindDirectory();
 
+    uint16_t slot = 0;
     while (true)
     {
       File entry = root.openNextFile();
       if (!entry)
       {
-        Serial.println("...");
-        // no more files
         break;
       }
-      // convert to string to make it easier to work with...
       String entryName = (String)entry.name();
-      Serial.println("FOUND: " + entryName);
+
+      slot = slotFromFilePath(entryName, prefix);
+
+      entries->insert({slot, {slot, entryName}});
+
       entry.close();
     }
 

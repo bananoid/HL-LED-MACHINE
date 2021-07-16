@@ -44,6 +44,9 @@ public:
     //                  { autoSave(); });
     // runner->addTask(autoSaveTask);
     // autoSaveTask.disable();
+
+    projectsBank->readSlots();
+    tracksBank->readSlots();
   }
 };
 
