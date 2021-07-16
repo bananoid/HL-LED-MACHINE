@@ -1,5 +1,5 @@
 #pragma once
-#include "Storage.h"
+
 #include <Wire.h>
 #include <SPI.h>
 #include <SD.h>
@@ -7,6 +7,9 @@
 #include <Arduino.h>
 #include "FileTools.h"
 #include <map>
+#include <Parameter.h>
+
+using namespace HLMusicMachine;
 
 class SortageBank
 {
@@ -15,8 +18,7 @@ public:
   String filePrefix;
   std::map<uint16_t, FileEntry> entries;
 
-  uint16_t currentSlot = 0;
-  uint16_t maxNumOfSlots = 256;
+  Parameter<uint16_t> currentSlot = {0, 0, 16};
 
   SortageBank(String dirPath, String filePrefix)
   {
@@ -51,7 +53,6 @@ public:
   void saveSlot(uint8_t *data, int size)
   {
     saveSlot(data, size, currentSlot);
-    currentSlot++; //TMP
   }
 
   void loadSlot(uint8_t *data, int size, uint16_t slotNumber)

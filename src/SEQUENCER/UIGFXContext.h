@@ -13,6 +13,7 @@ static const uint8_t ALIGN_CENTER = 1;
 static const uint8_t ALIGN_RIGHT = 2;
 
 #define BG_INT 50
+#define MD_INT 80
 
 static const Color COLOR_WHITE_F = Color(255, 255, 255);
 static const Color COLOR_WHITE_B = Color(BG_INT, BG_INT, BG_INT);
@@ -25,6 +26,7 @@ static const Color COLOR_GREEN_B = Color(0, BG_INT, 0);
 static const Color COLOR_BLUE_F = Color(0, 0, 255);
 static const Color COLOR_BLUE_B = Color(0, 0, 255);
 static const Color COLOR_CYAN_F = Color(0, 255, 255);
+static const Color COLOR_CYAN_M = Color(0, MD_INT, MD_INT);
 static const Color COLOR_CYAN_B = Color(0, BG_INT, BG_INT);
 static const Color COLOR_MAGENTA_F = Color(255, 0, 255);
 static const Color COLOR_MAGENTA_B = Color(BG_INT, 0, BG_INT);

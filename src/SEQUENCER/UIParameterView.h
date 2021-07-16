@@ -58,6 +58,11 @@ public:
     *param += wheelSpeed;
   }
 
+  void updateParam(Parameter<uint16_t> *param, float wheelSpeed)
+  {
+    *param += wheelSpeed;
+  }
+
   void updateParam(Parameter<int8_t> *param, float wheelSpeed)
   {
     *param += wheelSpeed;
@@ -81,12 +86,14 @@ public:
   {
     int barValW = param->scale(0, frame.w - 2);
 
-    // ctx->drawRect({1, 1, frame.w - 2, frame.h - 2}, COLOR_RED_B, true);
+    // ctx->drawRect({1, 1, frame.w - 2, frame.h - 2}, COLOR_CYAN_M, true);
+
     ctx->drawRect({1, 1, barValW, 3}, COLOR_RED_F, true);
     ctx->setTextSize(1);
     ctx->setTextColor(COLOR_WHITE_F);
     ctx->setCursor(0, 0);
-    ctx->drawText(label, 4, frame.h - 16, ALIGN_LEFT);
-    ctx->drawText(String(*param), frame.w / 2, frame.h - 2, ALIGN_LEFT);
+    ctx->drawText(label, 4, frame.h / 2 - 3, ALIGN_LEFT);
+    ctx->drawText(String(*param), 4, frame.h - 5, ALIGN_LEFT);
+    ctx->drawRect({4, frame.h / 2, frame.w - 8, 1}, COLOR_WHITE_F, true);
   }
 };
