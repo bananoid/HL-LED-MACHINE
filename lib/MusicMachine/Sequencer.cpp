@@ -1,5 +1,8 @@
 #include "Sequencer.h"
 #include <Arduino.h>
+#include <GFXUtils.h>
+
+using namespace GFX;
 
 namespace HLMusicMachine
 {
@@ -117,7 +120,7 @@ namespace HLMusicMachine
       auto rLFOlen = Clock::getQuntizedTimePulses(rLFOVal);
 
       float phase = (float)counter / (float)rLFOlen * TWO_PI;
-      phase += parameters.velocityLFOPhase * TWO_PI;
+      // phase += parameters.velocityLFOPhase * TWO_PI;
       // float phase = (float)eucTrigCounter / (float)rLFOlen * TWO_PI;
 
       float rLFO = cosf(phase);
@@ -168,12 +171,16 @@ namespace HLMusicMachine
       {
         int velSpeed = parameters.velocityLFOSpeed;
         int velLen = Clock::getQuntizedTimePulses(velSpeed);
-        float phase = (float)counter / (float)velLen * TWO_PI;
-        float vLFO = cosf(phase);
+
+        // float phase = (float)counter / (float)velLen * TWO_PI;
+        // float vLFO = cosf(phase);
+
+        float phase = (float)counter / (float)velLen + parameters.velocityLFOPhase;
+        float vLFO = GFXUtils::wave(phase, parameters.velocityLFOQue, parameters.velocityLFOSym);
 
         // vLFO = asinf(vLFO) / HALF_PI; //Linear Modulation
 
-        vel = map(vLFO, -1.f, 1.f, parameters.velocityMin, parameters.velocityMax);
+        vel = map(vLFO, 0.f, 1.f, parameters.velocityMin, parameters.velocityMax);
       }
 
       if (type == MELODY)

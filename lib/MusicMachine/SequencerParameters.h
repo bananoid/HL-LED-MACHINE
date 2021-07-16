@@ -37,5 +37,7 @@ namespace HLMusicMachine
     Parameter<uint8_t> velocityMin = {0, 0, 127};
     Parameter<uint8_t> velocityLFOSpeed = {0, 0, 16};
     Parameter<float> velocityLFOPhase = {0, 0, 1};
+    Parameter<float> velocityLFOQue = {0.5, 0.001, 3};
+    Parameter<float> velocityLFOSym = {0.5, 0, 1};
   };
 }

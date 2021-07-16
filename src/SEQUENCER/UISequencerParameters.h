@@ -110,6 +110,14 @@ public:
                 "vel LFO Phase",
                 new UIParameterView<float>(&sequencer->parameters.velocityLFOPhase),
             },
+            {
+                "vel LFO Que",
+                new UIParameterView<float>(&sequencer->parameters.velocityLFOQue),
+            },
+            {
+                "vel LFO Sym",
+                new UIParameterView<float>(&sequencer->parameters.velocityLFOSym),
+            },
         };
 
         auto cFrame = frame;
