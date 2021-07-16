@@ -25,11 +25,11 @@ public:
     UIView *cView;
     auto itemFrame = frame;
 
-    cView = new UIFileManagerView();
+    cView = new UIClockView(tracker);
     cView->frame = itemFrame;
     addChild(cView);
 
-    cView = new UIClockView(tracker);
+    cView = new UIFileManagerView();
     cView->frame = itemFrame;
     addChild(cView);
 

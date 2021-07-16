@@ -26,7 +26,6 @@ class Storage
 {
 private:
 public:
-  Task autoSaveTask;
   // unsigned long autoSaveTime = 0;
 
   SortageBank *projectsBank;
@@ -45,8 +44,8 @@ public:
     // runner->addTask(autoSaveTask);
     // autoSaveTask.disable();
 
-    projectsBank->readSlots();
-    tracksBank->readSlots();
+    // projectsBank->readSlots();
+    // tracksBank->readSlots();
   }
 };
 

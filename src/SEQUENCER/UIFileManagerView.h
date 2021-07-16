@@ -27,6 +27,8 @@ public:
   UIParameterView<uint16_t> *paramTracksSlot;
   UIParameterView<uint8_t> *paramTrackInx;
 
+  bool autoSaveEnabled = false;
+
   void build() override
   {
     auto itFrame = frame;
@@ -81,36 +83,37 @@ public:
     ctx->setTextColor(COLOR_WHITE_F);
     ctx->drawText(String(storage->projectsBank->lastSlot), frame.w - 16, 32 + 7, ALIGN_CENTER);
 
-    // Save Load Buttons
-    if (focusMode != NONE)
+    ctx->setTextSize(1);
+    Rect btnFrame = {1, frame.h - 16, 62, 16};
+
+    Color slBtnBgColor = COLOR_YELLOW_F;
+    String saveLabel = "SAVE";
+    String loadLabel = "LOAD";
+
+    if (focusMode == PROJECTS)
     {
-      ctx->setTextSize(1);
-      Rect btnFrame = {1, frame.h - 16, 62, 16};
-
-      Color slBtnBgColor = COLOR_YELLOW_F;
-      String saveLabel = "SAVE";
-      String loadLabel = "LOAD";
-
-      if (focusMode == PROJECTS)
-      {
-        saveLabel += " P";
-        loadLabel += " P";
-      }
-      else if (focusMode == TRACKS)
-      {
-        saveLabel += " T";
-        loadLabel += " T";
-      }
-
-      ctx->drawRect(btnFrame, slBtnBgColor, true);
-      ctx->setTextColor(COLOR_BLACK_B);
-      ctx->drawText(saveLabel, btnFrame.x + btnFrame.w / 2, btnFrame.y + btnFrame.h - 5, ALIGN_CENTER);
-
-      btnFrame.x = 64;
-
-      ctx->drawRect(btnFrame, slBtnBgColor, true);
-      ctx->setTextColor(COLOR_BLACK_B);
-      ctx->drawText(loadLabel, btnFrame.x + btnFrame.w / 2, btnFrame.y + btnFrame.h - 5, ALIGN_CENTER);
+      saveLabel += " P";
+      loadLabel += " P";
     }
+    else if (focusMode == TRACKS)
+    {
+      saveLabel += " T";
+      loadLabel += " T";
+    }
+    else
+    {
+      saveLabel = autoSaveEnabled ? "DIS AUTO S" : "ENA AUTO S";
+      loadLabel += " A";
+    }
+
+    ctx->drawRect(btnFrame, slBtnBgColor, true);
+    ctx->setTextColor(COLOR_BLACK_B);
+    ctx->drawText(saveLabel, btnFrame.x + btnFrame.w / 2, btnFrame.y + btnFrame.h - 5, ALIGN_CENTER);
+
+    btnFrame.x = 64;
+
+    ctx->drawRect(btnFrame, slBtnBgColor, true);
+    ctx->setTextColor(COLOR_BLACK_B);
+    ctx->drawText(loadLabel, btnFrame.x + btnFrame.w / 2, btnFrame.y + btnFrame.h - 5, ALIGN_CENTER);
   }
 };

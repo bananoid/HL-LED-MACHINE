@@ -41,5 +41,24 @@ void UIFileManagerView::update()
   else
   {
     focusMode = NONE;
+    // Save Track
+    if (ctx->controller->buttonKeys[KEY_ID_SCREEN_A]->released())
+    {
+      if (ui->autoSaveTask.isEnabled())
+      {
+        ui->autoSaveTask.disable();
+        autoSaveEnabled = false;
+      }
+      else
+      {
+        ui->autoSaveTask.enable();
+        autoSaveEnabled = true;
+      }
+    }
+    // Load Track
+    else if (ctx->controller->buttonKeys[KEY_ID_SCREEN_D]->released())
+    {
+      ui->loadAutoSave();
+    }
   }
 }

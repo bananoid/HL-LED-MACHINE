@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 #include <SequencerParameters.h>
+#include "FileTools.h"
 
 using namespace HLMusicMachine;
 
@@ -17,6 +18,11 @@ void UI::init(Scheduler *runner, Tracker *tracker)
   pinMode(FRONT_RIGHT_LED_PIN, OUTPUT);
 
   UIViewController::init(runner);
+
+  autoSaveTask.set(TASK_SECOND * 30, TASK_FOREVER, [this]()
+                   { saveAutoSave(); });
+  runner->addTask(autoSaveTask);
+  autoSaveTask.disable();
 }
 
 UIView *UI::initRootView()
@@ -101,6 +107,42 @@ void UI::loadTrackFromSlot(uint8_t trackInx, uint16_t slot)
   }
   auto track = tracker->tracks[trackInx];
   loadTrackFromSlot(track, slot);
+}
+
+void UI::saveAutoSave()
+{
+  GlobalStore globalStore;
+
+  int i = 0;
+  for (auto track : tracker->tracks)
+  {
+    memcpy(&globalStore.trackParams[i], &track->sequencers[0]->parameters, sizeof(Parameters));
+    globalStore.tracksEnabled[i] = track->isPlaying;
+    i++;
+  }
+  globalStore.bpm = tracker->clock->getBpm();
+
+  FileTools::save((uint8_t *)&globalStore, sizeof(GlobalStore), "AUTOSAVE");
+
+  // Serial.println("AUTO SAVE");
+}
+
+void UI::loadAutoSave()
+{
+  GlobalStore globalStore;
+  FileTools::load((uint8_t *)&globalStore, sizeof(GlobalStore), "AUTOSAVE");
+
+  int i = 0;
+  for (auto track : tracker->tracks)
+  {
+    memcpy(&track->sequencers[0]->parameters, &globalStore.trackParams[i], sizeof(Parameters));
+
+    globalStore.tracksEnabled[i] ? track->play() : track->stop();
+
+    i++;
+  }
+
+  tracker->clock->setBpm(globalStore.bpm);
 }
 
 UI *ui = new UI();

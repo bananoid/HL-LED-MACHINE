@@ -6,6 +6,9 @@
 #define FRONT_LEFT_LED_PIN 40
 #define FRONT_RIGHT_LED_PIN 38
 
+#include "config.h"
+#include <TaskSchedulerDeclarations.h>
+
 #include <Tracker.h>
 using namespace HLMusicMachine;
 
@@ -45,6 +48,8 @@ private:
 public:
   UIDelegate *delegate;
 
+  Task autoSaveTask;
+
   Tracker *tracker;
   void init(Scheduler *runner, Tracker *tracker);
   void update() override;
@@ -58,6 +63,9 @@ public:
 
   void loadTrackFromSlot(Track *track, uint16_t slot);
   void loadTrackFromSlot(uint8_t trackInx, uint16_t slot);
+
+  void saveAutoSave();
+  void loadAutoSave();
 };
 
 extern UI *ui;
