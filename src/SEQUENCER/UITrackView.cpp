@@ -11,22 +11,11 @@ void UITrackView::update()
 
   if (ctx->controller->buttonKeys[KEY_ID_SCREEN_B]->pressed())
   {
+
     focusIn(1);
   }
 
-  if (!storeSlot->isFocused())
-  {
-    if (ctx->controller->buttonKeys[KEY_ID_SCREEN_C]->pressed())
-    {
-      setFocusIndex(0);
-      setFocus();
-    }
-    if (ctx->controller->buttonKeys[KEY_ID_SCREEN_D]->pressed())
-    {
-      focusIn(2);
-    }
-  }
-  else
+  if (storeSlot->isFocused() && ctx->controller->buttonKeys[KEY_ID_FRONT_RIGHT]->isPressed())
   {
     // Save slot
     if (ctx->controller->buttonKeys[KEY_ID_SCREEN_C]->pressed())
@@ -37,6 +26,19 @@ void UITrackView::update()
     if (ctx->controller->buttonKeys[KEY_ID_SCREEN_D]->pressed())
     {
       ui->loadTrackFromSlot(track, storage->tracksBank->currentSlot);
+    }
+  }
+  else
+  {
+    if (ctx->controller->buttonKeys[KEY_ID_SCREEN_C]->pressed())
+    {
+      setFocusIndex(0);
+      setFocus();
+    }
+    if (ctx->controller->buttonKeys[KEY_ID_SCREEN_D]->pressed())
+    {
+      setFocus();
+      focusIn(2);
     }
   }
 

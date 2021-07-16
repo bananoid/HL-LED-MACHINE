@@ -28,12 +28,12 @@ public:
   {
     auto itemFrame = frame;
     // itemFrame.w /= 2;
-    itemFrame.y = 96;
-    itemFrame.h -= itemFrame.y;
+    itemFrame.y = 80;
+    itemFrame.h = 32;
 
     plotter = new UITrackPlotter(track);
     plotter->direction = UITrackPlotter::HORIZONTAL;
-    plotter->frame = {0, 16, frame.w, frame.h - itemFrame.h - 16};
+    plotter->frame = {0, 0, frame.w, frame.h - itemFrame.h - 16};
     addChild(plotter);
 
     itemFrame.x = 0;
@@ -60,7 +60,7 @@ public:
 
   void draw() override
   {
-    Rect onOffBox = {0, 0, frame.w, 16};
+    Rect onOffBox = {0, frame.h - 16, frame.w, 16};
     auto textColor = COLOR_BLACK_B;
     if (track->isPlaying)
     {
@@ -75,6 +75,21 @@ public:
     ctx->setTextSize(1);
     ctx->setTextColor(textColor);
     ctx->setCursor(0, 0);
-    ctx->drawText(label, frame.w / 2, 11, ALIGN_CENTER);
+    ctx->drawText(label, 4, frame.h - 5, ALIGN_LEFT);
+
+    if (storeSlot->isFocused() && ctx->controller->buttonKeys[KEY_ID_FRONT_RIGHT]->isPressed())
+    {
+      Rect btnFrame = {64, frame.h - 16, 32, 16};
+
+      ctx->drawRect(btnFrame, COLOR_YELLOW_F, true);
+      ctx->setTextColor(COLOR_BLACK_B);
+      ctx->drawText("SAVE", btnFrame.x + btnFrame.w / 2, btnFrame.y + btnFrame.h - 5, ALIGN_CENTER);
+
+      btnFrame.x += 32;
+
+      ctx->drawRect(btnFrame, COLOR_YELLOW_F, true);
+      ctx->setTextColor(COLOR_BLACK_B);
+      ctx->drawText("LOAD", btnFrame.x + btnFrame.w / 2, btnFrame.y + btnFrame.h - 5, ALIGN_CENTER);
+    }
   }
 };
