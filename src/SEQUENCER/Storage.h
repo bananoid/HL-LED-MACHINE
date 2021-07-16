@@ -1,9 +1,6 @@
 #pragma once
 
-#include <Wire.h>
-#include <SPI.h>
-#include <SD.h>
-#include <SerialFlash.h>
+#include <Arduino.h>
 
 #include "config.h"
 #include <TaskSchedulerDeclarations.h>
@@ -14,17 +11,32 @@
 
 #define DATA_FILE_NAME "SEQDATA.bin"
 
-#include "GlobalSettings.h";
+#define PROJECTS_PATH "PROJECTS"
+#define PROJECTS_PREFIX "PROJ_"
+
+#define TRACKS_PATH "TRACKS"
+#define TRACKS_PREFIX "TRACK_"
+
+#include "GlobalSettings.h"
 
 #include <Parameter.h>
+#include "StorageBanck.h"
 
 class Storage
 {
 private:
 public:
-  File frec;
   Task autoSaveTask;
   // unsigned long autoSaveTime = 0;
+
+  SortageBank *projectsBank;
+  SortageBank *tracksBank;
+
+  Storage()
+  {
+    projectsBank = new SortageBank(PROJECTS_PATH, PROJECTS_PREFIX);
+    tracksBank = new SortageBank(TRACKS_PATH, TRACKS_PREFIX);
+  }
 
   void begin(Scheduler *runner)
   {
@@ -32,78 +44,6 @@ public:
     //                  { autoSave(); });
     // runner->addTask(autoSaveTask);
     // autoSaveTask.disable();
-  }
-
-  bool checkSDCard()
-  {
-    if (!SD.begin(BUILTIN_SDCARD))
-    {
-      Serial.println("Card failed, or not present");
-      return false;
-    }
-    return true;
-  }
-  void load(uint8_t *data, int size)
-  {
-    unsigned long curTime = micros();
-
-    if (!checkSDCard())
-    {
-      return;
-    }
-
-    File file = SD.open(DATA_FILE_NAME, FILE_READ);
-    if (!file)
-    {
-      Serial.print("File not found ");
-      Serial.println(DATA_FILE_NAME);
-      return;
-    }
-
-    file.readBytes(data, size);
-
-    file.close();
-
-    long deltaTime = micros() - curTime;
-    Serial.printf("Load in %ius\n", deltaTime);
-  }
-
-  void save(uint8_t *data, int size)
-  {
-    if (!checkSDCard())
-    {
-      return;
-    }
-
-    unsigned long curTime = micros();
-
-    if (SD.exists(DATA_FILE_NAME))
-    {
-      SD.remove(DATA_FILE_NAME);
-    }
-
-    frec = SD.open(DATA_FILE_NAME, FILE_WRITE);
-
-    frec.write(data, size);
-
-    frec.close();
-
-    long deltaTime = micros() - curTime;
-    Serial.printf("Save in %ius size:%i\n", deltaTime, size);
-  }
-
-  // void autoSave()
-  // {
-  //   autoSaveTime = millis();
-  // }
-
-  void save(GlobalSettings *gs, String fileName)
-  {
-    if (!checkSDCard())
-    {
-      return;
-    }
-    frec = SD.open(DATA_FILE_NAME, FILE_WRITE);
   }
 };
 

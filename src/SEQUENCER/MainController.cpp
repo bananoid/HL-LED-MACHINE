@@ -325,31 +325,19 @@ void MainController::saveGlobalSettings()
   Serial.printf("all params size = %i \n", sizeof(cvSequencers[0]->parameters));
   Serial.printf("steps param size = %i \n", sizeof(cvSequencers[0]->parameters.steps));
 
-  storage->save((uint8_t *)&globalSettings, sizeof(GlobalSettings));
+  storage->projectsBank->saveSlot((uint8_t *)&globalSettings, sizeof(GlobalSettings));
 
   globalSettingsUnsaved = false;
 }
 
 void MainController::loadGlobalSettings()
 {
-  storage->load((uint8_t *)&globalSettings, sizeof(GlobalSettings));
+  storage->projectsBank->saveSlot((uint8_t *)&globalSettings, sizeof(GlobalSettings));
 
   for (int i = 0; i < NUM_OF_CV_TRAKS; i++)
   {
     memcpy(&cvSequencers[i]->parameters, &globalSettings.trackParams[i], sizeof(Parameters));
     globalSettings.tracksEnabled[i] ? cvTracks[i]->play() : cvTracks[i]->stop();
-
-    // Overide Not assigned parameters
-    // Todo: add controls
-    // cvSequencers[i]->parameters.velocity = -1;
-    // cvSequencers[i]->parameters.velocityLFO = 4;
-    // cvSequencers[i]->parameters.velocityLFO.min = 0;
-    // cvSequencers[i]->parameters.velocityLFO.max = 127;
-
-    // cvSequencers[i]->parameters.arpeggioType = ArpeggioType_LFO;
-    // cvSequencers[i]->parameters.arpeggioLFO = 1;
-
-    // cvSequencers[i]->parameters.fillFactor = 1;
   }
 
   globalSettingsUnsaved = false;

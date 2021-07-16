@@ -4,7 +4,7 @@
 # SOFTWARE
 [] Harmony
   [x] Scale note selection
-  [] Global Tranposing
+  [x] Global Tranposing
     [] Recording transposition
   [] Global to Track transposing link
   [] Recording Track note transoping 
