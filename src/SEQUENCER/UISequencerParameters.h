@@ -72,7 +72,11 @@ public:
             },
             {
                 "retrig",
-                new UIParameterView<int8_t>(&sequencer->parameters.retrig),
+                new UIParameterView<uint8_t>(&sequencer->parameters.retrig),
+            },
+            {
+                "retrig LFO Enabled",
+                new UIParameterView<bool>(&sequencer->parameters.retrigLFOEnabled),
             },
             {
                 "retrigLFO",
@@ -86,7 +90,6 @@ public:
                 "retrig max",
                 new UIParameterView<uint8_t>(&sequencer->parameters.retrigMax),
             },
-
             {
                 "vel Max",
                 new UIParameterView<uint8_t>(&sequencer->parameters.velocityMax),
@@ -96,12 +99,12 @@ public:
                 new UIParameterView<uint8_t>(&sequencer->parameters.velocityMin),
             },
             {
-                "vel LFO Enabled",
-                new UIParameterView<bool>(&sequencer->parameters.velocityLFOEnabled),
-            },
-            {
                 "vel LFO Speed",
                 new UIParameterView<uint8_t>(&sequencer->parameters.velocityLFOSpeed),
+            },
+            {
+                "vel LFO Phase",
+                new UIParameterView<float>(&sequencer->parameters.velocityLFOPhase),
             },
         };
 

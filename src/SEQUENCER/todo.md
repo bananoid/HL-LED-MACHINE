@@ -11,17 +11,17 @@
   [] Midi controller Scale selection
 
 [] Storage
-  [] Structire serialization
-  [] Save/Load Project state
-  [] Save/Load Track state
+  [x] Structire serialization
+  [x] Save/Load Project state
+  [x] Save/Load Track state
   [] Save/Load Scale 
 
 [] Sequencer 
   [x] Fix Retrig/Rolling 
-  [] LFO phase + shape (vel, arpegio, retrig)
-  [] Note lenght parameter
   [] retrig lfo enable parameter
   [] retrig lfo reset from eucledian trig
+  [] LFO phase + shape (vel, arpegio, retrig)
+  [] Note lenght parameter
   [] Second sequencer enable/disable
   [] Legato/Glide effect for overllapping note in mono voice instriment
 

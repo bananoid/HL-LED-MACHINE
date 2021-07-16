@@ -66,8 +66,8 @@ namespace HLMusicMachine
 
     int stepLenght = Clock::getQuntizedTimePulses(parameters.stepLenght);
     int retrigSize = parameters.retrig;
-    bool retrigActive = retrigSize != 0;
-    bool retrigLFOActive = retrigSize < 0;
+    bool retrigLFOEnabled = parameters.retrigLFOEnabled;
+    bool retrigActive = retrigSize > 0 || retrigLFOEnabled;
 
     if (!retrigActive)
     {
@@ -101,12 +101,13 @@ namespace HLMusicMachine
     uint32_t trigCounter = counter - lastTrigTime;
     // uint32_t eucTrigCounter = counter - lastEuqTrigTime;
 
-    if (retrigLFOActive)
+    if (retrigLFOEnabled)
     {
       int rLFOVal = parameters.retrigLFO;
       auto rLFOlen = Clock::getQuntizedTimePulses(rLFOVal);
 
       float phase = (float)counter / (float)rLFOlen * TWO_PI;
+      phase += parameters.velocityLFOPhase * TWO_PI;
       // float phase = (float)eucTrigCounter / (float)rLFOlen * TWO_PI;
 
       float rLFO = cosf(phase);
@@ -147,7 +148,7 @@ namespace HLMusicMachine
       // noteLenght = 3; // Parametrize
 
       int vel = parameters.velocityMax;
-      if (parameters.velocityLFOEnabled)
+      if (parameters.velocityLFOSpeed > 0)
       {
         int velSpeed = parameters.velocityLFOSpeed;
         int velLen = Clock::getQuntizedTimePulses(velSpeed);
