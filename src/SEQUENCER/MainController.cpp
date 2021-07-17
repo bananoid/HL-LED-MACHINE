@@ -99,19 +99,13 @@ void MainController::updateMIDI()
     Serial.printf("type:%i - data1:%i - data2:%i - channel:%i  \n", type, data1, data2, channel);
     if (channel == 1)
     {
-      if (type == MIDIDevice::ControlChange)
-      {
-        if (data1 == 50) // c1 s4
-        {
-          tracker->quantizer->noteOffset.setValue((float)data2, 0.f, 127.f);
-        }
-
-        if (data1 == 53)
-        {
-          // tracker->quantizer->toggleRecordingNoteOffset();
-          tracker->quantizer->setRecordingNoteOffset(data2 == 0 ? false : true);
-        }
-      }
+      // if (type == MIDIDevice::ControlChange)
+      // {
+      // if (data1 == 50) // c1 s4
+      // {
+      //   tracker->quantizer->noteOffset.setValue((float)data2, 0.f, 127.f);
+      // }
+      // }
     }
 
     // load
@@ -326,7 +320,7 @@ void MainController::drawMidiInterface()
     midi1.sendNoteOn(41 + i, tracker->keyIndex == i ? 127 : 0, 3);
   }
 
-  midi1.sendControlChange(53, tracker->quantizer->isRecording, 1);
+  // midi1.sendControlChange(53, tracker->quantizer->isRecording, 1);
 
   // Serial.println("midi ui redraw");
   // saveGlobalSettings();

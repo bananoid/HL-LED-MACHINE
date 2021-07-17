@@ -40,6 +40,20 @@ public:
         }
       }
     }
+    else
+    {
+      auto wheel = ctx->controller->wheelEncoders[WHEEL_ID_RIGHT]->speed;
+
+      if (wheel != 0)
+      {
+        tracker->quantizer->noteOffset += wheel;
+      }
+
+      if (ctx->controller->buttonKeys[KEY_ID_FRONT_RIGHT]->released())
+      {
+        tracker->quantizer->toggleRecordingNoteOffset();
+      }
+    }
   }
 
   void draw() override
