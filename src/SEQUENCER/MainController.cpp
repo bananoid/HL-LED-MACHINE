@@ -105,6 +105,12 @@ void MainController::updateMIDI()
         {
           tracker->quantizer->noteOffset.setValue((float)data2, 0.f, 127.f);
         }
+
+        if (data1 == 53)
+        {
+          // tracker->quantizer->toggleRecordingNoteOffset();
+          tracker->quantizer->setRecordingNoteOffset(data2 == 0 ? false : true);
+        }
       }
     }
 
@@ -319,6 +325,8 @@ void MainController::drawMidiInterface()
     midi1.sendNoteOn(73 + i, tracker->scaleIndex == i ? 127 : 0, 3);
     midi1.sendNoteOn(41 + i, tracker->keyIndex == i ? 127 : 0, 3);
   }
+
+  midi1.sendControlChange(53, tracker->quantizer->isRecording, 1);
 
   // Serial.println("midi ui redraw");
   // saveGlobalSettings();

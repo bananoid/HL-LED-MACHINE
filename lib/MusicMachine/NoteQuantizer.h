@@ -3,6 +3,7 @@
 #include <vector>
 #include "Parameter.h"
 #include "Clock.h"
+#include <CircularBuffer.h>
 
 namespace HLMusicMachine
 {
@@ -17,6 +18,10 @@ namespace HLMusicMachine
 
     Parameter<int8_t> noteOffset = {0, -5, 5};
     int8_t tqNoteOffset = 0;
+
+    CircularBuffer<int8_t, 32> noteOffsetRec;
+    bool isRecording = false;
+    uint8_t recBuffetTime = 0;
 
     NoteQuantizer()
     {
@@ -79,8 +84,34 @@ namespace HLMusicMachine
     {
       if ((masterClock->tickCounter) % (masterClock->clockDivider) == 0)
       {
+        if (masterClock->tickCounter == 0)
+        {
+          recBuffetTime = 0;
+        }
+
+        recBuffetTime = recBuffetTime % 32;
+
         tqNoteOffset = noteOffset;
+
+        if (isRecording)
+        {
+          noteOffsetRec.push(noteOffset);
+        }
+        else if (recBuffetTime < noteOffsetRec.size())
+        {
+          tqNoteOffset = noteOffsetRec[recBuffetTime];
+        }
+
+        recBuffetTime++;
       }
+    }
+    void toggleRecordingNoteOffset()
+    {
+      isRecording = !isRecording;
+    }
+    void setRecordingNoteOffset(bool rec)
+    {
+      isRecording = rec;
     }
   };
 }
