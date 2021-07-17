@@ -16,7 +16,7 @@ namespace HLMusicMachine
     bool keys[12];
     std::vector<uint8_t> curretScale;
 
-    Parameter<int8_t> noteOffset = {0, -5, 5};
+    Parameter<int8_t> noteOffset = {0, 0, 10};
     int8_t tqNoteOffset = 0;
 
     CircularBuffer<int8_t, 32> noteOffsetRec;
