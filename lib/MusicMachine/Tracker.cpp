@@ -39,6 +39,8 @@ namespace HLMusicMachine
     {
       track->clockTick(clock->tickCounter);
     }
+
+    quantizer->clockTick();
   }
 
   void Tracker::clockStart()

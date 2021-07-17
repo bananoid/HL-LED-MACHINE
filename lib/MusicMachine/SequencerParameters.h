@@ -21,7 +21,7 @@ namespace HLMusicMachine
     Parameter<int8_t> octave = {1, 0, 10};
     Parameter<uint8_t> noteCount = {1, 1, 7};
     Parameter<uint8_t> noteSpread = {1, 1, 10};
-    Parameter<uint8_t> noteOffset = {0, 0, 20};
+    Parameter<uint8_t> noteOffset = {0, 0, 10};
     Parameter<ArpeggioType> arpeggioType = {ArpeggioType_Eucledian, ArpeggioType_Eucledian, ArpeggioType_LFO};
     Parameter<uint8_t> arpeggioLFO = {3, 1, 22};
     Parameter<float> arpeggioLFOPhase = {0, 0, 1};

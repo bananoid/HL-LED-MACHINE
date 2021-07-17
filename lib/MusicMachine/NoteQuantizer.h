@@ -2,6 +2,7 @@
 #include <Arduino.h>
 #include <vector>
 #include "Parameter.h"
+#include "Clock.h"
 
 namespace HLMusicMachine
 {
@@ -14,7 +15,8 @@ namespace HLMusicMachine
     bool keys[12];
     std::vector<uint8_t> curretScale;
 
-    Parameter<uint8_t> noteOffset = {0, 0, 20};
+    Parameter<int8_t> noteOffset = {0, -5, 5};
+    int8_t tqNoteOffset = 0;
 
     NoteQuantizer()
     {
@@ -60,7 +62,7 @@ namespace HLMusicMachine
         return 0;
       }
 
-      inx += noteOffset;
+      inx += tqNoteOffset;
 
       octave += inx / size;
       inx = inx % size;
@@ -71,6 +73,14 @@ namespace HLMusicMachine
     {
       keys[inx] = !keys[inx];
       setCurrentScale(keys);
+    }
+
+    void clockTick()
+    {
+      if ((masterClock->tickCounter) % (masterClock->clockDivider) == 0)
+      {
+        tqNoteOffset = noteOffset;
+      }
     }
   };
 }
